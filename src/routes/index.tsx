@@ -479,6 +479,7 @@ function Rooms() {
 }
 
 function Conference() {
+  const t = useT();
   const halls = [
     {
       name: "Afrosiyob",
@@ -498,14 +499,11 @@ function Conference() {
       }}
     >
       <div className="mx-auto max-w-7xl px-4">
-        <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">Конференц-залы</p>
+        <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("conf_kicker")}</p>
         <h2 className="mt-3 max-w-3xl font-serif text-3xl md:text-4xl">
-          Бизнес-отель с конференц-залами в Ташкенте
+          {t("conf_h2")}
         </h2>
-        <p className="mt-4 max-w-2xl text-white/80">
-          Мультимедийное оборудование, проектор, экран, звуковая система, рассадка, кофе-брейки и
-          банкетное обслуживание.
-        </p>
+        <p className="mt-4 max-w-2xl text-white/80">{t("conf_desc")}</p>
 
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           {halls.map((h) => (
@@ -523,7 +521,7 @@ function Conference() {
           <BookingDialog
             trigger={
               <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
-                Оставить заявку
+                {t("cta_request")}
               </Button>
             }
           />
@@ -534,6 +532,7 @@ function Conference() {
 }
 
 function Spa() {
+  const t = useT();
   const imgs = [
     `${SRC}/IMG_1818.jpg`,
     `${SRC}/IMG_1804.jpg`,
@@ -553,15 +552,11 @@ function Spa() {
           <img src={imgs[2]} alt="Сауна" loading="lazy" className="h-44 w-full rounded-2xl object-cover" />
         </div>
         <div>
-          <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">СПА и фитнес</p>
+          <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("spa_kicker")}</p>
           <h2 className="mt-3 font-serif text-3xl text-primary md:text-4xl">
-            Восстановление сил после перелёта
+            {t("spa_h2")}
           </h2>
-          <p className="mt-5 leading-relaxed text-foreground/80">
-            Крытый бассейн, современный фитнес-клуб, сауна и турецкий хаммам — в Afrosiyob Regency
-            вас ждёт полноценная СПА-зона. Снимите напряжение, восстановите силы и поддерживайте
-            форму в поездках.
-          </p>
+          <p className="mt-5 leading-relaxed text-foreground/80">{t("spa_desc")}</p>
           <ul className="mt-6 grid grid-cols-2 gap-3 text-sm text-foreground/80">
             {["Крытый бассейн", "Фитнес-центр", "Сауна", "Турецкий хаммам"].map((x) => (
               <li key={x} className="flex items-center gap-2">
@@ -573,7 +568,7 @@ function Spa() {
             <BookingDialog
               trigger={
                 <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
-                  Оставить заявку
+                  {t("cta_request")}
                 </Button>
               }
             />
@@ -585,20 +580,17 @@ function Spa() {
 }
 
 function Restaurant() {
+  const t = useT();
   const imgs = [`${SRC}/3.jpg`, `${SRC}/5.jpg`, `${SRC}/2.png`, `${SRC}/1.jpg`];
   return (
     <section id="restaurant" className="bg-secondary/40 py-20">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 lg:grid-cols-2 lg:items-center">
         <div>
-          <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">
-            Ресторан Ko'hna
-          </p>
+          <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("rest_kicker")}</p>
           <h2 className="mt-3 font-serif text-3xl text-primary md:text-4xl">
-            Национальная и европейская кухня
+            {t("rest_h2")}
           </h2>
-          <p className="mt-5 leading-relaxed text-foreground/80">
-            В отеле работает ресторан, подходящий для деловых ужинов и корпоративных мероприятий.
-          </p>
+          <p className="mt-5 leading-relaxed text-foreground/80">{t("rest_desc")}</p>
           <ul className="mt-6 space-y-2 text-sm text-foreground/80">
             {[
               "Завтрак — шведский стол",
@@ -616,7 +608,7 @@ function Restaurant() {
               href={`tel:${PHONE_TEL}`}
               className="inline-flex h-11 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground hover:bg-primary/90"
             >
-              <Phone className="mr-2 h-4 w-4" /> Забронировать столик
+              <Phone className="mr-2 h-4 w-4" /> {t("cta_book_table")}
             </a>
           </div>
         </div>
@@ -637,6 +629,7 @@ function Restaurant() {
 }
 
 function Why() {
+  const t = useT();
   const items = [
     { icon: Plane, title: "5 минут до аэропорта", desc: "Всего 1 км от международного аэропорта Ташкента." },
     { icon: BedDouble, title: "100 современных номеров", desc: "От Standard до Suite — комфорт для каждого гостя." },
@@ -648,9 +641,9 @@ function Why() {
   return (
     <section className="bg-background py-20">
       <div className="mx-auto max-w-7xl px-4">
-        <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">Преимущества</p>
+        <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("why_kicker")}</p>
         <h2 className="mt-3 max-w-3xl font-serif text-3xl text-primary md:text-4xl">
-          Почему выбирают Afrosiyob Regency Hotel?
+          {t("why_h2")}
         </h2>
         <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {items.map((it) => (
@@ -670,13 +663,14 @@ function Why() {
 }
 
 function Location() {
+  const t = useT();
   return (
     <section id="location" className="bg-secondary/40 py-20">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 lg:grid-cols-[1fr_1.2fr]">
         <div>
-          <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">Локация</p>
+          <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("loc_kicker")}</p>
           <h2 className="mt-3 font-serif text-3xl text-primary md:text-4xl">
-            Улица Абдулла Каххара 150A, Ташкент
+            {t("loc_h2")}
           </h2>
           <p className="mt-5 text-foreground/80">
             Отель находится всего в 1 км от аэропорта — идеальный выбор для транзитных пассажиров,
@@ -713,12 +707,12 @@ function Location() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Button variant="outline">Открыть на Яндекс.Картах</Button>
+              <Button variant="outline">{t("cta_open_map")}</Button>
             </a>
             <BookingDialog
               trigger={
                 <Button className="bg-accent text-accent-foreground hover:bg-accent/90">
-                  Забронировать
+                  {t("cta_book")}
                 </Button>
               }
             />
@@ -738,6 +732,7 @@ function Location() {
 }
 
 function Footer() {
+  const t = useT();
   return (
     <footer className="bg-primary py-12 text-primary-foreground">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 md:grid-cols-3">
@@ -763,7 +758,7 @@ function Footer() {
             <BookingDialog
               trigger={
                 <Button className="bg-accent text-accent-foreground hover:bg-accent/90">
-                  Забронировать номер
+                  {t("cta_book_room")}
                 </Button>
               }
             />
