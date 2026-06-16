@@ -352,23 +352,18 @@ function Stats() {
 }
 
 function About() {
+  const t = useT();
   const gallery = [8, 9, 10, 11, 12, 13].map((n) => `${SRC}/${n}.jpg`);
   return (
     <section id="about" className="bg-secondary/40 py-20">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 lg:grid-cols-2">
         <div>
-          <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">О нас</p>
+          <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("about_kicker")}</p>
           <h2 className="mt-3 font-serif text-3xl text-primary md:text-4xl">
-            Современный отель премиум класса рядом с аэропортом
+            {t("about_h2")}
           </h2>
-          <p className="mt-5 text-base leading-relaxed text-foreground/80">
-            Afrosiyob Regency предлагает 100 современных и комфортабельных номеров, а также
-            универсальные конференц-залы для проведения мероприятий различного формата.
-          </p>
-          <p className="mt-4 text-base leading-relaxed text-foreground/80">
-            К услугам гостей рестораны, лобби-бар, СПА-зона и фитнес-центр, создающие все условия
-            для комфортного и продуктивного пребывания.
-          </p>
+          <p className="mt-5 text-base leading-relaxed text-foreground/80">{t("about_p1")}</p>
+          <p className="mt-4 text-base leading-relaxed text-foreground/80">{t("about_p2")}</p>
         </div>
         <div className="grid grid-cols-3 gap-3">
           {gallery.map((src, i) => (
