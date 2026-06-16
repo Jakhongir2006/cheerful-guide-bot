@@ -3,16 +3,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import {
@@ -31,6 +21,9 @@ import {
   Coffee,
   Briefcase,
 } from "lucide-react";
+import { BookingFlow } from "@/components/booking/BookingFlow";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -133,137 +126,30 @@ function BookingDialog({
   trigger: React.ReactNode;
   defaultRoom?: string;
 }) {
-  const [open, setOpen] = useState(false);
-  const today = new Date().toISOString().split("T")[0];
-
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const fd = new FormData(e.currentTarget);
-    const name = String(fd.get("name") || "").trim().slice(0, 100);
-    const phone = String(fd.get("phone") || "").trim().slice(0, 30);
-    const checkin = String(fd.get("checkin") || "");
-    const checkout = String(fd.get("checkout") || "");
-    const guests = String(fd.get("guests") || "");
-    const room = String(fd.get("room") || "");
-    const notes = String(fd.get("notes") || "").trim().slice(0, 500);
-
-    if (!name || !phone || !checkin || !checkout) {
-      toast.error("Заполните имя, телефон и даты заезда/выезда");
-      return;
-    }
-    if (checkout <= checkin) {
-      toast.error("Дата выезда должна быть позже даты заезда");
-      return;
-    }
-
-    const msg = [
-      "Бронирование — Afrosiyob Regency Hotel",
-      `Имя: ${name}`,
-      `Телефон: ${phone}`,
-      `Заезд: ${checkin}`,
-      `Выезд: ${checkout}`,
-      `Гости: ${guests}`,
-      `Номер: ${room}`,
-      notes ? `Комментарий: ${notes}` : "",
-    ]
-      .filter(Boolean)
-      .join("\n");
-
-    const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
-    window.open(url, "_blank", "noopener,noreferrer");
-    toast.success("Заявка отправлена в WhatsApp службы бронирования");
-    setOpen(false);
-  }
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-[520px]">
-        <DialogHeader>
-          <DialogTitle>Бронирование номера</DialogTitle>
-          <DialogDescription>
-            Заполните форму — заявка уйдёт в WhatsApp службы бронирования отеля.
-          </DialogDescription>
-        </DialogHeader>
-        <form onSubmit={handleSubmit} className="grid gap-4">
-          <div className="grid gap-2">
-            <Label htmlFor="name">Имя</Label>
-            <Input id="name" name="name" required maxLength={100} placeholder="Ваше имя" />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="phone">Телефон</Label>
-            <Input id="phone" name="phone" required maxLength={30} placeholder="+998 ..." />
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="grid gap-2">
-              <Label htmlFor="checkin">Заезд</Label>
-              <Input id="checkin" name="checkin" type="date" required min={today} />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="checkout">Выезд</Label>
-              <Input id="checkout" name="checkout" type="date" required min={today} />
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="grid gap-2">
-              <Label htmlFor="guests">Гости</Label>
-              <select
-                id="guests"
-                name="guests"
-                defaultValue="2 взрослых"
-                className="h-10 rounded-md border border-input bg-background px-3 text-sm"
-              >
-                <option>1 взрослый</option>
-                <option>2 взрослых</option>
-                <option>2 взрослых, 1 ребёнок</option>
-                <option>3 взрослых</option>
-                <option>4 взрослых</option>
-              </select>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="room">Тип номера</Label>
-              <select
-                id="room"
-                name="room"
-                defaultValue={defaultRoom ?? rooms[0].name}
-                className="h-10 rounded-md border border-input bg-background px-3 text-sm"
-              >
-                {rooms.map((r) => (
-                  <option key={r.id} value={r.name}>
-                    {r.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="notes">Комментарий</Label>
-            <Textarea id="notes" name="notes" maxLength={500} placeholder="Особые пожелания" />
-          </div>
-          <DialogFooter className="gap-2 sm:gap-2">
-            <a
-              href={`tel:${PHONE_TEL}`}
-              className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
-            >
-              <Phone className="mr-2 h-4 w-4" /> Позвонить
-            </a>
-            <Button type="submit">Отправить заявку</Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
-  );
+  // Wrap legacy call sites with the new multi-step flow.
+  // Map UI room ids/names to pricing keys.
+  const map: Record<string, string> = {
+    "standard-twin": "standard-twin",
+    "standard-double": "standard-king",
+    "superior-double": "superior-king",
+    "superior-twin": "superior-twin",
+    deluxe: "deluxe",
+    suite: "suite",
+  };
+  const id = defaultRoom ? rooms.find((r) => r.name === defaultRoom)?.id : undefined;
+  return <BookingFlow trigger={trigger} defaultRoomKey={id ? map[id] : undefined} />;
 }
 
 function Header() {
+  const t = useT();
   const nav = [
-    { href: "#home", label: "Главная" },
-    { href: "#rooms", label: "Номера" },
-    { href: "#about", label: "О нас" },
-    { href: "#conference", label: "Конференц-залы" },
-    { href: "#spa", label: "СПА" },
-    { href: "#restaurant", label: "Ресторан" },
-    { href: "#location", label: "Контакты" },
+    { href: "#home", label: t("nav_home") },
+    { href: "#rooms", label: t("nav_rooms") },
+    { href: "#about", label: t("nav_about") },
+    { href: "#conference", label: t("nav_conference") },
+    { href: "#spa", label: t("nav_spa") },
+    { href: "#restaurant", label: t("nav_restaurant") },
+    { href: "#location", label: t("nav_contacts") },
   ];
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
@@ -290,16 +176,17 @@ function Header() {
             </a>
           ))}
         </nav>
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="flex items-center gap-3">
+          <LanguageSwitcher />
           <a
             href={`tel:${PHONE_TEL}`}
-            className="flex items-center gap-2 text-sm font-semibold text-primary"
+            className="hidden items-center gap-2 text-sm font-semibold text-primary md:flex"
           >
             <Phone className="h-4 w-4" />
             {PHONE}
           </a>
           <BookingDialog
-            trigger={<Button className="bg-accent text-accent-foreground hover:bg-accent/90">Резервация</Button>}
+            trigger={<Button className="hidden bg-accent text-accent-foreground hover:bg-accent/90 md:inline-flex">{t("cta_reservation")}</Button>}
           />
         </div>
       </div>
@@ -308,6 +195,7 @@ function Header() {
 }
 
 function Hero() {
+  const t = useT();
   return (
     <section
       id="home"
@@ -320,20 +208,19 @@ function Hero() {
     >
       <div className="mx-auto max-w-7xl px-4 pt-20 pb-32 text-white">
         <p className="font-serif text-sm uppercase tracking-[0.4em] text-accent">
-          4★ Hotel · Tashkent
+          {t("hero_kicker")}
         </p>
         <h1 className="mt-4 max-w-3xl font-serif text-4xl leading-tight md:text-6xl">
           Afrosiyob Regency Hotel
         </h1>
         <p className="mt-4 max-w-2xl text-base text-white/85 md:text-lg">
-          Современный гостиничный комплекс премиум класса в 1 км от Международного аэропорта
-          Ташкента имени Ислама Каримова.
+          {t("hero_desc")}
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <BookingDialog
             trigger={
               <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
-                Забронировать номер
+                {t("cta_book_room")}
               </Button>
             }
           />
@@ -343,7 +230,7 @@ function Hero() {
               variant="outline"
               className="border-white/40 bg-white/10 text-white hover:bg-white/20 hover:text-white"
             >
-              Посмотреть номера
+              {t("cta_view_rooms")}
             </Button>
           </a>
         </div>
@@ -357,36 +244,38 @@ function Hero() {
 }
 
 function BookingForm() {
+  const t = useT();
   const today = new Date().toISOString().split("T")[0];
   const [checkin, setCheckin] = useState(today);
   const [checkout, setCheckout] = useState(today);
-  const [guests, setGuests] = useState("2 взрослых");
+  const [guests, setGuests] = useState("2");
+  const [open, setOpen] = useState(false);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!checkin || !checkout || checkout <= checkin) {
-      toast.error("Проверьте даты заезда и выезда");
+      toast.error("Check dates");
       return;
     }
-    const msg = `Бронирование:\nЗаезд: ${checkin}\nВыезд: ${checkout}\nГости: ${guests}`;
-    window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`, "_blank", "noopener,noreferrer");
+    setOpen(true);
   }
 
   return (
+    <>
     <form
       onSubmit={handleSubmit}
       className="rounded-2xl border border-border bg-card p-6 shadow-2xl"
     >
       <div className="mb-4 flex items-baseline justify-between">
         <h2 className="font-serif text-lg uppercase tracking-[0.15em] text-primary">
-          Онлайн-бронирование
+          {t("booking_online")}
         </h2>
-        <span className="text-xs text-muted-foreground">Гарантированное заселение</span>
+        <span className="text-xs text-muted-foreground">{t("guaranteed")}</span>
       </div>
       <div className="grid gap-3 md:grid-cols-[1fr_1fr_1fr_auto]">
         <div className="grid gap-1.5">
           <Label htmlFor="hero-checkin" className="text-xs uppercase tracking-wider">
-            Заезд
+            {t("checkin")}
           </Label>
           <Input
             id="hero-checkin"
@@ -398,7 +287,7 @@ function BookingForm() {
         </div>
         <div className="grid gap-1.5">
           <Label htmlFor="hero-checkout" className="text-xs uppercase tracking-wider">
-            Выезд
+            {t("checkout")}
           </Label>
           <Input
             id="hero-checkout"
@@ -410,7 +299,7 @@ function BookingForm() {
         </div>
         <div className="grid gap-1.5">
           <Label htmlFor="hero-guests" className="text-xs uppercase tracking-wider">
-            Гости
+            {t("guests")}
           </Label>
           <select
             id="hero-guests"
@@ -418,21 +307,21 @@ function BookingForm() {
             onChange={(e) => setGuests(e.target.value)}
             className="h-10 rounded-md border border-input bg-background px-3 text-sm"
           >
-            <option>1 взрослый</option>
-            <option>2 взрослых</option>
-            <option>3 взрослых</option>
-            <option>4 взрослых</option>
-            <option>2 взрослых, 1 ребёнок</option>
+            {[1, 2, 3, 4].map((n) => (
+              <option key={n} value={n}>{n}</option>
+            ))}
           </select>
         </div>
         <Button
           type="submit"
           className="h-10 self-end bg-primary text-primary-foreground hover:bg-primary/90"
         >
-          Найти номер
+          {t("cta_find_room")}
         </Button>
       </div>
     </form>
+    <BookingFlow open={open} onOpenChange={setOpen} />
+    </>
   );
 }
 
@@ -463,23 +352,18 @@ function Stats() {
 }
 
 function About() {
+  const t = useT();
   const gallery = [8, 9, 10, 11, 12, 13].map((n) => `${SRC}/${n}.jpg`);
   return (
     <section id="about" className="bg-secondary/40 py-20">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 lg:grid-cols-2">
         <div>
-          <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">О нас</p>
+          <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("about_kicker")}</p>
           <h2 className="mt-3 font-serif text-3xl text-primary md:text-4xl">
-            Современный отель премиум класса рядом с аэропортом
+            {t("about_h2")}
           </h2>
-          <p className="mt-5 text-base leading-relaxed text-foreground/80">
-            Afrosiyob Regency предлагает 100 современных и комфортабельных номеров, а также
-            универсальные конференц-залы для проведения мероприятий различного формата.
-          </p>
-          <p className="mt-4 text-base leading-relaxed text-foreground/80">
-            К услугам гостей рестораны, лобби-бар, СПА-зона и фитнес-центр, создающие все условия
-            для комфортного и продуктивного пребывания.
-          </p>
+          <p className="mt-5 text-base leading-relaxed text-foreground/80">{t("about_p1")}</p>
+          <p className="mt-4 text-base leading-relaxed text-foreground/80">{t("about_p2")}</p>
         </div>
         <div className="grid grid-cols-3 gap-3">
           {gallery.map((src, i) => (
@@ -498,6 +382,7 @@ function About() {
 }
 
 function Rooms() {
+  const t = useT();
   const amenities = [
     { icon: Snowflake, label: "Кондиционер" },
     { icon: Wifi, label: "Wi-Fi" },
@@ -511,9 +396,9 @@ function Rooms() {
       <div className="mx-auto max-w-7xl px-4">
         <div className="flex items-end justify-between gap-6">
           <div>
-            <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">Номера</p>
+            <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("rooms_kicker")}</p>
             <h2 className="mt-3 font-serif text-3xl text-primary md:text-4xl">
-              100 современных номеров
+              {t("rooms_h1")}
             </h2>
           </div>
           <div className="hidden gap-3 md:flex">
@@ -573,17 +458,15 @@ function Rooms() {
                     defaultRoom={r.name}
                     trigger={
                       <Button className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90">
-                        Забронировать
+                        {t("cta_book")}
                       </Button>
                     }
                   />
                   <a
-                    href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Здравствуйте, узнать стоимость номера ${r.name}`)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href={`tel:${PHONE_TEL}`}
                     className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
                   >
-                    Узнать цену
+                    {t("cta_get_price")}
                   </a>
                 </div>
               </div>
@@ -596,6 +479,7 @@ function Rooms() {
 }
 
 function Conference() {
+  const t = useT();
   const halls = [
     {
       name: "Afrosiyob",
@@ -615,14 +499,11 @@ function Conference() {
       }}
     >
       <div className="mx-auto max-w-7xl px-4">
-        <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">Конференц-залы</p>
+        <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("conf_kicker")}</p>
         <h2 className="mt-3 max-w-3xl font-serif text-3xl md:text-4xl">
-          Бизнес-отель с конференц-залами в Ташкенте
+          {t("conf_h2")}
         </h2>
-        <p className="mt-4 max-w-2xl text-white/80">
-          Мультимедийное оборудование, проектор, экран, звуковая система, рассадка, кофе-брейки и
-          банкетное обслуживание.
-        </p>
+        <p className="mt-4 max-w-2xl text-white/80">{t("conf_desc")}</p>
 
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           {halls.map((h) => (
@@ -640,7 +521,7 @@ function Conference() {
           <BookingDialog
             trigger={
               <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
-                Оставить заявку
+                {t("cta_request")}
               </Button>
             }
           />
@@ -651,6 +532,7 @@ function Conference() {
 }
 
 function Spa() {
+  const t = useT();
   const imgs = [
     `${SRC}/IMG_1818.jpg`,
     `${SRC}/IMG_1804.jpg`,
@@ -670,15 +552,11 @@ function Spa() {
           <img src={imgs[2]} alt="Сауна" loading="lazy" className="h-44 w-full rounded-2xl object-cover" />
         </div>
         <div>
-          <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">СПА и фитнес</p>
+          <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("spa_kicker")}</p>
           <h2 className="mt-3 font-serif text-3xl text-primary md:text-4xl">
-            Восстановление сил после перелёта
+            {t("spa_h2")}
           </h2>
-          <p className="mt-5 leading-relaxed text-foreground/80">
-            Крытый бассейн, современный фитнес-клуб, сауна и турецкий хаммам — в Afrosiyob Regency
-            вас ждёт полноценная СПА-зона. Снимите напряжение, восстановите силы и поддерживайте
-            форму в поездках.
-          </p>
+          <p className="mt-5 leading-relaxed text-foreground/80">{t("spa_desc")}</p>
           <ul className="mt-6 grid grid-cols-2 gap-3 text-sm text-foreground/80">
             {["Крытый бассейн", "Фитнес-центр", "Сауна", "Турецкий хаммам"].map((x) => (
               <li key={x} className="flex items-center gap-2">
@@ -690,7 +568,7 @@ function Spa() {
             <BookingDialog
               trigger={
                 <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
-                  Оставить заявку
+                  {t("cta_request")}
                 </Button>
               }
             />
@@ -702,20 +580,17 @@ function Spa() {
 }
 
 function Restaurant() {
+  const t = useT();
   const imgs = [`${SRC}/3.jpg`, `${SRC}/5.jpg`, `${SRC}/2.png`, `${SRC}/1.jpg`];
   return (
     <section id="restaurant" className="bg-secondary/40 py-20">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 lg:grid-cols-2 lg:items-center">
         <div>
-          <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">
-            Ресторан Ko'hna
-          </p>
+          <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("rest_kicker")}</p>
           <h2 className="mt-3 font-serif text-3xl text-primary md:text-4xl">
-            Национальная и европейская кухня
+            {t("rest_h2")}
           </h2>
-          <p className="mt-5 leading-relaxed text-foreground/80">
-            В отеле работает ресторан, подходящий для деловых ужинов и корпоративных мероприятий.
-          </p>
+          <p className="mt-5 leading-relaxed text-foreground/80">{t("rest_desc")}</p>
           <ul className="mt-6 space-y-2 text-sm text-foreground/80">
             {[
               "Завтрак — шведский стол",
@@ -733,7 +608,7 @@ function Restaurant() {
               href={`tel:${PHONE_TEL}`}
               className="inline-flex h-11 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground hover:bg-primary/90"
             >
-              <Phone className="mr-2 h-4 w-4" /> Забронировать столик
+              <Phone className="mr-2 h-4 w-4" /> {t("cta_book_table")}
             </a>
           </div>
         </div>
@@ -754,6 +629,7 @@ function Restaurant() {
 }
 
 function Why() {
+  const t = useT();
   const items = [
     { icon: Plane, title: "5 минут до аэропорта", desc: "Всего 1 км от международного аэропорта Ташкента." },
     { icon: BedDouble, title: "100 современных номеров", desc: "От Standard до Suite — комфорт для каждого гостя." },
@@ -765,9 +641,9 @@ function Why() {
   return (
     <section className="bg-background py-20">
       <div className="mx-auto max-w-7xl px-4">
-        <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">Преимущества</p>
+        <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("why_kicker")}</p>
         <h2 className="mt-3 max-w-3xl font-serif text-3xl text-primary md:text-4xl">
-          Почему выбирают Afrosiyob Regency Hotel?
+          {t("why_h2")}
         </h2>
         <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {items.map((it) => (
@@ -787,13 +663,14 @@ function Why() {
 }
 
 function Location() {
+  const t = useT();
   return (
     <section id="location" className="bg-secondary/40 py-20">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 lg:grid-cols-[1fr_1.2fr]">
         <div>
-          <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">Локация</p>
+          <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("loc_kicker")}</p>
           <h2 className="mt-3 font-serif text-3xl text-primary md:text-4xl">
-            Улица Абдулла Каххара 150A, Ташкент
+            {t("loc_h2")}
           </h2>
           <p className="mt-5 text-foreground/80">
             Отель находится всего в 1 км от аэропорта — идеальный выбор для транзитных пассажиров,
@@ -830,12 +707,12 @@ function Location() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Button variant="outline">Открыть на Яндекс.Картах</Button>
+              <Button variant="outline">{t("cta_open_map")}</Button>
             </a>
             <BookingDialog
               trigger={
                 <Button className="bg-accent text-accent-foreground hover:bg-accent/90">
-                  Забронировать
+                  {t("cta_book")}
                 </Button>
               }
             />
@@ -855,6 +732,7 @@ function Location() {
 }
 
 function Footer() {
+  const t = useT();
   return (
     <footer className="bg-primary py-12 text-primary-foreground">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 md:grid-cols-3">
@@ -880,7 +758,7 @@ function Footer() {
             <BookingDialog
               trigger={
                 <Button className="bg-accent text-accent-foreground hover:bg-accent/90">
-                  Забронировать номер
+                  {t("cta_book_room")}
                 </Button>
               }
             />
