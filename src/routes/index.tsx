@@ -195,6 +195,7 @@ function Header() {
 }
 
 function Hero() {
+  const t = useT();
   return (
     <section
       id="home"
@@ -207,20 +208,19 @@ function Hero() {
     >
       <div className="mx-auto max-w-7xl px-4 pt-20 pb-32 text-white">
         <p className="font-serif text-sm uppercase tracking-[0.4em] text-accent">
-          4★ Hotel · Tashkent
+          {t("hero_kicker")}
         </p>
         <h1 className="mt-4 max-w-3xl font-serif text-4xl leading-tight md:text-6xl">
           Afrosiyob Regency Hotel
         </h1>
         <p className="mt-4 max-w-2xl text-base text-white/85 md:text-lg">
-          Современный гостиничный комплекс премиум класса в 1 км от Международного аэропорта
-          Ташкента имени Ислама Каримова.
+          {t("hero_desc")}
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <BookingDialog
             trigger={
               <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
-                Забронировать номер
+                {t("cta_book_room")}
               </Button>
             }
           />
@@ -230,7 +230,7 @@ function Hero() {
               variant="outline"
               className="border-white/40 bg-white/10 text-white hover:bg-white/20 hover:text-white"
             >
-              Посмотреть номера
+              {t("cta_view_rooms")}
             </Button>
           </a>
         </div>
@@ -244,36 +244,38 @@ function Hero() {
 }
 
 function BookingForm() {
+  const t = useT();
   const today = new Date().toISOString().split("T")[0];
   const [checkin, setCheckin] = useState(today);
   const [checkout, setCheckout] = useState(today);
-  const [guests, setGuests] = useState("2 взрослых");
+  const [guests, setGuests] = useState("2");
+  const [open, setOpen] = useState(false);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!checkin || !checkout || checkout <= checkin) {
-      toast.error("Проверьте даты заезда и выезда");
+      toast.error("Check dates");
       return;
     }
-    const msg = `Бронирование:\nЗаезд: ${checkin}\nВыезд: ${checkout}\nГости: ${guests}`;
-    window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`, "_blank", "noopener,noreferrer");
+    setOpen(true);
   }
 
   return (
+    <>
     <form
       onSubmit={handleSubmit}
       className="rounded-2xl border border-border bg-card p-6 shadow-2xl"
     >
       <div className="mb-4 flex items-baseline justify-between">
         <h2 className="font-serif text-lg uppercase tracking-[0.15em] text-primary">
-          Онлайн-бронирование
+          {t("booking_online")}
         </h2>
-        <span className="text-xs text-muted-foreground">Гарантированное заселение</span>
+        <span className="text-xs text-muted-foreground">{t("guaranteed")}</span>
       </div>
       <div className="grid gap-3 md:grid-cols-[1fr_1fr_1fr_auto]">
         <div className="grid gap-1.5">
           <Label htmlFor="hero-checkin" className="text-xs uppercase tracking-wider">
-            Заезд
+            {t("checkin")}
           </Label>
           <Input
             id="hero-checkin"
@@ -285,7 +287,7 @@ function BookingForm() {
         </div>
         <div className="grid gap-1.5">
           <Label htmlFor="hero-checkout" className="text-xs uppercase tracking-wider">
-            Выезд
+            {t("checkout")}
           </Label>
           <Input
             id="hero-checkout"
@@ -297,7 +299,7 @@ function BookingForm() {
         </div>
         <div className="grid gap-1.5">
           <Label htmlFor="hero-guests" className="text-xs uppercase tracking-wider">
-            Гости
+            {t("guests")}
           </Label>
           <select
             id="hero-guests"
@@ -305,21 +307,21 @@ function BookingForm() {
             onChange={(e) => setGuests(e.target.value)}
             className="h-10 rounded-md border border-input bg-background px-3 text-sm"
           >
-            <option>1 взрослый</option>
-            <option>2 взрослых</option>
-            <option>3 взрослых</option>
-            <option>4 взрослых</option>
-            <option>2 взрослых, 1 ребёнок</option>
+            {[1, 2, 3, 4].map((n) => (
+              <option key={n} value={n}>{n}</option>
+            ))}
           </select>
         </div>
         <Button
           type="submit"
           className="h-10 self-end bg-primary text-primary-foreground hover:bg-primary/90"
         >
-          Найти номер
+          {t("cta_find_room")}
         </Button>
       </div>
     </form>
+    <BookingFlow open={open} onOpenChange={setOpen} />
+    </>
   );
 }
 
