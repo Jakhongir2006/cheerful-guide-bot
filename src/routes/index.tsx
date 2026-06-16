@@ -126,11 +126,18 @@ function BookingDialog({
   trigger: React.ReactNode;
   defaultRoom?: string;
 }) {
-  // Wrap legacy call sites with the new multi-step flow
-  const key = defaultRoom
-    ? rooms.find((r) => r.name === defaultRoom)?.id
-    : undefined;
-  return <BookingFlow trigger={trigger} defaultRoomKey={key} />;
+  // Wrap legacy call sites with the new multi-step flow.
+  // Map UI room ids/names to pricing keys.
+  const map: Record<string, string> = {
+    "standard-twin": "standard-twin",
+    "standard-double": "standard-king",
+    "superior-double": "superior-king",
+    "superior-twin": "superior-twin",
+    deluxe: "deluxe",
+    suite: "suite",
+  };
+  const id = defaultRoom ? rooms.find((r) => r.name === defaultRoom)?.id : undefined;
+  return <BookingFlow trigger={trigger} defaultRoomKey={id ? map[id] : undefined} />;
 }
 
 function Header() {
