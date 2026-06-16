@@ -382,6 +382,7 @@ function About() {
 }
 
 function Rooms() {
+  const t = useT();
   const amenities = [
     { icon: Snowflake, label: "Кондиционер" },
     { icon: Wifi, label: "Wi-Fi" },
@@ -395,9 +396,9 @@ function Rooms() {
       <div className="mx-auto max-w-7xl px-4">
         <div className="flex items-end justify-between gap-6">
           <div>
-            <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">Номера</p>
+            <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("rooms_kicker")}</p>
             <h2 className="mt-3 font-serif text-3xl text-primary md:text-4xl">
-              100 современных номеров
+              {t("rooms_h1")}
             </h2>
           </div>
           <div className="hidden gap-3 md:flex">
@@ -457,17 +458,15 @@ function Rooms() {
                     defaultRoom={r.name}
                     trigger={
                       <Button className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90">
-                        Забронировать
+                        {t("cta_book")}
                       </Button>
                     }
                   />
                   <a
-                    href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Здравствуйте, узнать стоимость номера ${r.name}`)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href={`tel:${PHONE_TEL}`}
                     className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
                   >
-                    Узнать цену
+                    {t("cta_get_price")}
                   </a>
                 </div>
               </div>
