@@ -141,14 +141,15 @@ function BookingDialog({
 }
 
 function Header() {
+  const t = useT();
   const nav = [
-    { href: "#home", label: "Главная" },
-    { href: "#rooms", label: "Номера" },
-    { href: "#about", label: "О нас" },
-    { href: "#conference", label: "Конференц-залы" },
-    { href: "#spa", label: "СПА" },
-    { href: "#restaurant", label: "Ресторан" },
-    { href: "#location", label: "Контакты" },
+    { href: "#home", label: t("nav_home") },
+    { href: "#rooms", label: t("nav_rooms") },
+    { href: "#about", label: t("nav_about") },
+    { href: "#conference", label: t("nav_conference") },
+    { href: "#spa", label: t("nav_spa") },
+    { href: "#restaurant", label: t("nav_restaurant") },
+    { href: "#location", label: t("nav_contacts") },
   ];
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
@@ -175,16 +176,17 @@ function Header() {
             </a>
           ))}
         </nav>
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="flex items-center gap-3">
+          <LanguageSwitcher />
           <a
             href={`tel:${PHONE_TEL}`}
-            className="flex items-center gap-2 text-sm font-semibold text-primary"
+            className="hidden items-center gap-2 text-sm font-semibold text-primary md:flex"
           >
             <Phone className="h-4 w-4" />
             {PHONE}
           </a>
           <BookingDialog
-            trigger={<Button className="bg-accent text-accent-foreground hover:bg-accent/90">Резервация</Button>}
+            trigger={<Button className="hidden bg-accent text-accent-foreground hover:bg-accent/90 md:inline-flex">{t("cta_reservation")}</Button>}
           />
         </div>
       </div>
