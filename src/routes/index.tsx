@@ -373,25 +373,26 @@ function About() {
   return (
     <section id="about" className="bg-secondary/40 py-20">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 lg:grid-cols-2">
-        <div>
+        <Reveal>
           <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("about_kicker")}</p>
           <h2 className="mt-3 font-serif text-3xl text-primary md:text-4xl">
             {t("about_h2")}
           </h2>
           <p className="mt-5 text-base leading-relaxed text-foreground/80">{t("about_p1")}</p>
           <p className="mt-4 text-base leading-relaxed text-foreground/80">{t("about_p2")}</p>
-        </div>
-        <div className="grid grid-cols-3 gap-3">
+        </Reveal>
+        <Reveal className="grid grid-cols-3 gap-3" delay={100}>
           {gallery.map((src, i) => (
-            <img
+            <Zimg
               key={src}
               src={src}
+              gallery={gallery}
+              index={i}
               alt={`Afrosiyob Regency интерьер ${i + 1}`}
-              loading="lazy"
               className={`h-full w-full rounded-xl object-cover ${i === 0 ? "row-span-2 h-auto" : ""}`}
             />
           ))}
-        </div>
+        </Reveal>
       </div>
     </section>
   );
