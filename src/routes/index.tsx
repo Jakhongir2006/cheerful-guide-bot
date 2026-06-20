@@ -432,16 +432,17 @@ function Rooms() {
         </div>
 
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {rooms.map((r) => (
-            <article
+          {rooms.map((r, i) => (
+            <Reveal key={r.id} delay={i * 70} as="article"
               key={r.id}
               className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:shadow-xl"
             >
               <div className="aspect-[4/3] overflow-hidden">
-                <img
+                <Zimg
                   src={r.image}
+                  gallery={rooms.map((x) => x.image)}
+                  index={i}
                   alt={r.name}
-                  loading="lazy"
                   className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                 />
               </div>
@@ -487,7 +488,7 @@ function Rooms() {
                   </a>
                 </div>
               </div>
-            </article>
+            </Reveal>
           ))}
         </div>
       </div>
