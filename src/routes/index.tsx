@@ -24,6 +24,15 @@ import {
 import { BookingFlow } from "@/components/booking/BookingFlow";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useT } from "@/lib/i18n";
+import { LightboxProvider, Zimg } from "@/components/Lightbox";
+import { Reveal, CountUp } from "@/components/Reveal";
+import logoAsset from "@/assets/afrosiyob-logo.png.asset.json";
+import conf1 from "@/assets/conference-1.png.asset.json";
+import conf2 from "@/assets/conference-2.png.asset.json";
+import conf3 from "@/assets/conference-3.png.asset.json";
+import spaHammam from "@/assets/spa-hammam.png.asset.json";
+import spaMassage from "@/assets/spa-massage.png.asset.json";
+import spaSauna from "@/assets/spa-sauna.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
