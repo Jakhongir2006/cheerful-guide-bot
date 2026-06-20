@@ -561,24 +561,21 @@ function Conference() {
 
 function Spa() {
   const t = useT();
-  const imgs = [
-    `${SRC}/IMG_1818.jpg`,
-    `${SRC}/IMG_1804.jpg`,
-    `${SRC}/IMG_1800.jpg`,
-  ];
+  const imgs = [spaHammam.url, spaMassage.url, spaSauna.url];
   return (
     <section id="spa" className="bg-background py-20">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 lg:grid-cols-2 lg:items-center">
-        <div className="grid grid-cols-2 gap-3">
-          <img
+        <Reveal className="grid grid-cols-2 gap-3">
+          <Zimg
             src={imgs[0]}
-            alt="СПА и бассейн"
-            loading="lazy"
+            gallery={imgs}
+            index={0}
+            alt="Турецкий хаммам"
             className="col-span-2 h-72 w-full rounded-2xl object-cover"
           />
-          <img src={imgs[1]} alt="Фитнес" loading="lazy" className="h-44 w-full rounded-2xl object-cover" />
-          <img src={imgs[2]} alt="Сауна" loading="lazy" className="h-44 w-full rounded-2xl object-cover" />
-        </div>
+          <Zimg src={imgs[1]} gallery={imgs} index={1} alt="Массажный кабинет" className="h-44 w-full rounded-2xl object-cover" />
+          <Zimg src={imgs[2]} gallery={imgs} index={2} alt="Сауна" className="h-44 w-full rounded-2xl object-cover" />
+        </Reveal>
         <div>
           <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("spa_kicker")}</p>
           <h2 className="mt-3 font-serif text-3xl text-primary md:text-4xl">
