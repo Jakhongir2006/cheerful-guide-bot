@@ -210,11 +210,12 @@ function Hero() {
   return (
     <section
       id="home"
-      className="relative isolate overflow-hidden"
+      className="relative isolate"
       style={{
         backgroundImage: `linear-gradient(180deg, rgba(15,30,60,0.55), rgba(15,30,60,0.75)), url(${SRC}/t6.jpg)`,
         backgroundSize: "cover",
         backgroundPosition: "center",
+        backgroundAttachment: "fixed",
       }}
     >
       <div className="mx-auto max-w-7xl px-4 pt-20 pb-32 text-white">
