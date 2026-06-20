@@ -703,7 +703,7 @@ function Location() {
           </div>
           <div className="mt-8 flex flex-wrap gap-3">
             <a
-              href="https://yandex.uz/maps/?ll=69.281006%2C41.257889&z=16"
+              href="https://yandex.uz/maps/?ll=69.264784%2C41.271109&z=16"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -721,7 +721,7 @@ function Location() {
         <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
           <iframe
             title="Карта"
-            src="https://yandex.com/map-widget/v1/?ll=69.281006%2C41.257889&z=16&pt=69.281006%2C41.257889"
+            src="https://yandex.com/map-widget/v1/?ll=69.264784%2C41.271109&z=16&pt=69.264784%2C41.271109"
             className="h-[420px] w-full"
             loading="lazy"
           />
