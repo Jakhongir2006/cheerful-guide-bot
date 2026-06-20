@@ -339,24 +339,28 @@ function BookingForm() {
 
 function Stats() {
   const items = [
-    { icon: Plane, label: "5 минут до аэропорта" },
-    { icon: BedDouble, label: "100 номеров" },
-    { icon: Users, label: "3 конференц-зала" },
-    { icon: Waves, label: "Бассейн и СПА" },
-    { icon: ShieldCheck, label: "4-звёздочный отель" },
-    { icon: UtensilsCrossed, label: "Ресторан Ko'hna" },
+    { icon: Plane, num: 5, suffix: "", label: "минут до аэропорта" },
+    { icon: BedDouble, num: 100, suffix: "", label: "номеров" },
+    { icon: Users, num: 3, suffix: "", label: "конференц-зала" },
+    { icon: Waves, num: 0, suffix: "", label: "Бассейн и СПА" },
+    { icon: ShieldCheck, num: 4, suffix: "★", label: "звёздочный отель" },
+    { icon: UtensilsCrossed, num: 0, suffix: "", label: "Ресторан Ko'hna" },
   ];
   return (
     <section className="bg-background pt-32 pb-16">
       <div className="mx-auto grid max-w-7xl grid-cols-2 gap-4 px-4 md:grid-cols-3 lg:grid-cols-6">
-        {items.map((it) => (
-          <div
-            key={it.label}
-            className="flex flex-col items-center gap-2 rounded-xl border border-border bg-card p-5 text-center"
-          >
-            <it.icon className="h-7 w-7 text-accent" />
-            <span className="text-sm font-medium text-foreground">{it.label}</span>
-          </div>
+        {items.map((it, i) => (
+          <Reveal key={it.label} delay={i * 80}>
+            <div className="flex h-full flex-col items-center gap-2 rounded-xl border border-border bg-card p-5 text-center transition hover:-translate-y-1 hover:shadow-lg">
+              <it.icon className="h-7 w-7 text-accent" />
+              {it.num > 0 ? (
+                <div className="font-serif text-2xl text-primary">
+                  <CountUp value={it.num} suffix={it.suffix} />
+                </div>
+              ) : null}
+              <span className="text-sm font-medium text-foreground">{it.label}</span>
+            </div>
+          </Reveal>
         ))}
       </div>
     </section>
