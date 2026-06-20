@@ -639,11 +639,12 @@ function Restaurant() {
         </div>
         <div className="grid grid-cols-2 gap-3">
           {imgs.map((src, i) => (
-            <img
+            <Zimg
               key={src}
               src={src}
+              gallery={imgs}
+              index={i}
               alt={`Ресторан Ko'hna ${i + 1}`}
-              loading="lazy"
               className="h-48 w-full rounded-2xl object-cover"
             />
           ))}
