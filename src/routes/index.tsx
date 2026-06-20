@@ -164,9 +164,11 @@ function Header() {
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
         <a href="#home" className="flex items-center gap-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground font-serif text-lg">
-            A
-          </div>
+          <img
+            src={logoAsset.url}
+            alt="Afrosiyob Hotel"
+            className="h-11 w-11 rounded-full object-contain bg-white ring-1 ring-border"
+          />
           <div className="leading-tight">
             <div className="font-serif text-base font-semibold text-primary">Afrosiyob</div>
             <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
@@ -179,7 +181,7 @@ function Header() {
             <a
               key={n.href}
               href={n.href}
-              className="text-sm text-foreground/80 transition hover:text-primary"
+              className="relative text-sm text-foreground/80 transition hover:text-primary after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full"
             >
               {n.label}
             </a>
