@@ -501,13 +501,11 @@ function Rooms() {
 function Conference() {
   const t = useT();
   const halls = [
-    {
-      name: "Afrosiyob",
-      desc: "Для корпоративных мероприятий и презентаций.",
-    },
-    { name: "Shahrisabz", desc: "Для деловых встреч, тренингов и семинаров." },
-    { name: "Nasaf", desc: "Для переговоров и бизнес-встреч." },
+    { name: "Afrosiyob", desc: "Для корпоративных мероприятий и презентаций.", image: conf1.url },
+    { name: "Shahrisabz", desc: "Для деловых встреч, тренингов и семинаров.", image: conf2.url },
+    { name: "Nasaf", desc: "Для переговоров и бизнес-встреч.", image: conf3.url },
   ];
+  const confGallery = halls.map((h) => h.image);
   return (
     <section
       id="conference"
@@ -526,14 +524,24 @@ function Conference() {
         <p className="mt-4 max-w-2xl text-white/80">{t("conf_desc")}</p>
 
         <div className="mt-10 grid gap-5 md:grid-cols-3">
-          {halls.map((h) => (
-            <div
-              key={h.name}
-              className="rounded-2xl border border-white/15 bg-white/5 p-6 backdrop-blur"
-            >
-              <h3 className="font-serif text-2xl text-accent">«{h.name}»</h3>
-              <p className="mt-3 text-sm text-white/80">{h.desc}</p>
-            </div>
+          {halls.map((h, i) => (
+            <Reveal key={h.name} delay={i * 100}>
+              <div className="group overflow-hidden rounded-2xl border border-white/15 bg-white/5 backdrop-blur transition hover:-translate-y-1 hover:border-accent">
+                <div className="aspect-[4/3] overflow-hidden">
+                  <Zimg
+                    src={h.image}
+                    gallery={confGallery}
+                    index={i}
+                    alt={`Конференц-зал ${h.name}`}
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="font-serif text-2xl text-accent">«{h.name}»</h3>
+                  <p className="mt-3 text-sm text-white/80">{h.desc}</p>
+                </div>
+              </div>
+            </Reveal>
           ))}
         </div>
 
