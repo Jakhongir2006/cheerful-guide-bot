@@ -800,21 +800,23 @@ function Footer() {
 
 function Index() {
   return (
-    <div className="min-h-screen bg-background font-sans">
-      <Header />
-      <main>
-        <Hero />
-        <Stats />
-        <About />
-        <Rooms />
-        <Conference />
-        <Spa />
-        <Restaurant />
-        <Why />
-        <Location />
-      </main>
-      <Footer />
-      <Toaster richColors position="top-center" />
-    </div>
+    <LightboxProvider>
+      <div className="min-h-screen bg-background font-sans">
+        <Header />
+        <main>
+          <Hero />
+          <Stats />
+          <About />
+          <Rooms />
+          <Conference />
+          <Spa />
+          <Restaurant />
+          <Why />
+          <Location />
+        </main>
+        <Footer />
+        <Toaster richColors position="top-center" />
+      </div>
+    </LightboxProvider>
   );
 }
