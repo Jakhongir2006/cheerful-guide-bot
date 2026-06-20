@@ -24,6 +24,15 @@ import {
 import { BookingFlow } from "@/components/booking/BookingFlow";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useT } from "@/lib/i18n";
+import { LightboxProvider, Zimg } from "@/components/Lightbox";
+import { Reveal, CountUp } from "@/components/Reveal";
+import logoAsset from "@/assets/afrosiyob-logo.png.asset.json";
+import conf1 from "@/assets/conference-1.png.asset.json";
+import conf2 from "@/assets/conference-2.png.asset.json";
+import conf3 from "@/assets/conference-3.png.asset.json";
+import spaHammam from "@/assets/spa-hammam.png.asset.json";
+import spaMassage from "@/assets/spa-massage.png.asset.json";
+import spaSauna from "@/assets/spa-sauna.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -155,9 +164,11 @@ function Header() {
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
         <a href="#home" className="flex items-center gap-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground font-serif text-lg">
-            A
-          </div>
+          <img
+            src={logoAsset.url}
+            alt="Afrosiyob Hotel"
+            className="h-11 w-11 rounded-full object-contain bg-white ring-1 ring-border"
+          />
           <div className="leading-tight">
             <div className="font-serif text-base font-semibold text-primary">Afrosiyob</div>
             <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
@@ -170,7 +181,7 @@ function Header() {
             <a
               key={n.href}
               href={n.href}
-              className="text-sm text-foreground/80 transition hover:text-primary"
+              className="relative text-sm text-foreground/80 transition hover:text-primary after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full"
             >
               {n.label}
             </a>
@@ -199,11 +210,12 @@ function Hero() {
   return (
     <section
       id="home"
-      className="relative isolate overflow-hidden"
+      className="relative isolate"
       style={{
         backgroundImage: `linear-gradient(180deg, rgba(15,30,60,0.55), rgba(15,30,60,0.75)), url(${SRC}/t6.jpg)`,
         backgroundSize: "cover",
         backgroundPosition: "center",
+        backgroundAttachment: "fixed",
       }}
     >
       <div className="mx-auto max-w-7xl px-4 pt-20 pb-32 text-white">
@@ -327,24 +339,28 @@ function BookingForm() {
 
 function Stats() {
   const items = [
-    { icon: Plane, label: "5 минут до аэропорта" },
-    { icon: BedDouble, label: "100 номеров" },
-    { icon: Users, label: "3 конференц-зала" },
-    { icon: Waves, label: "Бассейн и СПА" },
-    { icon: ShieldCheck, label: "4-звёздочный отель" },
-    { icon: UtensilsCrossed, label: "Ресторан Ko'hna" },
+    { icon: Plane, num: 5, suffix: "", label: "минут до аэропорта" },
+    { icon: BedDouble, num: 100, suffix: "", label: "номеров" },
+    { icon: Users, num: 3, suffix: "", label: "конференц-зала" },
+    { icon: Waves, num: 0, suffix: "", label: "Бассейн и СПА" },
+    { icon: ShieldCheck, num: 4, suffix: "★", label: "звёздочный отель" },
+    { icon: UtensilsCrossed, num: 0, suffix: "", label: "Ресторан Ko'hna" },
   ];
   return (
     <section className="bg-background pt-32 pb-16">
       <div className="mx-auto grid max-w-7xl grid-cols-2 gap-4 px-4 md:grid-cols-3 lg:grid-cols-6">
-        {items.map((it) => (
-          <div
-            key={it.label}
-            className="flex flex-col items-center gap-2 rounded-xl border border-border bg-card p-5 text-center"
-          >
-            <it.icon className="h-7 w-7 text-accent" />
-            <span className="text-sm font-medium text-foreground">{it.label}</span>
-          </div>
+        {items.map((it, i) => (
+          <Reveal key={it.label} delay={i * 80}>
+            <div className="flex h-full flex-col items-center gap-2 rounded-xl border border-border bg-card p-5 text-center transition hover:-translate-y-1 hover:shadow-lg">
+              <it.icon className="h-7 w-7 text-accent" />
+              {it.num > 0 ? (
+                <div className="font-serif text-2xl text-primary">
+                  <CountUp value={it.num} suffix={it.suffix} />
+                </div>
+              ) : null}
+              <span className="text-sm font-medium text-foreground">{it.label}</span>
+            </div>
+          </Reveal>
         ))}
       </div>
     </section>
@@ -357,25 +373,26 @@ function About() {
   return (
     <section id="about" className="bg-secondary/40 py-20">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 lg:grid-cols-2">
-        <div>
+        <Reveal>
           <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("about_kicker")}</p>
           <h2 className="mt-3 font-serif text-3xl text-primary md:text-4xl">
             {t("about_h2")}
           </h2>
           <p className="mt-5 text-base leading-relaxed text-foreground/80">{t("about_p1")}</p>
           <p className="mt-4 text-base leading-relaxed text-foreground/80">{t("about_p2")}</p>
-        </div>
-        <div className="grid grid-cols-3 gap-3">
+        </Reveal>
+        <Reveal className="grid grid-cols-3 gap-3" delay={100}>
           {gallery.map((src, i) => (
-            <img
+            <Zimg
               key={src}
               src={src}
+              gallery={gallery}
+              index={i}
               alt={`Afrosiyob Regency интерьер ${i + 1}`}
-              loading="lazy"
               className={`h-full w-full rounded-xl object-cover ${i === 0 ? "row-span-2 h-auto" : ""}`}
             />
           ))}
-        </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -415,16 +432,19 @@ function Rooms() {
         </div>
 
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {rooms.map((r) => (
-            <article
+          {rooms.map((r, i) => (
+            <Reveal
               key={r.id}
+              delay={i * 70}
+              as="article"
               className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:shadow-xl"
             >
               <div className="aspect-[4/3] overflow-hidden">
-                <img
+                <Zimg
                   src={r.image}
+                  gallery={rooms.map((x) => x.image)}
+                  index={i}
                   alt={r.name}
-                  loading="lazy"
                   className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                 />
               </div>
@@ -470,7 +490,7 @@ function Rooms() {
                   </a>
                 </div>
               </div>
-            </article>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -481,13 +501,11 @@ function Rooms() {
 function Conference() {
   const t = useT();
   const halls = [
-    {
-      name: "Afrosiyob",
-      desc: "Для корпоративных мероприятий и презентаций.",
-    },
-    { name: "Shahrisabz", desc: "Для деловых встреч, тренингов и семинаров." },
-    { name: "Nasaf", desc: "Для переговоров и бизнес-встреч." },
+    { name: "Afrosiyob", desc: "Для корпоративных мероприятий и презентаций.", image: conf1.url },
+    { name: "Shahrisabz", desc: "Для деловых встреч, тренингов и семинаров.", image: conf2.url },
+    { name: "Nasaf", desc: "Для переговоров и бизнес-встреч.", image: conf3.url },
   ];
+  const confGallery = halls.map((h) => h.image);
   return (
     <section
       id="conference"
@@ -506,14 +524,24 @@ function Conference() {
         <p className="mt-4 max-w-2xl text-white/80">{t("conf_desc")}</p>
 
         <div className="mt-10 grid gap-5 md:grid-cols-3">
-          {halls.map((h) => (
-            <div
-              key={h.name}
-              className="rounded-2xl border border-white/15 bg-white/5 p-6 backdrop-blur"
-            >
-              <h3 className="font-serif text-2xl text-accent">«{h.name}»</h3>
-              <p className="mt-3 text-sm text-white/80">{h.desc}</p>
-            </div>
+          {halls.map((h, i) => (
+            <Reveal key={h.name} delay={i * 100}>
+              <div className="group overflow-hidden rounded-2xl border border-white/15 bg-white/5 backdrop-blur transition hover:-translate-y-1 hover:border-accent">
+                <div className="aspect-[4/3] overflow-hidden">
+                  <Zimg
+                    src={h.image}
+                    gallery={confGallery}
+                    index={i}
+                    alt={`Конференц-зал ${h.name}`}
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="font-serif text-2xl text-accent">«{h.name}»</h3>
+                  <p className="mt-3 text-sm text-white/80">{h.desc}</p>
+                </div>
+              </div>
+            </Reveal>
           ))}
         </div>
 
@@ -533,24 +561,21 @@ function Conference() {
 
 function Spa() {
   const t = useT();
-  const imgs = [
-    `${SRC}/IMG_1818.jpg`,
-    `${SRC}/IMG_1804.jpg`,
-    `${SRC}/IMG_1800.jpg`,
-  ];
+  const imgs = [spaHammam.url, spaMassage.url, spaSauna.url];
   return (
     <section id="spa" className="bg-background py-20">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 lg:grid-cols-2 lg:items-center">
-        <div className="grid grid-cols-2 gap-3">
-          <img
+        <Reveal className="grid grid-cols-2 gap-3">
+          <Zimg
             src={imgs[0]}
-            alt="СПА и бассейн"
-            loading="lazy"
+            gallery={imgs}
+            index={0}
+            alt="Турецкий хаммам"
             className="col-span-2 h-72 w-full rounded-2xl object-cover"
           />
-          <img src={imgs[1]} alt="Фитнес" loading="lazy" className="h-44 w-full rounded-2xl object-cover" />
-          <img src={imgs[2]} alt="Сауна" loading="lazy" className="h-44 w-full rounded-2xl object-cover" />
-        </div>
+          <Zimg src={imgs[1]} gallery={imgs} index={1} alt="Массажный кабинет" className="h-44 w-full rounded-2xl object-cover" />
+          <Zimg src={imgs[2]} gallery={imgs} index={2} alt="Сауна" className="h-44 w-full rounded-2xl object-cover" />
+        </Reveal>
         <div>
           <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("spa_kicker")}</p>
           <h2 className="mt-3 font-serif text-3xl text-primary md:text-4xl">
@@ -614,11 +639,12 @@ function Restaurant() {
         </div>
         <div className="grid grid-cols-2 gap-3">
           {imgs.map((src, i) => (
-            <img
+            <Zimg
               key={src}
               src={src}
+              gallery={imgs}
+              index={i}
               alt={`Ресторан Ko'hna ${i + 1}`}
-              loading="lazy"
               className="h-48 w-full rounded-2xl object-cover"
             />
           ))}
@@ -774,21 +800,23 @@ function Footer() {
 
 function Index() {
   return (
-    <div className="min-h-screen bg-background font-sans">
-      <Header />
-      <main>
-        <Hero />
-        <Stats />
-        <About />
-        <Rooms />
-        <Conference />
-        <Spa />
-        <Restaurant />
-        <Why />
-        <Location />
-      </main>
-      <Footer />
-      <Toaster richColors position="top-center" />
-    </div>
+    <LightboxProvider>
+      <div className="min-h-screen bg-background font-sans">
+        <Header />
+        <main>
+          <Hero />
+          <Stats />
+          <About />
+          <Rooms />
+          <Conference />
+          <Spa />
+          <Restaurant />
+          <Why />
+          <Location />
+        </main>
+        <Footer />
+        <Toaster richColors position="top-center" />
+      </div>
+    </LightboxProvider>
   );
 }
