@@ -571,7 +571,7 @@ function Conference() {
 
 function Spa() {
   const t = useT();
-  const imgs = [spaHammam.url, spaMassage.url, spaSauna.url];
+  const imgs = [spaPool.url, spaFitness.url, spaHammam.url, spaMassage.url, spaSauna.url];
   return (
     <section id="spa" className="bg-background py-20">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 lg:grid-cols-2 lg:items-center">
@@ -580,11 +580,13 @@ function Spa() {
             src={imgs[0]}
             gallery={imgs}
             index={0}
-            alt="Турецкий хаммам"
+            alt={t("spa_pool")}
             className="col-span-2 h-72 w-full rounded-2xl object-cover"
           />
-          <Zimg src={imgs[1]} gallery={imgs} index={1} alt="Массажный кабинет" className="h-44 w-full rounded-2xl object-cover" />
-          <Zimg src={imgs[2]} gallery={imgs} index={2} alt="Сауна" className="h-44 w-full rounded-2xl object-cover" />
+          <Zimg src={imgs[1]} gallery={imgs} index={1} alt={t("spa_fitness")} className="h-44 w-full rounded-2xl object-cover" />
+          <Zimg src={imgs[2]} gallery={imgs} index={2} alt={t("spa_hammam")} className="h-44 w-full rounded-2xl object-cover" />
+          <Zimg src={imgs[3]} gallery={imgs} index={3} alt="Massage" className="h-44 w-full rounded-2xl object-cover" />
+          <Zimg src={imgs[4]} gallery={imgs} index={4} alt={t("spa_sauna")} className="col-span-2 h-44 w-full rounded-2xl object-cover" />
         </Reveal>
         <div>
           <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("spa_kicker")}</p>
@@ -593,7 +595,7 @@ function Spa() {
           </h2>
           <p className="mt-5 leading-relaxed text-foreground/80">{t("spa_desc")}</p>
           <ul className="mt-6 grid grid-cols-2 gap-3 text-sm text-foreground/80">
-            {["Крытый бассейн", "Фитнес-центр", "Сауна", "Турецкий хаммам"].map((x) => (
+            {[t("spa_pool"), t("spa_fitness"), t("spa_sauna"), t("spa_hammam")].map((x) => (
               <li key={x} className="flex items-center gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-accent" /> {x}
               </li>
