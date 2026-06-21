@@ -33,6 +33,8 @@ import conf3 from "@/assets/conference-3.png.asset.json";
 import spaHammam from "@/assets/spa-hammam.png.asset.json";
 import spaMassage from "@/assets/spa-massage.png.asset.json";
 import spaSauna from "@/assets/spa-sauna.png.asset.json";
+import spaPool from "@/assets/spa-pool.jpg.asset.json";
+import spaFitness from "@/assets/spa-fitness.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -64,8 +66,9 @@ const WHATSAPP = "998555190005";
 type Room = {
   id: string;
   name: string;
-  nameRu: string;
+  nameKey: string;
   count: string;
+  countNum: number;
   area: string;
   bed: string;
   image: string;
@@ -75,8 +78,9 @@ const rooms: Room[] = [
   {
     id: "standard-twin",
     name: "Standard Twin Room",
-    nameRu: "Стандартный номер с раздельными кроватями",
-    count: "31 номер",
+    nameKey: "room_standard_twin",
+    count: "31",
+    countNum: 31,
     area: "27 м²",
     bed: "2 × 100×200 см",
     image: `${SRC}/Room%208-910.jpg`,
@@ -84,8 +88,9 @@ const rooms: Room[] = [
   {
     id: "standard-double",
     name: "Standard Double Room",
-    nameRu: "Стандартный номер с одной большой кроватью",
-    count: "31 номер",
+    nameKey: "room_standard_double",
+    count: "31",
+    countNum: 31,
     area: "27 м²",
     bed: "1 × 160×200 см",
     image: `${SRC}/Room%2022-906.jpg`,
@@ -93,8 +98,9 @@ const rooms: Room[] = [
   {
     id: "superior-double",
     name: "Superior Double Room",
-    nameRu: "Улучшенный номер с одной большой кроватью",
-    count: "12 номеров",
+    nameKey: "room_superior_double",
+    count: "12",
+    countNum: 12,
     area: "40 м²",
     bed: "1 × 180×200 см",
     image: `${SRC}/Room%203-1005.jpg`,
@@ -102,8 +108,9 @@ const rooms: Room[] = [
   {
     id: "superior-twin",
     name: "Superior Twin Room",
-    nameRu: "Улучшенный номер с раздельными кроватями",
-    count: "19 номеров",
+    nameKey: "room_superior_twin",
+    count: "19",
+    countNum: 19,
     area: "40 м²",
     bed: "2 × 100×200 см",
     image: `${SRC}/Room%2010-910.jpg`,
@@ -111,8 +118,9 @@ const rooms: Room[] = [
   {
     id: "deluxe",
     name: "Deluxe Room",
-    nameRu: "Полулюкс номер",
-    count: "5 номеров",
+    nameKey: "room_deluxe",
+    count: "5",
+    countNum: 5,
     area: "50 м²",
     bed: "1 × 180×200 см",
     image: `${SRC}/Room%2017-909.jpg`,
@@ -120,8 +128,9 @@ const rooms: Room[] = [
   {
     id: "suite",
     name: "Suite Room",
-    nameRu: "Люкс номер",
-    count: "2 номера",
+    nameKey: "room_suite",
+    count: "2",
+    countNum: 2,
     area: "80 м²",
     bed: "1 × 180×200 см",
     image: `${SRC}/Room%2029-1013.jpg`,
@@ -338,13 +347,14 @@ function BookingForm() {
 }
 
 function Stats() {
+  const t = useT();
   const items = [
-    { icon: Plane, num: 5, suffix: "", label: "минут до аэропорта" },
-    { icon: BedDouble, num: 100, suffix: "", label: "номеров" },
-    { icon: Users, num: 3, suffix: "", label: "конференц-зала" },
-    { icon: Waves, num: 0, suffix: "", label: "Бассейн и СПА" },
-    { icon: ShieldCheck, num: 4, suffix: "★", label: "звёздочный отель" },
-    { icon: UtensilsCrossed, num: 0, suffix: "", label: "Ресторан Ko'hna" },
+    { icon: Plane, num: 5, suffix: "", label: t("stat_min_to_airport") },
+    { icon: BedDouble, num: 100, suffix: "", label: t("stat_rooms") },
+    { icon: Users, num: 3, suffix: "", label: t("stat_halls") },
+    { icon: Waves, num: 0, suffix: "", label: t("stat_pool_spa") },
+    { icon: ShieldCheck, num: 4, suffix: "★", label: t("stat_star_hotel") },
+    { icon: UtensilsCrossed, num: 0, suffix: "", label: t("stat_restaurant") },
   ];
   return (
     <section className="bg-background pt-32 pb-16">
@@ -401,12 +411,12 @@ function About() {
 function Rooms() {
   const t = useT();
   const amenities = [
-    { icon: Snowflake, label: "Кондиционер" },
-    { icon: Wifi, label: "Wi-Fi" },
-    { icon: Tv, label: "ТВ 43–55″" },
-    { icon: Coffee, label: "Мини-бар" },
-    { icon: ShieldCheck, label: "Сейф" },
-    { icon: Briefcase, label: "Рабочая зона" },
+    { icon: Snowflake, label: t("am_ac") },
+    { icon: Wifi, label: t("am_wifi") },
+    { icon: Tv, label: t("am_tv") },
+    { icon: Coffee, label: t("am_minibar") },
+    { icon: ShieldCheck, label: t("am_safe") },
+    { icon: Briefcase, label: t("am_workspace") },
   ];
   return (
     <section id="rooms" className="bg-background py-20">
@@ -450,25 +460,25 @@ function Rooms() {
               </div>
               <div className="flex flex-1 flex-col p-5">
                 <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                  {r.nameRu}
+                  {t(r.nameKey)}
                 </p>
                 <h3 className="mt-1 font-serif text-xl text-primary">{r.name}</h3>
                 <dl className="mt-4 grid grid-cols-3 gap-2 text-xs text-foreground/70">
                   <div>
                     <dt className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                      Кол-во
+                      {t("room_count")}
                     </dt>
-                    <dd className="font-medium text-foreground">{r.count}</dd>
+                    <dd className="font-medium text-foreground">{r.count} {r.countNum === 1 ? t("room_word") : t("rooms_word")}</dd>
                   </div>
                   <div>
                     <dt className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                      Площадь
+                      {t("room_area")}
                     </dt>
                     <dd className="font-medium text-foreground">{r.area}</dd>
                   </div>
                   <div>
                     <dt className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                      Кровать
+                      {t("room_bed")}
                     </dt>
                     <dd className="font-medium text-foreground">{r.bed}</dd>
                   </div>
@@ -501,9 +511,9 @@ function Rooms() {
 function Conference() {
   const t = useT();
   const halls = [
-    { name: "Afrosiyob", desc: "Для корпоративных мероприятий и презентаций.", image: conf1.url },
-    { name: "Nasaf", desc: "Для деловых встреч, тренингов и семинаров.", image: conf2.url },
-    { name: "Shakhrisabz", desc: "Для переговоров и бизнес-встреч.", image: conf3.url },
+    { name: "Afrosiyob", desc: t("conf_d_afrosiyob"), image: conf1.url },
+    { name: "Nasaf", desc: t("conf_d_nasaf"), image: conf2.url },
+    { name: "Shakhrisabz", desc: t("conf_d_shakhrisabz"), image: conf3.url },
   ];
   const confGallery = halls.map((h) => h.image);
   return (
@@ -561,7 +571,7 @@ function Conference() {
 
 function Spa() {
   const t = useT();
-  const imgs = [spaHammam.url, spaMassage.url, spaSauna.url];
+  const imgs = [spaPool.url, spaFitness.url, spaHammam.url, spaMassage.url, spaSauna.url];
   return (
     <section id="spa" className="bg-background py-20">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 lg:grid-cols-2 lg:items-center">
@@ -570,11 +580,13 @@ function Spa() {
             src={imgs[0]}
             gallery={imgs}
             index={0}
-            alt="Турецкий хаммам"
+            alt={t("spa_pool")}
             className="col-span-2 h-72 w-full rounded-2xl object-cover"
           />
-          <Zimg src={imgs[1]} gallery={imgs} index={1} alt="Массажный кабинет" className="h-44 w-full rounded-2xl object-cover" />
-          <Zimg src={imgs[2]} gallery={imgs} index={2} alt="Сауна" className="h-44 w-full rounded-2xl object-cover" />
+          <Zimg src={imgs[1]} gallery={imgs} index={1} alt={t("spa_fitness")} className="h-44 w-full rounded-2xl object-cover" />
+          <Zimg src={imgs[2]} gallery={imgs} index={2} alt={t("spa_hammam")} className="h-44 w-full rounded-2xl object-cover" />
+          <Zimg src={imgs[3]} gallery={imgs} index={3} alt="Massage" className="h-44 w-full rounded-2xl object-cover" />
+          <Zimg src={imgs[4]} gallery={imgs} index={4} alt={t("spa_sauna")} className="col-span-2 h-44 w-full rounded-2xl object-cover" />
         </Reveal>
         <div>
           <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("spa_kicker")}</p>
@@ -583,7 +595,7 @@ function Spa() {
           </h2>
           <p className="mt-5 leading-relaxed text-foreground/80">{t("spa_desc")}</p>
           <ul className="mt-6 grid grid-cols-2 gap-3 text-sm text-foreground/80">
-            {["Крытый бассейн", "Фитнес-центр", "Сауна", "Турецкий хаммам"].map((x) => (
+            {[t("spa_pool"), t("spa_fitness"), t("spa_sauna"), t("spa_hammam")].map((x) => (
               <li key={x} className="flex items-center gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-accent" /> {x}
               </li>
@@ -618,10 +630,10 @@ function Restaurant() {
           <p className="mt-5 leading-relaxed text-foreground/80">{t("rest_desc")}</p>
           <ul className="mt-6 space-y-2 text-sm text-foreground/80">
             {[
-              "Завтрак — шведский стол",
-              "Бизнес-обеды",
-              "Банкетное обслуживание",
-              "Обслуживание в номере (Room Service)",
+              t("rest_breakfast"),
+              t("rest_business_lunch"),
+              t("rest_banquet"),
+              t("rest_room_service"),
             ].map((x) => (
               <li key={x} className="flex items-center gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-accent" /> {x}
@@ -657,12 +669,12 @@ function Restaurant() {
 function Why() {
   const t = useT();
   const items = [
-    { icon: Plane, title: "5 минут до аэропорта", desc: "Всего 1 км от международного аэропорта Ташкента." },
-    { icon: BedDouble, title: "100 современных номеров", desc: "От Standard до Suite — комфорт для каждого гостя." },
-    { icon: Users, title: "3 конференц-зала", desc: "Оборудованные залы для встреч и семинаров." },
-    { icon: Waves, title: "Бассейн, СПА, фитнес", desc: "Крытый бассейн, сауна, хаммам, фитнес-клуб." },
-    { icon: Car, title: "Бесплатная парковка", desc: "Круглосуточный reception, прачечная." },
-    { icon: ShieldCheck, title: "Booking и системы", desc: "Подключение к Booking и международным системам." },
+    { icon: Plane, title: t("why1_t"), desc: t("why1_d") },
+    { icon: BedDouble, title: t("why2_t"), desc: t("why2_d") },
+    { icon: Users, title: t("why3_t"), desc: t("why3_d") },
+    { icon: Waves, title: t("why4_t"), desc: t("why4_d") },
+    { icon: Car, title: t("why5_t"), desc: t("why5_d") },
+    { icon: ShieldCheck, title: t("why6_t"), desc: t("why6_d") },
   ];
   return (
     <section className="bg-background py-20">
@@ -698,22 +710,19 @@ function Location() {
           <h2 className="mt-3 font-serif text-3xl text-primary md:text-4xl">
             {t("loc_h2")}
           </h2>
-          <p className="mt-5 text-foreground/80">
-            Отель находится всего в 1 км от аэропорта — идеальный выбор для транзитных пассажиров,
-            международных делегаций и бизнес-путешественников.
-          </p>
+          <p className="mt-5 text-foreground/80">{t("loc_intro")}</p>
           <div className="mt-6 space-y-3 text-sm">
             <div className="flex items-start gap-3">
               <MapPin className="mt-0.5 h-5 w-5 text-accent" />
               <div>
-                <div className="font-medium text-foreground">Адрес</div>
-                <div className="text-foreground/70">ул. Абдулла Каххара 150A, Ташкент</div>
+                <div className="font-medium text-foreground">{t("loc_address")}</div>
+                <div className="text-foreground/70">{t("loc_address_val")}</div>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <Phone className="mt-0.5 h-5 w-5 text-accent" />
               <div>
-                <div className="font-medium text-foreground">Служба резервации</div>
+                <div className="font-medium text-foreground">{t("loc_reservation")}</div>
                 <a href={`tel:${PHONE_TEL}`} className="text-foreground/70 hover:text-primary">
                   {PHONE}
                 </a>
@@ -722,8 +731,8 @@ function Location() {
             <div className="flex items-start gap-3">
               <Plane className="mt-0.5 h-5 w-5 text-accent" />
               <div>
-                <div className="font-medium text-foreground">От аэропорта</div>
-                <div className="text-foreground/70">~1.3 км · 4–5 минут</div>
+                <div className="font-medium text-foreground">{t("loc_from_airport")}</div>
+                <div className="text-foreground/70">{t("loc_distance")}</div>
               </div>
             </div>
           </div>
@@ -764,22 +773,18 @@ function Footer() {
       <div className="mx-auto grid max-w-7xl gap-8 px-4 md:grid-cols-3">
         <div>
           <div className="font-serif text-2xl">Afrosiyob Regency</div>
-          <p className="mt-3 text-sm text-white/70">
-            4★ бизнес-отель в 1 км от международного аэропорта Ташкента.
-          </p>
+          <p className="mt-3 text-sm text-white/70">{t("foot_tagline")}</p>
         </div>
         <div>
-          <div className="text-xs uppercase tracking-wider text-accent">Контакты</div>
+          <div className="text-xs uppercase tracking-wider text-accent">{t("foot_contacts")}</div>
           <a href={`tel:${PHONE_TEL}`} className="mt-3 block text-sm">
             {PHONE}
           </a>
-          <div className="mt-1 text-sm text-white/70">ул. Абдулла Каххара 150A, Ташкент</div>
+          <div className="mt-1 text-sm text-white/70">{t("loc_address_val")}</div>
         </div>
         <div>
-          <div className="text-xs uppercase tracking-wider text-accent">Бронирование</div>
-          <p className="mt-3 text-sm text-white/70">
-            Бронируйте напрямую через сайт и получите лучшие условия проживания.
-          </p>
+          <div className="text-xs uppercase tracking-wider text-accent">{t("foot_booking")}</div>
+          <p className="mt-3 text-sm text-white/70">{t("foot_booking_desc")}</p>
           <div className="mt-4">
             <BookingDialog
               trigger={
@@ -792,7 +797,7 @@ function Footer() {
         </div>
       </div>
       <div className="mt-10 border-t border-white/10 pt-6 text-center text-xs text-white/50">
-        © {new Date().getFullYear()} Afrosiyob Regency Hotel. Все права защищены.
+        © {new Date().getFullYear()} Afrosiyob Regency Hotel. {t("foot_rights")}
       </div>
     </footer>
   );
