@@ -773,22 +773,18 @@ function Footer() {
       <div className="mx-auto grid max-w-7xl gap-8 px-4 md:grid-cols-3">
         <div>
           <div className="font-serif text-2xl">Afrosiyob Regency</div>
-          <p className="mt-3 text-sm text-white/70">
-            4★ бизнес-отель в 1 км от международного аэропорта Ташкента.
-          </p>
+          <p className="mt-3 text-sm text-white/70">{t("foot_tagline")}</p>
         </div>
         <div>
-          <div className="text-xs uppercase tracking-wider text-accent">Контакты</div>
+          <div className="text-xs uppercase tracking-wider text-accent">{t("foot_contacts")}</div>
           <a href={`tel:${PHONE_TEL}`} className="mt-3 block text-sm">
             {PHONE}
           </a>
-          <div className="mt-1 text-sm text-white/70">ул. Абдулла Каххара 150A, Ташкент</div>
+          <div className="mt-1 text-sm text-white/70">{t("loc_address_val")}</div>
         </div>
         <div>
-          <div className="text-xs uppercase tracking-wider text-accent">Бронирование</div>
-          <p className="mt-3 text-sm text-white/70">
-            Бронируйте напрямую через сайт и получите лучшие условия проживания.
-          </p>
+          <div className="text-xs uppercase tracking-wider text-accent">{t("foot_booking")}</div>
+          <p className="mt-3 text-sm text-white/70">{t("foot_booking_desc")}</p>
           <div className="mt-4">
             <BookingDialog
               trigger={
@@ -801,7 +797,7 @@ function Footer() {
         </div>
       </div>
       <div className="mt-10 border-t border-white/10 pt-6 text-center text-xs text-white/50">
-        © {new Date().getFullYear()} Afrosiyob Regency Hotel. Все права защищены.
+        © {new Date().getFullYear()} Afrosiyob Regency Hotel. {t("foot_rights")}
       </div>
     </footer>
   );
