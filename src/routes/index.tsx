@@ -66,8 +66,9 @@ const WHATSAPP = "998555190005";
 type Room = {
   id: string;
   name: string;
-  nameRu: string;
+  nameKey: string;
   count: string;
+  countNum: number;
   area: string;
   bed: string;
   image: string;
@@ -77,8 +78,9 @@ const rooms: Room[] = [
   {
     id: "standard-twin",
     name: "Standard Twin Room",
-    nameRu: "Стандартный номер с раздельными кроватями",
-    count: "31 номер",
+    nameKey: "room_standard_twin",
+    count: "31",
+    countNum: 31,
     area: "27 м²",
     bed: "2 × 100×200 см",
     image: `${SRC}/Room%208-910.jpg`,
@@ -86,8 +88,9 @@ const rooms: Room[] = [
   {
     id: "standard-double",
     name: "Standard Double Room",
-    nameRu: "Стандартный номер с одной большой кроватью",
-    count: "31 номер",
+    nameKey: "room_standard_double",
+    count: "31",
+    countNum: 31,
     area: "27 м²",
     bed: "1 × 160×200 см",
     image: `${SRC}/Room%2022-906.jpg`,
@@ -95,8 +98,9 @@ const rooms: Room[] = [
   {
     id: "superior-double",
     name: "Superior Double Room",
-    nameRu: "Улучшенный номер с одной большой кроватью",
-    count: "12 номеров",
+    nameKey: "room_superior_double",
+    count: "12",
+    countNum: 12,
     area: "40 м²",
     bed: "1 × 180×200 см",
     image: `${SRC}/Room%203-1005.jpg`,
@@ -104,8 +108,9 @@ const rooms: Room[] = [
   {
     id: "superior-twin",
     name: "Superior Twin Room",
-    nameRu: "Улучшенный номер с раздельными кроватями",
-    count: "19 номеров",
+    nameKey: "room_superior_twin",
+    count: "19",
+    countNum: 19,
     area: "40 м²",
     bed: "2 × 100×200 см",
     image: `${SRC}/Room%2010-910.jpg`,
@@ -113,8 +118,9 @@ const rooms: Room[] = [
   {
     id: "deluxe",
     name: "Deluxe Room",
-    nameRu: "Полулюкс номер",
-    count: "5 номеров",
+    nameKey: "room_deluxe",
+    count: "5",
+    countNum: 5,
     area: "50 м²",
     bed: "1 × 180×200 см",
     image: `${SRC}/Room%2017-909.jpg`,
@@ -122,8 +128,9 @@ const rooms: Room[] = [
   {
     id: "suite",
     name: "Suite Room",
-    nameRu: "Люкс номер",
-    count: "2 номера",
+    nameKey: "room_suite",
+    count: "2",
+    countNum: 2,
     area: "80 м²",
     bed: "1 × 180×200 см",
     image: `${SRC}/Room%2029-1013.jpg`,
