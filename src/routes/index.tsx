@@ -669,12 +669,12 @@ function Restaurant() {
 function Why() {
   const t = useT();
   const items = [
-    { icon: Plane, title: "5 минут до аэропорта", desc: "Всего 1 км от международного аэропорта Ташкента." },
-    { icon: BedDouble, title: "100 современных номеров", desc: "От Standard до Suite — комфорт для каждого гостя." },
-    { icon: Users, title: "3 конференц-зала", desc: "Оборудованные залы для встреч и семинаров." },
-    { icon: Waves, title: "Бассейн, СПА, фитнес", desc: "Крытый бассейн, сауна, хаммам, фитнес-клуб." },
-    { icon: Car, title: "Бесплатная парковка", desc: "Круглосуточный reception, прачечная." },
-    { icon: ShieldCheck, title: "Booking и системы", desc: "Подключение к Booking и международным системам." },
+    { icon: Plane, title: t("why1_t"), desc: t("why1_d") },
+    { icon: BedDouble, title: t("why2_t"), desc: t("why2_d") },
+    { icon: Users, title: t("why3_t"), desc: t("why3_d") },
+    { icon: Waves, title: t("why4_t"), desc: t("why4_d") },
+    { icon: Car, title: t("why5_t"), desc: t("why5_d") },
+    { icon: ShieldCheck, title: t("why6_t"), desc: t("why6_d") },
   ];
   return (
     <section className="bg-background py-20">
