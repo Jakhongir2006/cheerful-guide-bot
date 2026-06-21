@@ -511,9 +511,9 @@ function Rooms() {
 function Conference() {
   const t = useT();
   const halls = [
-    { name: "Afrosiyob", desc: t("conf_d_afrosiyob"), image: conf1.url },
+    { name: "Shakhrisabz", desc: t("conf_d_shakhrisabz"), image: conf1.url },
     { name: "Nasaf", desc: t("conf_d_nasaf"), image: conf2.url },
-    { name: "Shakhrisabz", desc: t("conf_d_shakhrisabz"), image: conf3.url },
+    { name: "Afrosiyob", desc: t("conf_d_afrosiyob"), image: conf3.url },
   ];
   const confGallery = halls.map((h) => h.image);
   return (
