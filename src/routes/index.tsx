@@ -33,6 +33,8 @@ import conf3 from "@/assets/conference-3.png.asset.json";
 import spaHammam from "@/assets/spa-hammam.png.asset.json";
 import spaMassage from "@/assets/spa-massage.png.asset.json";
 import spaSauna from "@/assets/spa-sauna.png.asset.json";
+import spaPool from "@/assets/spa-pool.jpg.asset.json";
+import spaFitness from "@/assets/spa-fitness.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
