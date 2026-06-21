@@ -710,22 +710,19 @@ function Location() {
           <h2 className="mt-3 font-serif text-3xl text-primary md:text-4xl">
             {t("loc_h2")}
           </h2>
-          <p className="mt-5 text-foreground/80">
-            Отель находится всего в 1 км от аэропорта — идеальный выбор для транзитных пассажиров,
-            международных делегаций и бизнес-путешественников.
-          </p>
+          <p className="mt-5 text-foreground/80">{t("loc_intro")}</p>
           <div className="mt-6 space-y-3 text-sm">
             <div className="flex items-start gap-3">
               <MapPin className="mt-0.5 h-5 w-5 text-accent" />
               <div>
-                <div className="font-medium text-foreground">Адрес</div>
-                <div className="text-foreground/70">ул. Абдулла Каххара 150A, Ташкент</div>
+                <div className="font-medium text-foreground">{t("loc_address")}</div>
+                <div className="text-foreground/70">{t("loc_address_val")}</div>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <Phone className="mt-0.5 h-5 w-5 text-accent" />
               <div>
-                <div className="font-medium text-foreground">Служба резервации</div>
+                <div className="font-medium text-foreground">{t("loc_reservation")}</div>
                 <a href={`tel:${PHONE_TEL}`} className="text-foreground/70 hover:text-primary">
                   {PHONE}
                 </a>
@@ -734,8 +731,8 @@ function Location() {
             <div className="flex items-start gap-3">
               <Plane className="mt-0.5 h-5 w-5 text-accent" />
               <div>
-                <div className="font-medium text-foreground">От аэропорта</div>
-                <div className="text-foreground/70">~1.3 км · 4–5 минут</div>
+                <div className="font-medium text-foreground">{t("loc_from_airport")}</div>
+                <div className="text-foreground/70">{t("loc_distance")}</div>
               </div>
             </div>
           </div>
