@@ -194,6 +194,98 @@ export const DICT: Dict = {
     uz: "Nima uchun Afrosiyob Regency Hotelni tanlash kerak?",
     ko: "왜 Afrosiyob Regency Hotel을 선택해야 할까요?",
   },
+
+  // Stats
+  stat_min_to_airport: { ru: "минут до аэропорта", en: "min to airport", uz: "daqiqa aeroportgacha", ko: "공항까지 분" },
+  stat_rooms: { ru: "номеров", en: "rooms", uz: "xona", ko: "객실" },
+  stat_halls: { ru: "конференц-зала", en: "conference halls", uz: "konferensiya zali", ko: "회의실" },
+  stat_pool_spa: { ru: "Бассейн и СПА", en: "Pool & SPA", uz: "Basseyn va SPA", ko: "수영장 & 스파" },
+  stat_star_hotel: { ru: "звёздочный отель", en: "star hotel", uz: "yulduzli mehmonxona", ko: "성급 호텔" },
+  stat_restaurant: { ru: "Ресторан Ko'hna", en: "Ko'hna Restaurant", uz: "Ko'hna restorani", ko: "Ko'hna 레스토랑" },
+
+  // Amenities
+  am_ac: { ru: "Кондиционер", en: "Air conditioning", uz: "Konditsioner", ko: "에어컨" },
+  am_wifi: { ru: "Wi-Fi", en: "Wi-Fi", uz: "Wi-Fi", ko: "Wi-Fi" },
+  am_tv: { ru: "ТВ 43–55″", en: "TV 43–55″", uz: "TV 43–55″", ko: "TV 43–55″" },
+  am_minibar: { ru: "Мини-бар", en: "Mini-bar", uz: "Mini-bar", ko: "미니바" },
+  am_safe: { ru: "Сейф", en: "Safe", uz: "Seyf", ko: "금고" },
+  am_workspace: { ru: "Рабочая зона", en: "Workspace", uz: "Ish joyi", ko: "업무 공간" },
+
+  // Room card
+  room_count: { ru: "Кол-во", en: "Count", uz: "Soni", ko: "수량" },
+  room_area: { ru: "Площадь", en: "Area", uz: "Maydon", ko: "면적" },
+  room_bed: { ru: "Кровать", en: "Bed", uz: "Krovat", ko: "침대" },
+  rooms_word: { ru: "номеров", en: "rooms", uz: "xona", ko: "객실" },
+  room_word: { ru: "номер", en: "room", uz: "xona", ko: "객실" },
+
+  // Room names (Russian descriptive)
+  room_standard_twin: { ru: "Стандартный номер с раздельными кроватями", en: "Standard Twin Room", uz: "Alohida krovatli standart xona", ko: "트윈 스탠다드 룸" },
+  room_standard_double: { ru: "Стандартный номер с одной большой кроватью", en: "Standard Double Room", uz: "Bitta katta krovatli standart xona", ko: "더블 스탠다드 룸" },
+  room_superior_double: { ru: "Улучшенный номер с одной большой кроватью", en: "Superior Double Room", uz: "Bitta katta krovatli yaxshilangan xona", ko: "슈피리어 더블 룸" },
+  room_superior_twin: { ru: "Улучшенный номер с раздельными кроватями", en: "Superior Twin Room", uz: "Alohida krovatli yaxshilangan xona", ko: "슈피리어 트윈 룸" },
+  room_deluxe: { ru: "Полулюкс номер", en: "Deluxe Room", uz: "Yarim-lyuks xona", ko: "디럭스 룸" },
+  room_suite: { ru: "Люкс номер", en: "Suite Room", uz: "Lyuks xona", ko: "스위트 룸" },
+
+  // Conference halls descriptions
+  conf_d_afrosiyob: { ru: "Для корпоративных мероприятий и презентаций.", en: "For corporate events and presentations.", uz: "Korporativ tadbirlar va taqdimotlar uchun.", ko: "기업 행사 및 프레젠테이션용." },
+  conf_d_nasaf: { ru: "Для деловых встреч, тренингов и семинаров.", en: "For business meetings, trainings and seminars.", uz: "Ishbilarmonlik uchrashuvlari, treninglar va seminarlar uchun.", ko: "비즈니스 미팅, 교육 및 세미나용." },
+  conf_d_shakhrisabz: { ru: "Для переговоров и бизнес-встреч.", en: "For negotiations and business meetings.", uz: "Muzokaralar va ishbilarmonlik uchrashuvlari uchun.", ko: "협상 및 비즈니스 미팅용." },
+
+  // SPA list
+  spa_pool: { ru: "Крытый бассейн", en: "Indoor pool", uz: "Yopiq basseyn", ko: "실내 수영장" },
+  spa_fitness: { ru: "Фитнес-центр", en: "Fitness centre", uz: "Fitnes markazi", ko: "피트니스 센터" },
+  spa_sauna: { ru: "Сауна", en: "Sauna", uz: "Sauna", ko: "사우나" },
+  spa_hammam: { ru: "Турецкий хаммам", en: "Turkish hammam", uz: "Turk hammomi", ko: "터키식 하맘" },
+
+  // Restaurant list
+  rest_breakfast: { ru: "Завтрак — шведский стол", en: "Breakfast — buffet", uz: "Nonushta — bufet", ko: "조식 — 뷔페" },
+  rest_business_lunch: { ru: "Бизнес-обеды", en: "Business lunches", uz: "Biznes-tushliklar", ko: "비즈니스 런치" },
+  rest_banquet: { ru: "Банкетное обслуживание", en: "Banquet service", uz: "Banket xizmati", ko: "연회 서비스" },
+  rest_room_service: { ru: "Обслуживание в номере (Room Service)", en: "Room Service", uz: "Xonaga xizmat (Room Service)", ko: "룸서비스" },
+
+  // Why items
+  why1_t: { ru: "5 минут до аэропорта", en: "5 minutes to the airport", uz: "Aeroportgacha 5 daqiqa", ko: "공항까지 5분" },
+  why1_d: { ru: "Всего 1 км от международного аэропорта Ташкента.", en: "Just 1 km from Tashkent International Airport.", uz: "Toshkent xalqaro aeroportidan atigi 1 km.", ko: "타슈켄트 국제공항에서 단 1km." },
+  why2_t: { ru: "100 современных номеров", en: "100 modern rooms", uz: "100 ta zamonaviy xona", ko: "100개의 현대식 객실" },
+  why2_d: { ru: "От Standard до Suite — комфорт для каждого гостя.", en: "From Standard to Suite — comfort for every guest.", uz: "Standartdan Lyuksgacha — har bir mehmon uchun qulaylik.", ko: "스탠다드부터 스위트까지 — 모든 손님께 편안함." },
+  why3_t: { ru: "3 конференц-зала", en: "3 conference halls", uz: "3 ta konferensiya zali", ko: "3개의 회의실" },
+  why3_d: { ru: "Оборудованные залы для встреч и семинаров.", en: "Equipped halls for meetings and seminars.", uz: "Uchrashuvlar va seminarlar uchun jihozlangan zallar.", ko: "회의와 세미나를 위한 시설." },
+  why4_t: { ru: "Бассейн, СПА, фитнес", en: "Pool, SPA, fitness", uz: "Basseyn, SPA, fitnes", ko: "수영장, 스파, 피트니스" },
+  why4_d: { ru: "Крытый бассейн, сауна, хаммам, фитнес-клуб.", en: "Indoor pool, sauna, hammam, fitness club.", uz: "Yopiq basseyn, sauna, hammom, fitnes-klub.", ko: "실내 수영장, 사우나, 하맘, 피트니스." },
+  why5_t: { ru: "Бесплатная парковка", en: "Free parking", uz: "Bepul to'xtash joyi", ko: "무료 주차" },
+  why5_d: { ru: "Круглосуточный reception, прачечная.", en: "24/7 reception, laundry.", uz: "24/7 qabulxona, kir yuvish.", ko: "24시간 리셉션, 세탁." },
+  why6_t: { ru: "Booking и системы", en: "Booking & systems", uz: "Booking va tizimlar", ko: "Booking 및 시스템" },
+  why6_d: { ru: "Подключение к Booking и международным системам.", en: "Connected to Booking and international systems.", uz: "Booking va xalqaro tizimlarga ulangan.", ko: "Booking 및 국제 시스템 연동." },
+
+  // Location
+  loc_intro: {
+    ru: "Отель находится всего в 1 км от аэропорта — идеальный выбор для транзитных пассажиров, международных делегаций и бизнес-путешественников.",
+    en: "The hotel is just 1 km from the airport — an ideal choice for transit passengers, international delegations and business travellers.",
+    uz: "Mehmonxona aeroportdan atigi 1 km masofada — tranzit yo'lovchilar, xalqaro delegatsiyalar va ishbilarmonlar uchun ideal tanlov.",
+    ko: "공항에서 단 1km — 환승객, 국제 대표단, 비즈니스 여행객에게 이상적입니다.",
+  },
+  loc_address: { ru: "Адрес", en: "Address", uz: "Manzil", ko: "주소" },
+  loc_address_val: { ru: "ул. Абдулла Каххара 150A, Ташкент", en: "Abdulla Kakhar St. 150A, Tashkent", uz: "Abdulla Qahhor ko'chasi 150A, Toshkent", ko: "압둘라 카하르 거리 150A, 타슈켄트" },
+  loc_reservation: { ru: "Служба резервации", en: "Reservation service", uz: "Bron xizmati", ko: "예약 서비스" },
+  loc_from_airport: { ru: "От аэропорта", en: "From airport", uz: "Aeroportdan", ko: "공항에서" },
+  loc_distance: { ru: "~1.3 км · 4–5 минут", en: "~1.3 km · 4–5 min", uz: "~1.3 km · 4–5 daqiqa", ko: "~1.3 km · 4–5분" },
+
+  // Footer
+  foot_tagline: {
+    ru: "4★ бизнес-отель в 1 км от международного аэропорта Ташкента.",
+    en: "4★ business hotel 1 km from Tashkent International Airport.",
+    uz: "Toshkent xalqaro aeroportidan 1 km masofadagi 4★ biznes-mehmonxona.",
+    ko: "타슈켄트 국제공항에서 1km 거리의 4★ 비즈니스 호텔.",
+  },
+  foot_contacts: { ru: "Контакты", en: "Contacts", uz: "Aloqa", ko: "연락처" },
+  foot_booking: { ru: "Бронирование", en: "Booking", uz: "Bron qilish", ko: "예약" },
+  foot_booking_desc: {
+    ru: "Бронируйте напрямую через сайт и получите лучшие условия проживания.",
+    en: "Book directly through the site and get the best conditions.",
+    uz: "Sayt orqali to'g'ridan-to'g'ri bron qiling va eng yaxshi shartlarni oling.",
+    ko: "공식 사이트에서 직접 예약하고 최고의 조건을 누리세요.",
+  },
+  foot_rights: { ru: "Все права защищены.", en: "All rights reserved.", uz: "Barcha huquqlar himoyalangan.", ko: "All rights reserved." },
 };
 
 type Ctx = { lang: Lang; setLang: (l: Lang) => void; t: (key: string) => string };
