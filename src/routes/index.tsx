@@ -630,10 +630,10 @@ function Restaurant() {
           <p className="mt-5 leading-relaxed text-foreground/80">{t("rest_desc")}</p>
           <ul className="mt-6 space-y-2 text-sm text-foreground/80">
             {[
-              "Завтрак — шведский стол",
-              "Бизнес-обеды",
-              "Банкетное обслуживание",
-              "Обслуживание в номере (Room Service)",
+              t("rest_breakfast"),
+              t("rest_business_lunch"),
+              t("rest_banquet"),
+              t("rest_room_service"),
             ].map((x) => (
               <li key={x} className="flex items-center gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-accent" /> {x}
