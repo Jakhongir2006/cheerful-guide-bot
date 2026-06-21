@@ -347,13 +347,14 @@ function BookingForm() {
 }
 
 function Stats() {
+  const t = useT();
   const items = [
-    { icon: Plane, num: 5, suffix: "", label: "минут до аэропорта" },
-    { icon: BedDouble, num: 100, suffix: "", label: "номеров" },
-    { icon: Users, num: 3, suffix: "", label: "конференц-зала" },
-    { icon: Waves, num: 0, suffix: "", label: "Бассейн и СПА" },
-    { icon: ShieldCheck, num: 4, suffix: "★", label: "звёздочный отель" },
-    { icon: UtensilsCrossed, num: 0, suffix: "", label: "Ресторан Ko'hna" },
+    { icon: Plane, num: 5, suffix: "", label: t("stat_min_to_airport") },
+    { icon: BedDouble, num: 100, suffix: "", label: t("stat_rooms") },
+    { icon: Users, num: 3, suffix: "", label: t("stat_halls") },
+    { icon: Waves, num: 0, suffix: "", label: t("stat_pool_spa") },
+    { icon: ShieldCheck, num: 4, suffix: "★", label: t("stat_star_hotel") },
+    { icon: UtensilsCrossed, num: 0, suffix: "", label: t("stat_restaurant") },
   ];
   return (
     <section className="bg-background pt-32 pb-16">
