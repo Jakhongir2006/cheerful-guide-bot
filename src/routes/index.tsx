@@ -411,12 +411,12 @@ function About() {
 function Rooms() {
   const t = useT();
   const amenities = [
-    { icon: Snowflake, label: "Кондиционер" },
-    { icon: Wifi, label: "Wi-Fi" },
-    { icon: Tv, label: "ТВ 43–55″" },
-    { icon: Coffee, label: "Мини-бар" },
-    { icon: ShieldCheck, label: "Сейф" },
-    { icon: Briefcase, label: "Рабочая зона" },
+    { icon: Snowflake, label: t("am_ac") },
+    { icon: Wifi, label: t("am_wifi") },
+    { icon: Tv, label: t("am_tv") },
+    { icon: Coffee, label: t("am_minibar") },
+    { icon: ShieldCheck, label: t("am_safe") },
+    { icon: Briefcase, label: t("am_workspace") },
   ];
   return (
     <section id="rooms" className="bg-background py-20">
@@ -460,25 +460,25 @@ function Rooms() {
               </div>
               <div className="flex flex-1 flex-col p-5">
                 <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                  {r.nameRu}
+                  {t(r.nameKey)}
                 </p>
                 <h3 className="mt-1 font-serif text-xl text-primary">{r.name}</h3>
                 <dl className="mt-4 grid grid-cols-3 gap-2 text-xs text-foreground/70">
                   <div>
                     <dt className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                      Кол-во
+                      {t("room_count")}
                     </dt>
-                    <dd className="font-medium text-foreground">{r.count}</dd>
+                    <dd className="font-medium text-foreground">{r.count} {r.countNum === 1 ? t("room_word") : t("rooms_word")}</dd>
                   </div>
                   <div>
                     <dt className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                      Площадь
+                      {t("room_area")}
                     </dt>
                     <dd className="font-medium text-foreground">{r.area}</dd>
                   </div>
                   <div>
                     <dt className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                      Кровать
+                      {t("room_bed")}
                     </dt>
                     <dd className="font-medium text-foreground">{r.bed}</dd>
                   </div>
