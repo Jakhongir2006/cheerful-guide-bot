@@ -502,8 +502,8 @@ function Conference() {
   const t = useT();
   const halls = [
     { name: "Afrosiyob", desc: "Для корпоративных мероприятий и презентаций.", image: conf1.url },
-    { name: "Shahrisabz", desc: "Для деловых встреч, тренингов и семинаров.", image: conf2.url },
-    { name: "Nasaf", desc: "Для переговоров и бизнес-встреч.", image: conf3.url },
+    { name: "Nasaf", desc: "Для деловых встреч, тренингов и семинаров.", image: conf2.url },
+    { name: "Shakhrisabz", desc: "Для переговоров и бизнес-встреч.", image: conf3.url },
   ];
   const confGallery = halls.map((h) => h.image);
   return (
