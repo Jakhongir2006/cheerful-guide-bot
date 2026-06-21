@@ -571,7 +571,7 @@ function Conference() {
 
 function Spa() {
   const t = useT();
-  const imgs = [spaPool.url, spaFitness.url, spaHammam.url, spaMassage.url, spaSauna.url];
+  const imgs = [spaPool.url, spaFitness.url, spaHammam.url, spaSauna.url, spaMassage.url];
   return (
     <section id="spa" className="bg-background py-20">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 lg:grid-cols-2 lg:items-center">
@@ -585,8 +585,7 @@ function Spa() {
           />
           <Zimg src={imgs[1]} gallery={imgs} index={1} alt={t("spa_fitness")} className="h-44 w-full rounded-2xl object-cover" />
           <Zimg src={imgs[2]} gallery={imgs} index={2} alt={t("spa_hammam")} className="h-44 w-full rounded-2xl object-cover" />
-          <Zimg src={imgs[3]} gallery={imgs} index={3} alt="Massage" className="h-44 w-full rounded-2xl object-cover" />
-          <Zimg src={imgs[4]} gallery={imgs} index={4} alt={t("spa_sauna")} className="col-span-2 h-44 w-full rounded-2xl object-cover" />
+          <Zimg src={imgs[3]} gallery={imgs} index={3} alt={t("spa_sauna")} className="col-span-2 h-44 w-full rounded-2xl object-cover" />
         </Reveal>
         <div>
           <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("spa_kicker")}</p>
