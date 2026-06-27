@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { ROOMS, priceFor, nightsBetween } from "@/lib/booking/pricing";
 
 const createSchema = z.object({
   booking_number: z.string().min(5).max(40),
@@ -15,21 +16,32 @@ const createSchema = z.object({
   guest_phone: z.string().min(4).max(30),
   guest_email: z.string().email().max(255),
   guest_citizenship: z.string().max(80).optional().nullable(),
-  price_per_night: z.number().int().nonnegative(),
-  total_price: z.number().int().nonnegative(),
   notes: z.string().max(1000).optional().nullable(),
 });
 
 export const createBooking = createServerFn({ method: "POST" })
   .inputValidator((data: z.infer<typeof createSchema>) => createSchema.parse(data))
   .handler(async ({ data }) => {
+    // Server-side price computation — never trust client-supplied amounts.
+    const room = ROOMS.find((r) => r.name === data.room_type);
+    if (!room) throw new Error("Invalid room selection.");
+    const computedNights = nightsBetween(data.check_in_date, data.check_out_date);
+    if (computedNights <= 0 || computedNights !== data.nights) {
+      throw new Error("Invalid booking dates.");
+    }
+    const price_per_night = priceFor(room, data.guests_count);
+    const total_price = price_per_night * computedNights;
+
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: row, error } = await supabaseAdmin
       .from("bookings" as never)
-      .insert({ ...data, status: "new" } as never)
+      .insert({ ...data, price_per_night, total_price, status: "new" } as never)
       .select()
       .single();
-    if (error) throw new Error(error.message);
+    if (error) {
+      console.error("[createBooking] DB error:", error);
+      throw new Error("Failed to create booking. Please try again.");
+    }
     return row as { id: string; booking_number: string };
   });
 
@@ -40,8 +52,11 @@ async function assertAdmin(supabase: any, userId: string) {
     .eq("user_id", userId)
     .eq("role", "admin")
     .maybeSingle();
-  if (error) throw new Error(error.message);
-  if (!data) throw new Error("Forbidden: admin only");
+  if (error) {
+    console.error("[assertAdmin] DB error:", error);
+    throw new Error("Authorization check failed.");
+  }
+  if (!data) throw new Error("Forbidden");
 }
 
 export const listBookings = createServerFn({ method: "GET" })
@@ -54,7 +69,10 @@ export const listBookings = createServerFn({ method: "GET" })
       .select("*")
       .order("created_at", { ascending: false })
       .limit(1000);
-    if (error) throw new Error(error.message);
+    if (error) {
+      console.error("[listBookings] DB error:", error);
+      throw new Error("Failed to load bookings. Please try again.");
+    }
     return data as any[];
   });
 
@@ -73,7 +91,10 @@ export const updateBookingStatus = createServerFn({ method: "POST" })
       .from("bookings" as never)
       .update({ status: data.status } as never)
       .eq("id", data.id);
-    if (error) throw new Error(error.message);
+    if (error) {
+      console.error("[updateBookingStatus] DB error:", error);
+      throw new Error("Failed to update booking. Please try again.");
+    }
     return { ok: true };
   });
 
@@ -92,7 +113,10 @@ export const cancelBookingByNumber = createServerFn({ method: "POST" })
       .eq("guest_email", data.email)
       .select()
       .maybeSingle();
-    if (error) throw new Error(error.message);
+    if (error) {
+      console.error("[cancelBookingByNumber] DB error:", error);
+      throw new Error("Failed to cancel booking. Please try again.");
+    }
     if (!row) throw new Error("Booking not found");
     return { ok: true };
   });
