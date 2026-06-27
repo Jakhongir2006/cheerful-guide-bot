@@ -151,3 +151,72 @@
 .afr-reveal.afr-in { animation: afr-fade-up 0.6s ease-out forwards; }
 .afr-zoomable { cursor: zoom-in; transition: transform 0.4s ease, box-shadow 0.4s ease; }
 .afr-zoomable:hover { transform: scale(1.02); }
+
+/* ===== Subtle 3D motion layer (content-preserving) ===== */
+@keyframes afr-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(0, -8px, 0); }
+}
+@keyframes afr-float-slow {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(0, -5px, 0); }
+}
+@keyframes afr-enter-3d {
+  from { opacity: 0; transform: perspective(900px) translate3d(0, 12px, -40px); }
+  to   { opacity: 1; transform: perspective(900px) translate3d(0, 0, 0); }
+}
+
+/* Page load entrance */
+main, header, footer, section {
+  animation: afr-enter-3d 0.7s ease-out both;
+}
+
+/* Hero floating: target first section's headings/images */
+section:first-of-type h1,
+section:first-of-type h2 {
+  animation: afr-float-slow 6s ease-in-out infinite;
+  will-change: transform;
+}
+section:first-of-type img {
+  animation: afr-float 7s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* 3D tilt base — JS sets --rx/--ry/--tz */
+.afr-tilt {
+  transform-style: preserve-3d;
+  transform: perspective(800px)
+    rotateX(var(--rx, 0deg))
+    rotateY(var(--ry, 0deg))
+    translateZ(var(--tz, 0px));
+  transition: transform 250ms cubic-bezier(.2,.7,.2,1);
+  will-change: transform;
+}
+
+/* Scroll depth scale-in */
+.afr-depth {
+  opacity: 0;
+  transform: perspective(900px) translateZ(-30px) scale(.97);
+  transition: opacity 500ms ease-out, transform 600ms cubic-bezier(.2,.7,.2,1);
+  will-change: transform, opacity;
+}
+.afr-depth.afr-depth-in {
+  opacity: 1;
+  transform: perspective(900px) translateZ(0) scale(1);
+}
+
+/* Parallax layer */
+.afr-parallax { will-change: transform; transition: transform 80ms linear; }
+
+@media (prefers-reduced-motion: reduce) {
+  main, header, footer, section,
+  section:first-of-type h1,
+  section:first-of-type h2,
+  section:first-of-type img,
+  .afr-tilt, .afr-depth, .afr-parallax {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
