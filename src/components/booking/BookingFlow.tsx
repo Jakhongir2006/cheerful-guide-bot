@@ -151,8 +151,6 @@ export function BookingFlow({
           guest_phone: form.phone,
           guest_email: form.email,
           guest_citizenship: form.citizenship || null,
-          price_per_night: pricePerNight,
-          total_price: total,
           notes: null,
         },
       });
