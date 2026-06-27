@@ -16,6 +16,14 @@ export const Route = createFileRoute("/admin")({
   ssr: false,
   head: () => ({ meta: [{ title: "Admin · Afrosiyob Regency" }] }),
   component: AdminPage,
+  pendingComponent: () => <div className="p-8 text-center text-sm">Загрузка…</div>,
+  errorComponent: ({ error, reset }) => (
+    <div className="p-8 text-center text-sm">
+      <p className="mb-3 text-destructive">{(error as Error)?.message || "Ошибка загрузки"}</p>
+      <Button variant="outline" onClick={reset}>Повторить</Button>
+    </div>
+  ),
+  notFoundComponent: () => <div className="p-8 text-center text-sm">Страница не найдена</div>,
 });
 
 type Booking = {

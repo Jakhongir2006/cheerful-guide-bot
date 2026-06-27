@@ -21,6 +21,42 @@ import { useServerFn } from "@tanstack/react-start";
 import { createBooking, cancelBookingByNumber } from "@/lib/bookings.functions";
 import jsPDF from "jspdf";
 
+// Convert any error (including Zod JSON arrays from server validators)
+// into a single human-readable sentence.
+function friendlyError(e: unknown, lang: "ru" | "en" | string): string {
+  const ru = lang === "ru";
+  const fallback = ru ? "Произошла ошибка. Попробуйте ещё раз." : "Something went wrong. Please try again.";
+  const raw = (e as any)?.message ?? (typeof e === "string" ? e : "");
+  if (!raw) return fallback;
+
+  // Try to parse Zod-style error arrays embedded in the message.
+  const jsonStart = raw.indexOf("[");
+  if (jsonStart !== -1) {
+    try {
+      const parsed = JSON.parse(raw.slice(jsonStart));
+      if (Array.isArray(parsed) && parsed.length) {
+        const first = parsed[0];
+        const field = Array.isArray(first?.path) ? String(first.path[0] ?? "") : "";
+        if (field === "guest_email" || first?.validation === "email") {
+          return ru ? "Пожалуйста, введите корректный email." : "Please enter a valid email address.";
+        }
+        if (field === "guest_phone") {
+          return ru ? "Пожалуйста, укажите корректный номер телефона." : "Please enter a valid phone number.";
+        }
+        return ru ? "Проверьте правильность заполненных полей." : "Please check the form fields and try again.";
+      }
+    } catch {
+      /* not JSON — fall through */
+    }
+  }
+
+  // Plain text message — return as is if it looks human-readable, otherwise fallback.
+  if (/^[\w\sа-яё.,!?:'"()\-]+$/i.test(raw) && raw.length < 200) return raw;
+  return fallback;
+}
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 type Step = 1 | 2 | 3 | 4 | 5;
 
 const today = () => new Date().toISOString().split("T")[0];
@@ -134,6 +170,10 @@ export function BookingFlow({
       toast.error(lang === "ru" ? "Заполните обязательные поля" : "Fill required fields");
       return;
     }
+    if (!EMAIL_RE.test(form.email.trim())) {
+      toast.error(lang === "ru" ? "Пожалуйста, введите корректный email." : "Please enter a valid email address.");
+      return;
+    }
     const bn = generateBookingNumber();
     setSubmitting(true);
     try {
@@ -149,7 +189,7 @@ export function BookingFlow({
           guest_lastname: form.lastname,
           guest_patronymic: form.patronymic || null,
           guest_phone: form.phone,
-          guest_email: form.email,
+          guest_email: form.email.trim(),
           guest_citizenship: form.citizenship || null,
           notes: null,
         },
@@ -157,7 +197,7 @@ export function BookingFlow({
       setBookingNumber(bn);
       setStep(5);
     } catch (e: any) {
-      toast.error(e?.message || "Error");
+      toast.error(friendlyError(e, lang));
     } finally {
       setSubmitting(false);
     }
@@ -196,7 +236,7 @@ export function BookingFlow({
       setOpen(false);
       reset();
     } catch (e: any) {
-      toast.error(e?.message || "Error");
+      toast.error(friendlyError(e, lang));
     }
   }
 
