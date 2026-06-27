@@ -88,6 +88,7 @@ export function Motion3D() {
       });
     let ticking = false;
     const onScroll = () => {
+      if (isMobile) return;
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
