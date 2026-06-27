@@ -28,6 +28,7 @@ export function Motion3D() {
 
     const tiltEls = new Set<HTMLElement>();
     const attachTilt = (el: HTMLElement) => {
+      if (isMobile) return;
       if (tiltEls.has(el)) return;
       // Skip tiny / form elements
       const tag = el.tagName.toLowerCase();
