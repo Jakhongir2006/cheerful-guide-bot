@@ -169,6 +169,8 @@
 /* Page load entrance */
 main, header, footer, section {
   animation: afr-enter-3d 0.7s ease-out both;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
 }
 
 /* Hero floating: target first section's headings/images */
@@ -176,10 +178,14 @@ section:first-of-type h1,
 section:first-of-type h2 {
   animation: afr-float-slow 6s ease-in-out infinite;
   will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 section:first-of-type img {
   animation: afr-float 7s ease-in-out infinite;
   will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 /* 3D tilt base — JS sets --rx/--ry/--tz */
@@ -191,6 +197,7 @@ section:first-of-type img {
     translateZ(var(--tz, 0px));
   transition: transform 250ms cubic-bezier(.2,.7,.2,1);
   will-change: transform;
+  backface-visibility: hidden;
 }
 
 /* Scroll depth scale-in */
@@ -199,6 +206,7 @@ section:first-of-type img {
   transform: perspective(900px) translateZ(-30px) scale(.97);
   transition: opacity 500ms ease-out, transform 600ms cubic-bezier(.2,.7,.2,1);
   will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 .afr-depth.afr-depth-in {
   opacity: 1;
@@ -206,7 +214,34 @@ section:first-of-type img {
 }
 
 /* Parallax layer */
-.afr-parallax { will-change: transform; transition: transform 80ms linear; }
+.afr-parallax {
+  will-change: transform;
+  transition: transform 80ms linear;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+/* Reveal helper */
+.afr-reveal { will-change: transform, opacity; transform: translate3d(0, 0, 0); }
+
+/* Reduce animation complexity on small screens (keep full effects on desktop) */
+@media (max-width: 768px) {
+  section:first-of-type h1,
+  section:first-of-type h2,
+  section:first-of-type img {
+    animation: none;
+  }
+  .afr-tilt {
+    transform: none !important;
+    transition: none !important;
+  }
+  .afr-parallax {
+    transform: none !important;
+  }
+  main, header, footer, section {
+    animation-duration: 0.4s;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   main, header, footer, section,

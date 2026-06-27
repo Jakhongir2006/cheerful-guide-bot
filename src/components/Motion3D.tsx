@@ -11,6 +11,10 @@ export function Motion3D() {
     if (typeof window === "undefined") return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) return;
+    // Reduce JS-driven motion on small/touch devices — CSS animations remain.
+    const isMobile =
+      window.matchMedia("(max-width: 768px)").matches ||
+      window.matchMedia("(hover: none)").matches;
 
     const tiltSelector = [
       ".afr-tilt",
@@ -24,6 +28,7 @@ export function Motion3D() {
 
     const tiltEls = new Set<HTMLElement>();
     const attachTilt = (el: HTMLElement) => {
+      if (isMobile) return;
       if (tiltEls.has(el)) return;
       // Skip tiny / form elements
       const tag = el.tagName.toLowerCase();
@@ -83,6 +88,7 @@ export function Motion3D() {
       });
     let ticking = false;
     const onScroll = () => {
+      if (isMobile) return;
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
