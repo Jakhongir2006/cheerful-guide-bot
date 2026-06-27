@@ -116,6 +116,7 @@ export function Zimg({
       src={src}
       alt={alt || ""}
       loading={loading}
+      decoding="async"
       onClick={() => open(gallery ?? [src], index ?? 0)}
       className={`afr-zoomable ${className ?? ""}`}
     />
