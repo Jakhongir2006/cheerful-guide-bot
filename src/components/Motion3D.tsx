@@ -11,6 +11,10 @@ export function Motion3D() {
     if (typeof window === "undefined") return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) return;
+    // Reduce JS-driven motion on small/touch devices — CSS animations remain.
+    const isMobile =
+      window.matchMedia("(max-width: 768px)").matches ||
+      window.matchMedia("(hover: none)").matches;
 
     const tiltSelector = [
       ".afr-tilt",
