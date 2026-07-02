@@ -265,7 +265,7 @@ export const DICT: Dict = {
     ko: "공항에서 단 1km — 환승객, 국제 대표단, 비즈니스 여행객에게 이상적입니다.",
   },
   loc_address: { ru: "Адрес", en: "Address", uz: "Manzil", ko: "주소" },
-  loc_address_val: { ru: "ул. Абдулла Каххара 150A, Ташкент", en: "Abdulla Kakhar St. 150A, Tashkent", uz: "Abdulla Qahhor ko'chasi 150A, Toshkent", ko: "압둘라 카하르 거리 150A, 타슈켄트" },
+  loc_address_val: { ru: "Яккасарайский район, махалля Дамариқ, ул. Абдулла Каххара, 9-й проезд, дом 20", en: "Yakkasaroy district, Damariq MFY, Abdulla Kakhar Street, 9th passage, house 20", uz: "Yakkasaroy tumani, Damariq MFY, Abdulla Qahhor 9-tor ko'chasi, 20-uy", ko: "약카사로이 구역, 다마리크 MFY, 압둘라 카하르 거리, 9번 통로, 20번지" },
   loc_reservation: { ru: "Служба резервации", en: "Reservation service", uz: "Bron xizmati", ko: "예약 서비스" },
   loc_from_airport: { ru: "От аэропорта", en: "From airport", uz: "Aeroportdan", ko: "공항에서" },
   loc_distance: { ru: "~1.3 км · 4–5 минут", en: "~1.3 km · 4–5 min", uz: "~1.3 km · 4–5 daqiqa", ko: "~1.3 km · 4–5분" },
