@@ -219,7 +219,7 @@ function Hero() {
   return (
     <section
       id="home"
-      className="relative isolate"
+      className="relative z-10"
       style={{
         backgroundImage: `linear-gradient(180deg, rgba(15,30,60,0.55), rgba(15,30,60,0.75)), url(${SRC}/t6.jpg)`,
         backgroundSize: "cover",
@@ -293,7 +293,7 @@ function BookingForm() {
         </h2>
         <span className="text-xs text-muted-foreground">{t("guaranteed")}</span>
       </div>
-      <div className="grid gap-3 md:grid-cols-[1fr_1fr_1fr_auto]">
+      <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto]">
         <div className="grid gap-1.5">
           <Label htmlFor="hero-checkin" className="text-xs uppercase tracking-wider">
             {t("checkin")}
@@ -304,6 +304,7 @@ function BookingForm() {
             min={today}
             value={checkin}
             onChange={(e) => setCheckin(e.target.value)}
+            className="h-11 w-full border-2 border-primary/20 bg-background text-foreground shadow-sm focus-visible:border-primary"
           />
         </div>
         <div className="grid gap-1.5">
@@ -316,6 +317,7 @@ function BookingForm() {
             min={today}
             value={checkout}
             onChange={(e) => setCheckout(e.target.value)}
+            className="h-11 w-full border-2 border-primary/20 bg-background text-foreground shadow-sm focus-visible:border-primary"
           />
         </div>
         <div className="grid gap-1.5">
@@ -326,7 +328,7 @@ function BookingForm() {
             id="hero-guests"
             value={guests}
             onChange={(e) => setGuests(e.target.value)}
-            className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+            className="h-11 w-full rounded-md border-2 border-primary/20 bg-background px-3 text-sm text-foreground shadow-sm focus:border-primary focus:outline-none"
           >
             {[1, 2, 3, 4].map((n) => (
               <option key={n} value={n}>{n}</option>
@@ -335,7 +337,7 @@ function BookingForm() {
         </div>
         <Button
           type="submit"
-          className="h-10 self-end bg-primary text-primary-foreground hover:bg-primary/90"
+          className="h-11 w-full self-end whitespace-nowrap bg-primary px-6 text-primary-foreground hover:bg-primary/90 sm:col-span-2 md:col-span-1 md:w-auto"
         >
           {t("cta_find_room")}
         </Button>
