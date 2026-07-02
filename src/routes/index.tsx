@@ -288,66 +288,95 @@ function BookingForm() {
     <>
     <form
       onSubmit={handleSubmit}
-      className="rounded-2xl border border-border bg-card p-6 shadow-2xl"
+      className="rounded-2xl border border-border bg-card p-6 shadow-2xl md:p-7"
     >
-      <div className="mb-4 flex items-baseline justify-between">
-        <h2 className="font-serif text-lg uppercase tracking-[0.15em] text-primary">
+      <div className="mb-5 flex items-baseline justify-between gap-4">
+        <h2 className="font-serif text-xl text-primary md:text-2xl">
           {t("booking_online")}
         </h2>
-        <span className="text-xs text-muted-foreground">{t("guaranteed")}</span>
+        <span className="hidden text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground sm:inline">
+          {t("guaranteed")}
+        </span>
       </div>
-      <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto]">
-        <div className="grid gap-1.5">
-          <Label htmlFor="hero-checkin" className="text-xs uppercase tracking-wider">
-            {t("checkin")}
-          </Label>
-          <Input
+      <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] md:gap-5 md:items-end">
+        <FieldShell icon={<Calendar className="h-4 w-4" />} label={t("checkin")} htmlFor="hero-checkin">
+          <input
             id="hero-checkin"
             type="date"
             min={today}
             value={checkin}
             onChange={(e) => setCheckin(e.target.value)}
-            className="h-11 w-full border-2 border-primary/20 bg-background text-foreground shadow-sm focus-visible:border-primary"
+            className="w-full bg-transparent text-base font-medium text-foreground outline-none placeholder:text-muted-foreground"
           />
-        </div>
-        <div className="grid gap-1.5">
-          <Label htmlFor="hero-checkout" className="text-xs uppercase tracking-wider">
-            {t("checkout")}
-          </Label>
-          <Input
+        </FieldShell>
+        <FieldShell icon={<Calendar className="h-4 w-4" />} label={t("checkout")} htmlFor="hero-checkout">
+          <input
             id="hero-checkout"
             type="date"
             min={today}
             value={checkout}
             onChange={(e) => setCheckout(e.target.value)}
-            className="h-11 w-full border-2 border-primary/20 bg-background text-foreground shadow-sm focus-visible:border-primary"
+            className="w-full bg-transparent text-base font-medium text-foreground outline-none placeholder:text-muted-foreground"
           />
-        </div>
-        <div className="grid gap-1.5">
-          <Label htmlFor="hero-guests" className="text-xs uppercase tracking-wider">
-            {t("guests")}
-          </Label>
+        </FieldShell>
+        <FieldShell
+          icon={<Users className="h-4 w-4" />}
+          label={t("guests")}
+          htmlFor="hero-guests"
+          trailing={<ChevronDown className="pointer-events-none h-4 w-4 text-muted-foreground" />}
+        >
           <select
             id="hero-guests"
             value={guests}
             onChange={(e) => setGuests(e.target.value)}
-            className="h-11 w-full rounded-md border-2 border-primary/20 bg-background px-3 text-sm text-foreground shadow-sm focus:border-primary focus:outline-none"
+            className="w-full appearance-none bg-transparent pr-6 text-base font-medium text-foreground outline-none"
           >
             {[1, 2, 3, 4].map((n) => (
               <option key={n} value={n}>{n}</option>
             ))}
           </select>
-        </div>
+        </FieldShell>
         <Button
           type="submit"
-          className="h-11 w-full self-end whitespace-nowrap bg-primary px-6 text-primary-foreground hover:bg-primary/90 sm:col-span-2 md:col-span-1 md:w-auto"
+          className="h-[68px] w-full gap-2 self-stretch whitespace-nowrap rounded-xl bg-primary px-7 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/20 hover:bg-primary/90 sm:col-span-2 md:col-span-1 md:w-auto"
         >
+          <Search className="h-4 w-4" />
           {t("cta_find_room")}
         </Button>
       </div>
     </form>
     <BookingFlow open={open} onOpenChange={setOpen} />
     </>
+  );
+}
+
+function FieldShell({
+  icon,
+  label,
+  htmlFor,
+  children,
+  trailing,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  htmlFor: string;
+  children: React.ReactNode;
+  trailing?: React.ReactNode;
+}) {
+  return (
+    <label
+      htmlFor={htmlFor}
+      className="group flex min-w-0 cursor-pointer flex-col gap-1 rounded-xl border border-border/70 bg-background px-4 py-3 transition hover:border-primary/50 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/15"
+    >
+      <span className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+        <span className="text-primary/70">{icon}</span>
+        {label}
+      </span>
+      <span className="relative flex items-center">
+        {children}
+        {trailing ? <span className="absolute right-0 top-1/2 -translate-y-1/2">{trailing}</span> : null}
+      </span>
+    </label>
   );
 }
 
