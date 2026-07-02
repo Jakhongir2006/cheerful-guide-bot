@@ -304,7 +304,7 @@ function BookingForm() {
             min={today}
             value={checkin}
             onChange={(e) => setCheckin(e.target.value)}
-            className="h-10 w-full border-input/80 bg-background text-foreground"
+            className="h-11 w-full border-2 border-primary/20 bg-background text-foreground shadow-sm focus-visible:border-primary"
           />
         </div>
         <div className="grid gap-1.5">
@@ -317,7 +317,7 @@ function BookingForm() {
             min={today}
             value={checkout}
             onChange={(e) => setCheckout(e.target.value)}
-            className="h-10 w-full border-input/80 bg-background text-foreground"
+            className="h-11 w-full border-2 border-primary/20 bg-background text-foreground shadow-sm focus-visible:border-primary"
           />
         </div>
         <div className="grid gap-1.5">
@@ -328,7 +328,7 @@ function BookingForm() {
             id="hero-guests"
             value={guests}
             onChange={(e) => setGuests(e.target.value)}
-            className="h-10 w-full rounded-md border border-input/80 bg-background px-3 text-sm text-foreground"
+            className="h-11 w-full rounded-md border-2 border-primary/20 bg-background px-3 text-sm text-foreground shadow-sm focus:border-primary focus:outline-none"
           >
             {[1, 2, 3, 4].map((n) => (
               <option key={n} value={n}>{n}</option>
@@ -337,7 +337,7 @@ function BookingForm() {
         </div>
         <Button
           type="submit"
-          className="h-10 w-full self-end whitespace-nowrap bg-primary px-6 text-primary-foreground hover:bg-primary/90 sm:col-span-2 md:col-span-1 md:w-auto"
+          className="h-11 w-full self-end whitespace-nowrap bg-primary px-6 text-primary-foreground hover:bg-primary/90 sm:col-span-2 md:col-span-1 md:w-auto"
         >
           {t("cta_find_room")}
         </Button>
