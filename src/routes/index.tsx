@@ -44,6 +44,7 @@ import skr3 from "@/assets/standart-king-room-3.jpg.asset.json";
 import skr4 from "@/assets/standart-king-room-4.jpg.asset.json";
 import skr5 from "@/assets/standart-king-room-5.jpg.asset.json";
 import skr6 from "@/assets/standart-king-room-6.jpg.asset.json";
+import skrMain from "@/assets/standart-king-room-main.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
