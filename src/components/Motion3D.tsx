@@ -16,6 +16,13 @@ export function Motion3D() {
       window.matchMedia("(max-width: 768px)").matches ||
       window.matchMedia("(hover: none)").matches;
 
+    let cleanup: (() => void) | undefined;
+    let cancelled = false;
+
+    // Defer DOM mutation until AFTER React finishes hydrating and painting.
+    // Mutating classes during hydration causes mismatch warnings and can
+    // discard subtrees below the fold.
+    const run = () => {
     const tiltSelector = [
       ".afr-tilt",
       "[data-tilt]",
@@ -105,6 +112,24 @@ export function Motion3D() {
       window.removeEventListener("scroll", onScroll);
       io.disconnect();
       tiltEls.forEach((el) => (el as any).__afrTiltCleanup?.());
+    };
+    };
+
+    const start = () => {
+      if (cancelled) return;
+      cleanup = run();
+    };
+    const idle: any = (window as any).requestIdleCallback;
+    const handle: any = idle ? idle(start, { timeout: 800 }) : window.setTimeout(start, 250);
+
+    return () => {
+      cancelled = true;
+      if (idle && (window as any).cancelIdleCallback) {
+        (window as any).cancelIdleCallback(handle);
+      } else {
+        window.clearTimeout(handle);
+      }
+      cleanup?.();
     };
   }, []);
 
