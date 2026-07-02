@@ -40,6 +40,8 @@ export function Motion3D() {
       // Skip tiny / form elements
       const tag = el.tagName.toLowerCase();
       if (["input", "textarea", "select", "label"].includes(tag)) return;
+      // Never touch form/booking widgets — animations there hide interactive controls.
+      if (el.closest("form") || el.closest("[data-no-motion]")) return;
       tiltEls.add(el);
       el.classList.add("afr-tilt");
       const onMove = (e: MouseEvent) => {
@@ -70,7 +72,16 @@ export function Motion3D() {
     const depthCandidates = document.querySelectorAll<HTMLElement>(
       "section > *, .rounded-xl.border, [class*='rounded-2xl'], img"
     );
-    depthCandidates.forEach((el) => el.classList.add("afr-depth"));
+    const depthTargets: HTMLElement[] = [];
+    depthCandidates.forEach((el) => {
+      // Skip forms and anything the author opted out of.
+      if (el.tagName === "FORM" || el.closest("form")) return;
+      if (el.closest("[data-no-motion]")) return;
+      // Skip wrappers that contain a form — hiding them hides its inputs.
+      if (el.querySelector("form")) return;
+      el.classList.add("afr-depth");
+      depthTargets.push(el);
+    });
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -82,7 +93,7 @@ export function Motion3D() {
       },
       { threshold: 0.12 },
     );
-    depthCandidates.forEach((el) => io.observe(el));
+    depthTargets.forEach((el) => io.observe(el));
 
     // Parallax — hero/background images move slower than scroll
     const parallaxEls: { el: HTMLElement; speed: number }[] = [];
