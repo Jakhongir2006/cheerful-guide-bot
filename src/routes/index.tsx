@@ -104,8 +104,8 @@ const rooms: Room[] = [
     countNum: 31,
     area: "27 м²",
     bed: "1 × 160×200 см",
-    image: skr2.url,
-    gallery: [skr2.url, skr1.url, skr3.url, skr4.url, skr5.url, skr6.url],
+    image: skr0.url,
+    gallery: [skr0.url, skr1.url, skr2.url, skr3.url, skr4.url, skr5.url, skr6.url],
   },
   {
     id: "superior-double",
