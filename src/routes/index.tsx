@@ -29,7 +29,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useT } from "@/lib/i18n";
 import { LightboxProvider, Zimg } from "@/components/Lightbox";
 import { Reveal, CountUp } from "@/components/Reveal";
-import logoAsset from "@/assets/afrosiyob-logo.png.asset.json";
+import logoAsset from "@/assets/afrosiyob-logo-new.png.asset.json";
 import conf1 from "@/assets/conference-1.png.asset.json";
 import conf2 from "@/assets/conference-2.png.asset.json";
 import conf3 from "@/assets/conference-3.png.asset.json";
