@@ -38,6 +38,7 @@ import spaMassage from "@/assets/spa-massage.png.asset.json";
 import spaSauna from "@/assets/spa-sauna.png.asset.json";
 import spaPool from "@/assets/spa-pool.jpg.asset.json";
 import spaFitness from "@/assets/spa-fitness.jpg.asset.json";
+import skr0 from "@/assets/standart-king-room-0.jpg.asset.json";
 import skr1 from "@/assets/standart-king-room-1.jpg.asset.json";
 import skr2 from "@/assets/standart-king-room-2.jpg.asset.json";
 import skr3 from "@/assets/standart-king-room-3.jpg.asset.json";
@@ -103,8 +104,8 @@ const rooms: Room[] = [
     countNum: 31,
     area: "27 м²",
     bed: "1 × 160×200 см",
-    image: skr2.url,
-    gallery: [skr2.url, skr1.url, skr3.url, skr4.url, skr5.url, skr6.url],
+    image: skr0.url,
+    gallery: [skr0.url, skr1.url, skr2.url, skr3.url, skr4.url, skr5.url, skr6.url],
   },
   {
     id: "superior-double",
