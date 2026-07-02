@@ -504,14 +504,19 @@ function Rooms() {
               as="article"
               className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:shadow-xl"
             >
-              <div className="aspect-[4/3] overflow-hidden">
+              <div className="relative aspect-[4/3] overflow-hidden">
                 <Zimg
                   src={r.image}
-                  gallery={rooms.map((x) => x.image)}
-                  index={i}
+                  gallery={r.gallery ?? rooms.map((x) => x.image)}
+                  index={r.gallery ? 0 : i}
                   alt={r.name}
                   className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                 />
+                {r.gallery && r.gallery.length > 1 ? (
+                  <span className="pointer-events-none absolute bottom-3 right-3 rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur">
+                    {r.gallery.length} photos
+                  </span>
+                ) : null}
               </div>
               <div className="flex flex-1 flex-col p-5">
                 <p className="text-xs uppercase tracking-wider text-muted-foreground">
