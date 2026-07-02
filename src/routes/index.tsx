@@ -212,7 +212,7 @@ function Header() {
             <a
               key={n.href}
               href={n.href}
-              className="relative whitespace-nowrap text-[11px] font-medium text-foreground/80 transition hover:text-primary after:absolute after:left-0 after:-bottom-0.5 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full sm:text-xs md:text-sm"
+              className="relative whitespace-nowrap text-[11px] font-semibold text-foreground/80 transition hover:text-primary after:absolute after:left-0 after:-bottom-0.5 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full sm:text-xs md:text-sm"
             >
               {n.label}
             </a>
