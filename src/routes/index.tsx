@@ -174,42 +174,61 @@ function Header() {
   ];
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
-        <a href="#home" className="flex items-center gap-2">
-          <img
-            src={logoAsset.url}
-            alt="Afrosiyob Hotel"
-            className="h-11 w-11 rounded-full object-contain bg-white ring-1 ring-border"
-          />
-          <div className="leading-tight">
-            <div className="font-serif text-base font-semibold text-primary">Afrosiyob</div>
-            <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-              Regency Hotel
+      <div className="mx-auto flex max-w-7xl flex-col gap-1.5 px-3 py-2.5 sm:px-4 sm:py-3 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
+        <div className="flex items-center justify-between">
+          <a href="#home" className="flex items-center gap-2">
+            <img
+              src={logoAsset.url}
+              alt="Afrosiyob Hotel"
+              className="h-9 w-9 rounded-full object-contain bg-white ring-1 ring-border sm:h-10 sm:w-10 lg:h-11 lg:w-11"
+            />
+            <div className="leading-tight">
+              <div className="font-serif text-sm font-semibold text-primary sm:text-base">Afrosiyob</div>
+              <div className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground sm:text-[10px]">
+                Regency Hotel
+              </div>
             </div>
+          </a>
+          <div className="flex items-center gap-2 sm:gap-3 lg:hidden">
+            <LanguageSwitcher />
+            <a
+              href={`tel:${PHONE_TEL}`}
+              className="flex items-center gap-1 text-sm font-semibold text-primary"
+              aria-label={PHONE}
+            >
+              <Phone className="h-4 w-4" />
+            </a>
+            <BookingDialog
+              trigger={
+                <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 whitespace-nowrap text-[11px] sm:text-xs">
+                  {t("cta_reservation")}
+                </Button>
+              }
+            />
           </div>
-        </a>
-        <nav className="hidden items-center gap-6 lg:flex">
+        </div>
+        <nav className="flex items-center gap-2 overflow-x-auto pb-0.5 scrollbar-hide sm:gap-3 md:gap-4 lg:gap-6 lg:overflow-visible lg:pb-0">
           {nav.map((n) => (
             <a
               key={n.href}
               href={n.href}
-              className="relative text-sm text-foreground/80 transition hover:text-primary after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full"
+              className="relative whitespace-nowrap text-[11px] font-medium text-foreground/80 transition hover:text-primary after:absolute after:left-0 after:-bottom-0.5 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full sm:text-xs md:text-sm"
             >
               {n.label}
             </a>
           ))}
         </nav>
-        <div className="flex items-center gap-3">
+        <div className="hidden items-center gap-3 lg:flex">
           <LanguageSwitcher />
           <a
             href={`tel:${PHONE_TEL}`}
-            className="hidden items-center gap-2 text-sm font-semibold text-primary md:flex"
+            className="flex items-center gap-2 text-sm font-semibold text-primary"
           >
             <Phone className="h-4 w-4" />
             {PHONE}
           </a>
           <BookingDialog
-            trigger={<Button className="hidden bg-accent text-accent-foreground hover:bg-accent/90 md:inline-flex">{t("cta_reservation")}</Button>}
+            trigger={<Button className="bg-accent text-accent-foreground hover:bg-accent/90">{t("cta_reservation")}</Button>}
           />
         </div>
       </div>
