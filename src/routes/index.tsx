@@ -176,18 +176,12 @@ function Header() {
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
       <div className="mx-auto flex max-w-7xl flex-col gap-1.5 px-3 py-2.5 sm:px-4 sm:py-3 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
         <div className="flex items-center justify-between">
-          <a href="#home" className="flex items-center gap-2">
+          <a href="#home" className="flex items-center">
             <img
               src={logoAsset.url}
-              alt="Afrosiyob Hotel"
-              className="h-9 w-9 rounded-full object-contain bg-white ring-1 ring-border sm:h-10 sm:w-10 lg:h-11 lg:w-11"
+              alt="Afrosiyob Regency Hotel"
+              className="h-9 object-contain sm:h-10 lg:h-11"
             />
-            <div className="leading-tight">
-              <div className="font-serif text-sm font-semibold text-primary sm:text-base">Afrosiyob</div>
-              <div className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground sm:text-[10px]">
-                Regency Hotel
-              </div>
-            </div>
           </a>
           <div className="flex items-center gap-2 sm:gap-3 lg:hidden">
             <LanguageSwitcher />
