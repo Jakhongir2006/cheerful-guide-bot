@@ -207,6 +207,16 @@ section:first-of-type img {
   will-change: transform, opacity;
   backface-visibility: hidden;
 }
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 .afr-depth.afr-depth-in {
   opacity: 1;
   transform: perspective(900px) translateZ(0) scale(1);
