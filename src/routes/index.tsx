@@ -219,7 +219,7 @@ function Hero() {
   return (
     <section
       id="home"
-      className="relative isolate"
+      className="relative z-10"
       style={{
         backgroundImage: `linear-gradient(180deg, rgba(15,30,60,0.55), rgba(15,30,60,0.75)), url(${SRC}/t6.jpg)`,
         backgroundSize: "cover",
