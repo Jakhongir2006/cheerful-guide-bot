@@ -20,6 +20,9 @@ import {
   Tv,
   Coffee,
   Briefcase,
+  Calendar,
+  Search,
+  ChevronDown,
 } from "lucide-react";
 import { BookingFlow } from "@/components/booking/BookingFlow";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
