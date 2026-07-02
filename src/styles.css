@@ -163,14 +163,13 @@
 }
 @keyframes afr-enter-3d {
   from { opacity: 0; transform: perspective(900px) translate3d(0, 12px, -40px); }
-  to   { opacity: 1; transform: perspective(900px) translate3d(0, 0, 0); }
+  to   { opacity: 1; transform: none; }
 }
 
 /* Page load entrance */
 main, header, footer, section {
   animation: afr-enter-3d 0.7s ease-out both;
   backface-visibility: hidden;
-  transform: translate3d(0, 0, 0);
 }
 
 /* Hero floating: target first section's headings/images */
