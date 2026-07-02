@@ -90,7 +90,7 @@ const rooms: Room[] = [
   },
   {
     id: "standard-double",
-    name: "Standard Double Room",
+    name: "Standard King Room",
     nameKey: "room_standard_double",
     count: "31",
     countNum: 31,
