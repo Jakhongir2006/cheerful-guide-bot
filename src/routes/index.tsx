@@ -38,6 +38,12 @@ import spaMassage from "@/assets/spa-massage.png.asset.json";
 import spaSauna from "@/assets/spa-sauna.png.asset.json";
 import spaPool from "@/assets/spa-pool.jpg.asset.json";
 import spaFitness from "@/assets/spa-fitness.jpg.asset.json";
+import skr1 from "@/assets/standart-king-room-1.jpg.asset.json";
+import skr2 from "@/assets/standart-king-room-2.jpg.asset.json";
+import skr3 from "@/assets/standart-king-room-3.jpg.asset.json";
+import skr4 from "@/assets/standart-king-room-4.jpg.asset.json";
+import skr5 from "@/assets/standart-king-room-5.jpg.asset.json";
+import skr6 from "@/assets/standart-king-room-6.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -75,6 +81,7 @@ type Room = {
   area: string;
   bed: string;
   image: string;
+  gallery?: string[];
 };
 
 const rooms: Room[] = [
@@ -96,7 +103,8 @@ const rooms: Room[] = [
     countNum: 31,
     area: "27 м²",
     bed: "1 × 160×200 см",
-    image: `${SRC}/Room%2022-906.jpg`,
+    image: skr1.url,
+    gallery: [skr1.url, skr2.url, skr3.url, skr4.url, skr5.url, skr6.url],
   },
   {
     id: "superior-double",
@@ -496,14 +504,19 @@ function Rooms() {
               as="article"
               className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:shadow-xl"
             >
-              <div className="aspect-[4/3] overflow-hidden">
+              <div className="relative aspect-[4/3] overflow-hidden">
                 <Zimg
                   src={r.image}
-                  gallery={rooms.map((x) => x.image)}
-                  index={i}
+                  gallery={r.gallery ?? rooms.map((x) => x.image)}
+                  index={r.gallery ? 0 : i}
                   alt={r.name}
                   className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                 />
+                {r.gallery && r.gallery.length > 1 ? (
+                  <span className="pointer-events-none absolute bottom-3 right-3 rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur">
+                    {r.gallery.length} photos
+                  </span>
+                ) : null}
               </div>
               <div className="flex flex-1 flex-col p-5">
                 <p className="text-xs uppercase tracking-wider text-muted-foreground">
