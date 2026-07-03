@@ -45,6 +45,11 @@ import skr4 from "@/assets/standart-king-room-4.jpg.asset.json";
 import skr5 from "@/assets/standart-king-room-5.jpg.asset.json";
 import skr6 from "@/assets/standart-king-room-6.jpg.asset.json";
 import skrMain from "@/assets/standart-king-room-main.jpg.asset.json";
+import stwMain from "@/assets/standart-twin-room-main.jpg.asset.json";
+import stw1 from "@/assets/standart-twin-room-1.jpg.asset.json";
+import stw2 from "@/assets/standart-twin-room-2.jpg.asset.json";
+import stw3 from "@/assets/standart-twin-room-3.jpg.asset.json";
+import stw4 from "@/assets/standart-twin-room-4.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -94,7 +99,8 @@ const rooms: Room[] = [
     countNum: 31,
     area: "27 м²",
     bed: "2 × 100×200 см",
-    image: `${SRC}/Room%208-910.jpg`,
+    image: stwMain.url,
+    gallery: [stwMain.url, stw1.url, stw2.url, stw3.url, stw4.url],
   },
   {
     id: "standard-double",
