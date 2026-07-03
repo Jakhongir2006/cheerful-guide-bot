@@ -49,13 +49,13 @@ import skrMain from "@/assets/standart-king-room-main.jpg.asset.json";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Afrosiyob Regency Hotel — отель рядом с аэропортом Ташкента" },
+      { title: "Afrosiyob Regency" },
       {
         name: "description",
         content:
           "Afrosiyob Regency Hotel — 4★ бизнес-отель премиум класса в 1 км от аэропорта Ташкента. 100 номеров, 3 конференц-зала, бассейн, СПА, ресторан Ko'hna.",
       },
-      { property: "og:title", content: "Afrosiyob Regency Hotel" },
+      { property: "og:title", content: "Afrosiyob Regency" },
       {
         property: "og:description",
         content:

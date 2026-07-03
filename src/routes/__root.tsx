@@ -75,14 +75,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Afrosiyob regency" },
-      { name: "description", content: "Preview by Jakhongir" },
-      { property: "og:title", content: "Afrosiyob regency" },
-      { property: "og:description", content: "Preview by Jakhongir" },
+      { title: "Afrosiyob Regency" },
+      { name: "description", content: "Afrosiyob Regency Hotel — 4★ бизнес-отель премиум класса в Ташкенте. 100 номеров, конференц-залы, СПА, ресторан." },
+      { property: "og:title", content: "Afrosiyob Regency" },
+      { property: "og:description", content: "Afrosiyob Regency Hotel — 4★ бизнес-отель премиум класса в Ташкенте. 100 номеров, конференц-залы, СПА, ресторан." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "Afrosiyob regency" },
-      { name: "twitter:description", content: "Preview by Jakhongir" },
+      { name: "twitter:title", content: "Afrosiyob Regency" },
+      { name: "twitter:description", content: "Afrosiyob Regency Hotel — 4★ бизнес-отель премиум класса в Ташкенте. 100 номеров, конференц-залы, СПА, ресторан." },
     ],
     links: [
       {
