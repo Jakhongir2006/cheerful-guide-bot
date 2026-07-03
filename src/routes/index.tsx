@@ -55,6 +55,12 @@ import supkr1 from "@/assets/superior-king-room-1.jpg.asset.json";
 import supkr2 from "@/assets/superior-king-room-2.jpg.asset.json";
 import supkr3 from "@/assets/superior-king-room-3.jpg.asset.json";
 import supkr4 from "@/assets/superior-king-room-4.jpg.asset.json";
+import stwrMain from "@/assets/superior-twin-room-main.png.asset.json";
+import stwr1 from "@/assets/superior-twin-room-1.jpg.asset.json";
+import stwr2 from "@/assets/superior-twin-room-2.jpg.asset.json";
+import stwr3 from "@/assets/superior-twin-room-3.jpg.asset.json";
+import stwr4 from "@/assets/superior-twin-room-4.jpg.asset.json";
+import stwr5 from "@/assets/superior-twin-room-5.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -137,7 +143,8 @@ const rooms: Room[] = [
     countNum: 19,
     area: "40 м²",
     bed: "2 × 100×200 см",
-    image: `${SRC}/Room%2010-910.jpg`,
+    image: stwrMain.url,
+    gallery: [stwrMain.url, stwr1.url, stwr2.url, stwr3.url, stwr4.url, stwr5.url],
   },
   {
     id: "deluxe",
