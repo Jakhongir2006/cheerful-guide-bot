@@ -115,7 +115,7 @@ const rooms: Room[] = [
   },
   {
     id: "superior-double",
-    name: "Superior Double Room",
+    name: "Superior King Room",
     nameKey: "room_superior_double",
     count: "12",
     countNum: 12,
