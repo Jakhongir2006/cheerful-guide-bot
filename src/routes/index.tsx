@@ -66,6 +66,11 @@ import dlx2 from "@/assets/deluxe-room-2.jpg.asset.json";
 import dlx3 from "@/assets/deluxe-room-3.jpg.asset.json";
 import dlx4 from "@/assets/deluxe-room-4.jpg.asset.json";
 import dlx5 from "@/assets/deluxe-room-5.jpg.asset.json";
+import suite1 from "@/assets/suite-room-1.png.asset.json";
+import suite2 from "@/assets/suite-room-2.png.asset.json";
+import suite3 from "@/assets/suite-room-3.png.asset.json";
+import suite4 from "@/assets/suite-room-4.png.asset.json";
+import suite5 from "@/assets/suite-room-5.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -170,7 +175,8 @@ const rooms: Room[] = [
     countNum: 2,
     area: "80 м²",
     bed: "1 × 180×200 см",
-    image: `${SRC}/Room%2029-1013.jpg`,
+    image: suite2.url,
+    gallery: [suite2.url, suite1.url, suite3.url, suite4.url, suite5.url],
   },
 ];
 
