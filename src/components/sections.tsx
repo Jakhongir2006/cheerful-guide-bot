@@ -58,6 +58,7 @@ import stwr2 from "@/assets/superior-twin-room-2.jpg.asset.json";
 import stwr3 from "@/assets/superior-twin-room-3.jpg.asset.json";
 import stwr4 from "@/assets/superior-twin-room-4.jpg.asset.json";
 import stwr5 from "@/assets/superior-twin-room-5.jpg.asset.json";
+import dlxMain from "@/assets/deluxe-room-main.png.asset.json";
 import dlx1 from "@/assets/deluxe-room-1.jpg.asset.json";
 import dlx2 from "@/assets/deluxe-room-2.jpg.asset.json";
 import dlx3 from "@/assets/deluxe-room-3.jpg.asset.json";
@@ -91,7 +92,7 @@ export const rooms: Room[] = [
   { id: "standard-double", name: "Standard King Room", nameKey: "room_standard_double", count: "31", countNum: 31, area: "27 м²", bed: "1 × 160×200 см", image: skrMain.url, gallery: [skrMain.url, skr2.url, skr1.url, skr3.url, skr4.url, skr5.url, skr6.url] },
   { id: "superior-double", name: "Superior King Room", nameKey: "room_superior_double", count: "12", countNum: 12, area: "40 м²", bed: "1 × 180×200 см", image: supkrMain.url, gallery: [supkrMain.url, supkr1.url, supkr2.url, supkr3.url, supkr4.url] },
   { id: "superior-twin", name: "Superior Twin Room", nameKey: "room_superior_twin", count: "19", countNum: 19, area: "40 м²", bed: "2 × 100×200 см", image: stwrMain.url, gallery: [stwrMain.url, stwr1.url, stwr2.url, stwr3.url, stwr4.url, stwr5.url] },
-  { id: "deluxe", name: "Deluxe Room", nameKey: "room_deluxe", count: "5", countNum: 5, area: "50 м²", bed: "1 × 180×200 см", image: dlx2.url, gallery: [dlx2.url, dlx1.url, dlx3.url, dlx4.url, dlx5.url] },
+  { id: "deluxe", name: "Deluxe Room", nameKey: "room_deluxe", count: "5", countNum: 5, area: "50 м²", bed: "1 × 180×200 см", image: dlxMain.url, gallery: [dlxMain.url, dlx2.url, dlx1.url, dlx3.url, dlx4.url, dlx5.url] },
   { id: "suite", name: "Suite Room", nameKey: "room_suite", count: "2", countNum: 2, area: "80 м²", bed: "1 × 180×200 см", image: suiteMain.url, gallery: [suiteMain.url, suite2.url, suite1.url, suite3.url, suite4.url, suite5.url] },
 ];
 
