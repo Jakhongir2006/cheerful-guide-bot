@@ -63,6 +63,7 @@ import dlx2 from "@/assets/deluxe-room-2.jpg.asset.json";
 import dlx3 from "@/assets/deluxe-room-3.jpg.asset.json";
 import dlx4 from "@/assets/deluxe-room-4.jpg.asset.json";
 import dlx5 from "@/assets/deluxe-room-5.jpg.asset.json";
+import suiteMain from "@/assets/suite-room-main.png.asset.json";
 import suite1 from "@/assets/suite-room-1.png.asset.json";
 import suite2 from "@/assets/suite-room-2.png.asset.json";
 import suite3 from "@/assets/suite-room-3.png.asset.json";
@@ -91,7 +92,7 @@ export const rooms: Room[] = [
   { id: "superior-double", name: "Superior King Room", nameKey: "room_superior_double", count: "12", countNum: 12, area: "40 м²", bed: "1 × 180×200 см", image: supkrMain.url, gallery: [supkrMain.url, supkr1.url, supkr2.url, supkr3.url, supkr4.url] },
   { id: "superior-twin", name: "Superior Twin Room", nameKey: "room_superior_twin", count: "19", countNum: 19, area: "40 м²", bed: "2 × 100×200 см", image: stwrMain.url, gallery: [stwrMain.url, stwr1.url, stwr2.url, stwr3.url, stwr4.url, stwr5.url] },
   { id: "deluxe", name: "Deluxe Room", nameKey: "room_deluxe", count: "5", countNum: 5, area: "50 м²", bed: "1 × 180×200 см", image: dlx2.url, gallery: [dlx2.url, dlx1.url, dlx3.url, dlx4.url, dlx5.url] },
-  { id: "suite", name: "Suite Room", nameKey: "room_suite", count: "2", countNum: 2, area: "80 м²", bed: "1 × 180×200 см", image: suite2.url, gallery: [suite2.url, suite1.url, suite3.url, suite4.url, suite5.url] },
+  { id: "suite", name: "Suite Room", nameKey: "room_suite", count: "2", countNum: 2, area: "80 м²", bed: "1 × 180×200 см", image: suiteMain.url, gallery: [suiteMain.url, suite2.url, suite1.url, suite3.url, suite4.url, suite5.url] },
 ];
 
 export function BookingDialog({ trigger, defaultRoom }: { trigger: React.ReactNode; defaultRoom?: string }) {
