@@ -41,7 +41,7 @@ import skr3 from "@/assets/standart-king-room-3.jpg.asset.json";
 import skr4 from "@/assets/standart-king-room-4.jpg.asset.json";
 import skr5 from "@/assets/standart-king-room-5.jpg.asset.json";
 import skr6 from "@/assets/standart-king-room-6.jpg.asset.json";
-import skrMain from "@/assets/standart-king-room-main.jpg.asset.json";
+import skrMain from "@/assets/standart-king-room-main.png.asset.json";
 import stwMain from "@/assets/standart-twin-room-main.jpg.asset.json";
 import stw1 from "@/assets/standart-twin-room-1.jpg.asset.json";
 import stw2 from "@/assets/standart-twin-room-2.jpg.asset.json";
