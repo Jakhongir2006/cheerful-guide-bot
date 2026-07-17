@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -114,6 +114,18 @@ export function BookingDialog({ trigger, defaultRoom }: { trigger: React.ReactNo
 
 export function Header() {
   const t = useT();
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    let raf = 0;
+    const check = () => { raf = 0; setScrolled(window.scrollY > 12); };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(check); };
+    check();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
   const nav = [
     { to: "/", label: t("nav_home") },
     { to: "/rooms", label: t("nav_rooms") },
@@ -124,18 +136,18 @@ export function Header() {
     { to: "/contacts", label: t("nav_contacts") },
   ] as const;
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
-      <div className="mx-auto flex max-w-7xl flex-col gap-1.5 px-3 py-2.5 sm:px-4 sm:py-3 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
+    <header data-scrolled={scrolled} className="afr-header sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
+      <div className={`mx-auto flex max-w-7xl flex-col gap-1.5 px-3 sm:px-4 lg:flex-row lg:items-center lg:justify-between lg:gap-4 transition-[padding] duration-300 ${scrolled ? "py-1.5 sm:py-2" : "py-2.5 sm:py-3"}`}>
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center">
-            <img src={logoAsset.url} alt="Afrosiyob Regency Hotel" className="h-9 object-contain sm:h-10 lg:h-11" />
+            <img src={logoAsset.url} alt="Afrosiyob Regency Hotel" className={`object-contain transition-[height] duration-300 ${scrolled ? "h-8 sm:h-9 lg:h-9" : "h-9 sm:h-10 lg:h-11"}`} />
           </Link>
           <div className="flex items-center gap-2 sm:gap-3 lg:hidden">
             <LanguageSwitcher />
             <a href={`tel:${PHONE_TEL}`} className="flex items-center gap-1 text-sm font-semibold text-primary" aria-label={PHONE}>
               <Phone className="h-4 w-4" />
             </a>
-            <BookingDialog trigger={<Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 whitespace-nowrap text-[11px] sm:text-xs">{t("cta_reservation")}</Button>} />
+            <BookingDialog trigger={<Button size="sm" className="afr-cta bg-accent text-accent-foreground hover:bg-accent/90 whitespace-nowrap text-[11px] sm:text-xs">{t("cta_reservation")}</Button>} />
           </div>
         </div>
         <nav className="flex items-center gap-2 overflow-x-auto pb-0.5 scrollbar-hide sm:gap-3 md:gap-4 lg:gap-6 lg:overflow-visible lg:pb-0">
@@ -145,7 +157,7 @@ export function Header() {
               to={n.to}
               activeOptions={{ exact: true }}
               activeProps={{ className: "text-primary" }}
-              className="relative whitespace-nowrap text-[11px] font-semibold text-foreground/80 transition hover:text-primary after:absolute after:left-0 after:-bottom-0.5 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full sm:text-xs md:text-sm"
+              className="afr-nav-link whitespace-nowrap text-[11px] font-semibold text-foreground/80 transition hover:text-primary sm:text-xs md:text-sm"
             >
               {n.label}
             </Link>
@@ -157,7 +169,7 @@ export function Header() {
             <Phone className="h-4 w-4" />
             {PHONE}
           </a>
-          <BookingDialog trigger={<Button className="bg-accent text-accent-foreground hover:bg-accent/90">{t("cta_reservation")}</Button>} />
+          <BookingDialog trigger={<Button className="afr-cta bg-accent text-accent-foreground hover:bg-accent/90">{t("cta_reservation")}</Button>} />
         </div>
       </div>
     </header>
@@ -169,28 +181,42 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative z-10"
-      style={{
-        backgroundImage: `linear-gradient(180deg, rgba(15,30,60,0.55), rgba(15,30,60,0.75)), url(${SRC}/t6.jpg)`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed",
-      }}
+      className="relative z-10 overflow-hidden"
     >
+      {/* Ken-Burns drifting hero image — works on iOS Safari, unlike bg-fixed. */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <img
+          src={`${SRC}/t6.jpg`}
+          alt=""
+          data-drift
+          className="h-full w-full object-cover"
+          loading="eager"
+          decoding="async"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[rgba(15,30,60,0.55)] to-[rgba(15,30,60,0.75)]" />
+      </div>
       <div className="mx-auto max-w-7xl px-4 pt-20 pb-32 text-white">
-        <p className="font-serif text-sm uppercase tracking-[0.4em] text-accent">{t("hero_kicker")}</p>
-        <h1 className="mt-4 max-w-3xl font-serif text-4xl leading-tight md:text-6xl">Afrosiyob Regency Hotel</h1>
-        <p className="mt-4 max-w-2xl text-base text-white/85 md:text-lg">{t("hero_desc")}</p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <BookingDialog trigger={<Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">{t("cta_book_room")}</Button>} />
-          <Link to="/rooms">
-            <Button size="lg" variant="outline" className="border-white/40 bg-white/10 text-white hover:bg-white/20 hover:text-white">{t("cta_view_rooms")}</Button>
-          </Link>
-        </div>
+        <Reveal variant="fade" delay={0}>
+          <p className="font-serif text-sm uppercase tracking-[0.4em] text-accent">{t("hero_kicker")}</p>
+        </Reveal>
+        <Reveal variant="up" delay={120}>
+          <h1 className="mt-4 max-w-3xl font-serif text-4xl leading-tight md:text-6xl">Afrosiyob Regency Hotel</h1>
+        </Reveal>
+        <Reveal variant="up" delay={260}>
+          <p className="mt-4 max-w-2xl text-base text-white/85 md:text-lg">{t("hero_desc")}</p>
+        </Reveal>
+        <Reveal variant="up" delay={420}>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <BookingDialog trigger={<Button size="lg" className="afr-cta bg-accent text-accent-foreground hover:bg-accent/90">{t("cta_book_room")}</Button>} />
+            <Link to="/rooms">
+              <Button size="lg" variant="outline" className="afr-cta border-white/40 bg-white/10 text-white hover:bg-white/20 hover:text-white">{t("cta_view_rooms")}</Button>
+            </Link>
+          </div>
+        </Reveal>
       </div>
-      <div className="relative z-10 mx-auto -mb-16 max-w-6xl px-4">
+      <Reveal variant="up" delay={560} className="relative z-10 mx-auto -mb-16 max-w-6xl px-4">
         <BookingForm />
-      </div>
+      </Reveal>
     </section>
   );
 }
@@ -270,7 +296,7 @@ export function Stats() {
       <div className="mx-auto grid max-w-7xl grid-cols-2 gap-4 px-4 md:grid-cols-3 lg:grid-cols-6">
         {items.map((it, i) => (
           <Reveal key={it.label} delay={i * 80}>
-            <div className="flex h-full flex-col items-center gap-2 rounded-xl border border-border bg-card p-5 text-center transition hover:-translate-y-1 hover:shadow-lg">
+            <div data-tilt className="flex h-full flex-col items-center gap-2 rounded-xl border border-border bg-card p-5 text-center transition hover:-translate-y-1 hover:shadow-lg">
               <it.icon className="h-7 w-7 text-accent" />
               {it.num > 0 ? (<div className="font-serif text-2xl text-primary"><CountUp value={it.num} suffix={it.suffix} /></div>) : null}
               <span className="text-sm font-medium text-foreground">{it.label}</span>
@@ -334,10 +360,13 @@ export function Rooms() {
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {rooms.map((r, i) => (
             <Reveal key={r.id} delay={i * 70} as="article" className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:shadow-xl">
-              <div className="relative aspect-[4/3] overflow-hidden">
-                <Zimg src={r.image} gallery={r.gallery ?? rooms.map((x) => x.image)} index={r.gallery ? 0 : i} alt={r.name} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+              <div data-tilt className="relative aspect-[4/3] overflow-hidden">
+                <Zimg src={r.image} gallery={r.gallery ?? rooms.map((x) => x.image)} index={r.gallery ? 0 : i} alt={r.name} className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.06]" />
+                {r.gallery && r.gallery[1] ? (
+                  <img src={r.gallery[1]} alt="" aria-hidden loading="lazy" decoding="async" className="afr-room-alt" />
+                ) : null}
                 {r.gallery && r.gallery.length > 1 ? (
-                  <span className="pointer-events-none absolute bottom-3 right-3 rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur">{r.gallery.length} photos</span>
+                  <span className="pointer-events-none absolute bottom-3 right-3 z-10 rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur">{r.gallery.length} photos</span>
                 ) : null}
               </div>
               <div className="flex flex-1 flex-col p-5">
@@ -349,7 +378,7 @@ export function Rooms() {
                   <div><dt className="text-[10px] uppercase tracking-wider text-muted-foreground">{t("room_bed")}</dt><dd className="font-medium text-foreground">{r.bed}</dd></div>
                 </dl>
                 <div className="mt-5 flex items-center gap-2">
-                  <BookingDialog defaultRoom={r.name} trigger={<Button className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90">{t("cta_book")}</Button>} />
+                  <BookingDialog defaultRoom={r.name} trigger={<Button className="afr-cta flex-1 bg-primary text-primary-foreground hover:bg-primary/90">{t("cta_book")}</Button>} />
                   <a href={`tel:${PHONE_TEL}`} className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground">{t("cta_get_price")}</a>
                 </div>
               </div>
@@ -475,12 +504,14 @@ export function Why() {
         <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("why_kicker")}</p>
         <h2 className="mt-3 max-w-3xl font-serif text-3xl text-primary md:text-4xl">{t("why_h2")}</h2>
         <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {items.map((it) => (
-            <div key={it.title} className="rounded-2xl border border-border bg-card p-6 transition hover:border-accent">
-              <it.icon className="h-8 w-8 text-accent" />
-              <h3 className="mt-4 font-serif text-lg text-primary">{it.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-foreground/70">{it.desc}</p>
-            </div>
+          {items.map((it, i) => (
+            <Reveal key={it.title} delay={i * 90}>
+              <div data-tilt className="h-full rounded-2xl border border-border bg-card p-6 transition hover:-translate-y-1 hover:border-accent hover:shadow-lg">
+                <it.icon className="h-8 w-8 text-accent" />
+                <h3 className="mt-4 font-serif text-lg text-primary">{it.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-foreground/70">{it.desc}</p>
+              </div>
+            </Reveal>
           ))}
         </div>
       </div>
