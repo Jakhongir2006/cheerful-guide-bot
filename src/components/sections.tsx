@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -114,6 +114,18 @@ export function BookingDialog({ trigger, defaultRoom }: { trigger: React.ReactNo
 
 export function Header() {
   const t = useT();
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    let raf = 0;
+    const check = () => { raf = 0; setScrolled(window.scrollY > 12); };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(check); };
+    check();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
   const nav = [
     { to: "/", label: t("nav_home") },
     { to: "/rooms", label: t("nav_rooms") },
@@ -124,18 +136,18 @@ export function Header() {
     { to: "/contacts", label: t("nav_contacts") },
   ] as const;
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
-      <div className="mx-auto flex max-w-7xl flex-col gap-1.5 px-3 py-2.5 sm:px-4 sm:py-3 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
+    <header data-scrolled={scrolled} className="afr-header sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
+      <div className={`mx-auto flex max-w-7xl flex-col gap-1.5 px-3 sm:px-4 lg:flex-row lg:items-center lg:justify-between lg:gap-4 transition-[padding] duration-300 ${scrolled ? "py-1.5 sm:py-2" : "py-2.5 sm:py-3"}`}>
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center">
-            <img src={logoAsset.url} alt="Afrosiyob Regency Hotel" className="h-9 object-contain sm:h-10 lg:h-11" />
+            <img src={logoAsset.url} alt="Afrosiyob Regency Hotel" className={`object-contain transition-[height] duration-300 ${scrolled ? "h-8 sm:h-9 lg:h-9" : "h-9 sm:h-10 lg:h-11"}`} />
           </Link>
           <div className="flex items-center gap-2 sm:gap-3 lg:hidden">
             <LanguageSwitcher />
             <a href={`tel:${PHONE_TEL}`} className="flex items-center gap-1 text-sm font-semibold text-primary" aria-label={PHONE}>
               <Phone className="h-4 w-4" />
             </a>
-            <BookingDialog trigger={<Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 whitespace-nowrap text-[11px] sm:text-xs">{t("cta_reservation")}</Button>} />
+            <BookingDialog trigger={<Button size="sm" className="afr-cta bg-accent text-accent-foreground hover:bg-accent/90 whitespace-nowrap text-[11px] sm:text-xs">{t("cta_reservation")}</Button>} />
           </div>
         </div>
         <nav className="flex items-center gap-2 overflow-x-auto pb-0.5 scrollbar-hide sm:gap-3 md:gap-4 lg:gap-6 lg:overflow-visible lg:pb-0">
@@ -145,7 +157,7 @@ export function Header() {
               to={n.to}
               activeOptions={{ exact: true }}
               activeProps={{ className: "text-primary" }}
-              className="relative whitespace-nowrap text-[11px] font-semibold text-foreground/80 transition hover:text-primary after:absolute after:left-0 after:-bottom-0.5 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full sm:text-xs md:text-sm"
+              className="afr-nav-link whitespace-nowrap text-[11px] font-semibold text-foreground/80 transition hover:text-primary sm:text-xs md:text-sm"
             >
               {n.label}
             </Link>
@@ -157,7 +169,7 @@ export function Header() {
             <Phone className="h-4 w-4" />
             {PHONE}
           </a>
-          <BookingDialog trigger={<Button className="bg-accent text-accent-foreground hover:bg-accent/90">{t("cta_reservation")}</Button>} />
+          <BookingDialog trigger={<Button className="afr-cta bg-accent text-accent-foreground hover:bg-accent/90">{t("cta_reservation")}</Button>} />
         </div>
       </div>
     </header>
@@ -169,28 +181,42 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative z-10"
-      style={{
-        backgroundImage: `linear-gradient(180deg, rgba(15,30,60,0.55), rgba(15,30,60,0.75)), url(${SRC}/t6.jpg)`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed",
-      }}
+      className="relative z-10 overflow-hidden"
     >
+      {/* Ken-Burns drifting hero image — works on iOS Safari, unlike bg-fixed. */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <img
+          src={`${SRC}/t6.jpg`}
+          alt=""
+          data-drift
+          className="h-full w-full object-cover"
+          loading="eager"
+          decoding="async"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[rgba(15,30,60,0.55)] to-[rgba(15,30,60,0.75)]" />
+      </div>
       <div className="mx-auto max-w-7xl px-4 pt-20 pb-32 text-white">
-        <p className="font-serif text-sm uppercase tracking-[0.4em] text-accent">{t("hero_kicker")}</p>
-        <h1 className="mt-4 max-w-3xl font-serif text-4xl leading-tight md:text-6xl">Afrosiyob Regency Hotel</h1>
-        <p className="mt-4 max-w-2xl text-base text-white/85 md:text-lg">{t("hero_desc")}</p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <BookingDialog trigger={<Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">{t("cta_book_room")}</Button>} />
-          <Link to="/rooms">
-            <Button size="lg" variant="outline" className="border-white/40 bg-white/10 text-white hover:bg-white/20 hover:text-white">{t("cta_view_rooms")}</Button>
-          </Link>
-        </div>
+        <Reveal variant="fade" delay={0}>
+          <p className="font-serif text-sm uppercase tracking-[0.4em] text-accent">{t("hero_kicker")}</p>
+        </Reveal>
+        <Reveal variant="up" delay={120}>
+          <h1 className="mt-4 max-w-3xl font-serif text-4xl leading-tight md:text-6xl">Afrosiyob Regency Hotel</h1>
+        </Reveal>
+        <Reveal variant="up" delay={260}>
+          <p className="mt-4 max-w-2xl text-base text-white/85 md:text-lg">{t("hero_desc")}</p>
+        </Reveal>
+        <Reveal variant="up" delay={420}>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <BookingDialog trigger={<Button size="lg" className="afr-cta bg-accent text-accent-foreground hover:bg-accent/90">{t("cta_book_room")}</Button>} />
+            <Link to="/rooms">
+              <Button size="lg" variant="outline" className="afr-cta border-white/40 bg-white/10 text-white hover:bg-white/20 hover:text-white">{t("cta_view_rooms")}</Button>
+            </Link>
+          </div>
+        </Reveal>
       </div>
-      <div className="relative z-10 mx-auto -mb-16 max-w-6xl px-4">
+      <Reveal variant="up" delay={560} className="relative z-10 mx-auto -mb-16 max-w-6xl px-4">
         <BookingForm />
-      </div>
+      </Reveal>
     </section>
   );
 }
