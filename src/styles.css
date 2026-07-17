@@ -143,47 +143,44 @@
   }
 }
 
-@keyframes afr-fade-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+/* ===== Reveal on scroll — cheap, GPU-only (transform + opacity) ===== */
+.afr-reveal { opacity: 0; will-change: transform, opacity; }
+.afr-reveal-up    { transform: translate3d(0, 24px, 0); }
+.afr-reveal-fade  { transform: none; }
+.afr-reveal-scale { transform: scale(0.96); }
+.afr-reveal-left  { transform: translate3d(-28px, 0, 0); }
+.afr-reveal-right { transform: translate3d(28px, 0, 0); }
+.afr-reveal.afr-in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition:
+    opacity 700ms cubic-bezier(.22,.61,.36,1),
+    transform 800ms cubic-bezier(.22,.61,.36,1);
+  transition-delay: inherit;
 }
-.afr-reveal { opacity: 0; }
-.afr-reveal.afr-in { animation: afr-fade-up 0.6s ease-out forwards; }
+/* Drop will-change after the animation lands so the layer isn't kept alive */
+.afr-reveal.afr-in { will-change: auto; }
 .afr-zoomable { cursor: zoom-in; transition: transform 0.4s ease, box-shadow 0.4s ease; }
 .afr-zoomable:hover { transform: scale(1.02); }
 
-/* ===== Subtle 3D motion layer (content-preserving) ===== */
-@keyframes afr-float {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50%      { transform: translate3d(0, -8px, 0); }
-}
-@keyframes afr-float-slow {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50%      { transform: translate3d(0, -5px, 0); }
-}
+/* ===== Subtle motion layer (opt-in, content-preserving) ===== */
 @keyframes afr-enter-3d {
-  from { opacity: 0; transform: perspective(900px) translate3d(0, 12px, -40px); }
+  from { opacity: 0; transform: translate3d(0, 8px, 0); }
   to   { opacity: 1; transform: none; }
 }
-
-/* Page load entrance */
-main, header, footer, section {
-  animation: afr-enter-3d 0.7s ease-out both;
-  backface-visibility: hidden;
+/* Only the hero section gets an entrance — not every section on every navigation */
+main > section:first-of-type {
+  animation: afr-enter-3d 0.6s cubic-bezier(.22,.61,.36,1) both;
 }
 
-/* Hero floating: target first section's headings/images */
-section:first-of-type h1,
-section:first-of-type h2 {
-  animation: afr-float-slow 6s ease-in-out infinite;
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
+/* Opt-in hero image drift (mark <img data-drift />). No always-on infinite anims. */
+@keyframes afr-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.01); }
+  50%      { transform: translate3d(0, -6px, 0) scale(1.02); }
 }
-section:first-of-type img {
-  animation: afr-float 7s ease-in-out infinite;
+[data-drift] {
+  animation: afr-drift 9s ease-in-out infinite;
   will-change: transform;
-  transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
 }
 
@@ -194,17 +191,8 @@ section:first-of-type img {
     rotateX(var(--rx, 0deg))
     rotateY(var(--ry, 0deg))
     translateZ(var(--tz, 0px));
-  transition: transform 250ms cubic-bezier(.2,.7,.2,1);
+  transition: transform 350ms cubic-bezier(.22,.61,.36,1);
   will-change: transform;
-  backface-visibility: hidden;
-}
-
-/* Scroll depth scale-in */
-.afr-depth {
-  opacity: 0;
-  transform: perspective(900px) translateZ(-30px) scale(.97);
-  transition: opacity 500ms ease-out, transform 600ms cubic-bezier(.2,.7,.2,1);
-  will-change: transform, opacity;
   backface-visibility: hidden;
 }
 
@@ -217,27 +205,17 @@ section:first-of-type img {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-.afr-depth.afr-depth-in {
-  opacity: 1;
-  transform: perspective(900px) translateZ(0) scale(1);
-}
 
 /* Parallax layer */
 .afr-parallax {
   will-change: transform;
-  transition: transform 80ms linear;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
 }
 
-/* Reveal helper */
-.afr-reveal { will-change: transform, opacity; transform: translate3d(0, 0, 0); }
-
 /* Reduce animation complexity on small screens (keep full effects on desktop) */
 @media (max-width: 768px) {
-  section:first-of-type h1,
-  section:first-of-type h2,
-  section:first-of-type img {
+  [data-drift] {
     animation: none;
   }
   .afr-tilt {
@@ -247,17 +225,15 @@ section:first-of-type img {
   .afr-parallax {
     transform: none !important;
   }
-  main, header, footer, section {
-    animation-duration: 0.4s;
+  main > section:first-of-type {
+    animation-duration: 0.35s;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  main, header, footer, section,
-  section:first-of-type h1,
-  section:first-of-type h2,
-  section:first-of-type img,
-  .afr-tilt, .afr-depth, .afr-parallax {
+  main > section:first-of-type,
+  [data-drift],
+  .afr-reveal, .afr-tilt, .afr-parallax {
     animation: none !important;
     transition: none !important;
     transform: none !important;
