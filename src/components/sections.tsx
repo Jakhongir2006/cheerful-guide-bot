@@ -65,6 +65,7 @@ import dlx3 from "@/assets/deluxe-room-3.jpg.asset.json";
 import dlx4 from "@/assets/deluxe-room-4.jpg.asset.json";
 import dlx5 from "@/assets/deluxe-room-5.jpg.asset.json";
 import suiteMain from "@/assets/suite-room-main.png.asset.json";
+import aboutRestaurant from "@/assets/about-restaurant.jpg.asset.json";
 import suite1 from "@/assets/suite-room-1.png.asset.json";
 import suite2 from "@/assets/suite-room-2.png.asset.json";
 import suite3 from "@/assets/suite-room-3.png.asset.json";
