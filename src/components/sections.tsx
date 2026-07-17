@@ -181,7 +181,7 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative z-10 overflow-hidden"
+      className="relative z-10"
     >
       {/* Ken-Burns drifting hero image — works on iOS Safari, unlike bg-fixed. */}
       <div className="absolute inset-0 z-0 overflow-hidden">
