@@ -11,119 +11,82 @@ export function Motion3D() {
     if (typeof window === "undefined") return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) return;
-    // Reduce JS-driven motion on small/touch devices — CSS animations remain.
+    // Skip all JS motion on touch / small screens — CSS animations still run.
     const isMobile =
-      window.matchMedia("(max-width: 768px)").matches ||
+      window.matchMedia("(max-width: 900px)").matches ||
       window.matchMedia("(hover: none)").matches;
+    if (isMobile) return;
 
     let cleanup: (() => void) | undefined;
     let cancelled = false;
 
-    // Defer DOM mutation until AFTER React finishes hydrating and painting.
-    // Mutating classes during hydration causes mismatch warnings and can
-    // discard subtrees below the fold.
     const run = () => {
-    const tiltSelector = [
-      ".afr-tilt",
-      "[data-tilt]",
-      "button",
-      "a[role='button']",
-      ".rounded-xl.border", // shadcn Card
-      "[class*='rounded-2xl']",
-      "[class*='rounded-xl']:not(input):not(textarea)",
-    ].join(",");
-
-    const tiltEls = new Set<HTMLElement>();
-    const attachTilt = (el: HTMLElement) => {
-      if (isMobile) return;
-      if (tiltEls.has(el)) return;
-      // Skip tiny / form elements
-      const tag = el.tagName.toLowerCase();
-      if (["input", "textarea", "select", "label"].includes(tag)) return;
-      // Never touch form/booking widgets — animations there hide interactive controls.
-      if (el.closest("form") || el.closest("[data-no-motion]")) return;
-      tiltEls.add(el);
-      el.classList.add("afr-tilt");
-      const onMove = (e: MouseEvent) => {
-        const r = el.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width - 0.5;
-        const py = (e.clientY - r.top) / r.height - 0.5;
-        const max = 6; // degrees
-        el.style.setProperty("--ry", `${(px * max).toFixed(2)}deg`);
-        el.style.setProperty("--rx", `${(-py * max).toFixed(2)}deg`);
-        el.style.setProperty("--tz", `6px`);
+      // Opt-in tilt: only elements marked [data-tilt] or .afr-tilt.
+      // Attaching mousemove to every button/card is the #1 cause of scroll jank.
+      const tiltEls: HTMLElement[] = [];
+      const attachTilt = (el: HTMLElement) => {
+        if (el.closest("form") || el.closest("[data-no-motion]")) return;
+        tiltEls.push(el);
+        el.classList.add("afr-tilt");
+        let rafId = 0;
+        let nextX = 0, nextY = 0;
+        const flush = () => {
+          rafId = 0;
+          el.style.setProperty("--ry", `${nextX.toFixed(2)}deg`);
+          el.style.setProperty("--rx", `${(-nextY).toFixed(2)}deg`);
+          el.style.setProperty("--tz", `6px`);
+        };
+        const onMove = (e: MouseEvent) => {
+          const r = el.getBoundingClientRect();
+          const max = 5;
+          nextX = ((e.clientX - r.left) / r.width - 0.5) * max;
+          nextY = ((e.clientY - r.top) / r.height - 0.5) * max;
+          if (!rafId) rafId = requestAnimationFrame(flush);
+        };
+        const onLeave = () => {
+          if (rafId) cancelAnimationFrame(rafId), (rafId = 0);
+          el.style.setProperty("--rx", `0deg`);
+          el.style.setProperty("--ry", `0deg`);
+          el.style.setProperty("--tz", `0px`);
+        };
+        el.addEventListener("mousemove", onMove, { passive: true });
+        el.addEventListener("mouseleave", onLeave);
+        (el as any).__afrTiltCleanup = () => {
+          el.removeEventListener("mousemove", onMove);
+          el.removeEventListener("mouseleave", onLeave);
+          if (rafId) cancelAnimationFrame(rafId);
+        };
       };
-      const onLeave = () => {
-        el.style.setProperty("--rx", `0deg`);
-        el.style.setProperty("--ry", `0deg`);
-        el.style.setProperty("--tz", `0px`);
-      };
-      el.addEventListener("mousemove", onMove);
-      el.addEventListener("mouseleave", onLeave);
-      (el as any).__afrTiltCleanup = () => {
-        el.removeEventListener("mousemove", onMove);
-        el.removeEventListener("mouseleave", onLeave);
-      };
-    };
+      document
+        .querySelectorAll<HTMLElement>("[data-tilt], .afr-tilt")
+        .forEach(attachTilt);
 
-    document.querySelectorAll<HTMLElement>(tiltSelector).forEach(attachTilt);
-
-    // Depth on scroll
-    const depthCandidates = document.querySelectorAll<HTMLElement>(
-      "section > *, .rounded-xl.border, [class*='rounded-2xl'], img"
-    );
-    const depthTargets: HTMLElement[] = [];
-    depthCandidates.forEach((el) => {
-      // Skip forms and anything the author opted out of.
-      if (el.tagName === "FORM" || el.closest("form")) return;
-      if (el.closest("[data-no-motion]")) return;
-      // Skip wrappers that contain a form — hiding them hides its inputs.
-      if (el.querySelector("form")) return;
-      el.classList.add("afr-depth");
-      depthTargets.push(el);
-    });
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add("afr-depth-in");
-            io.unobserve(e.target);
-          }
-        });
-      },
-      { threshold: 0.12 },
-    );
-    depthTargets.forEach((el) => io.observe(el));
-
-    // Parallax — hero/background images move slower than scroll
-    const parallaxEls: { el: HTMLElement; speed: number }[] = [];
-    document
-      .querySelectorAll<HTMLElement>("section:first-of-type img, [data-parallax]")
-      .forEach((el) => {
+      // Parallax — opt-in via [data-parallax="0.15"], rAF-throttled.
+      const parallaxEls: { el: HTMLElement; speed: number }[] = [];
+      document.querySelectorAll<HTMLElement>("[data-parallax]").forEach((el) => {
         el.classList.add("afr-parallax");
-        const speed = parseFloat(el.dataset.parallax || "0.15");
-        parallaxEls.push({ el, speed });
+        parallaxEls.push({ el, speed: parseFloat(el.dataset.parallax || "0.15") });
       });
-    let ticking = false;
-    const onScroll = () => {
-      if (isMobile) return;
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        const y = window.scrollY;
-        parallaxEls.forEach(({ el, speed }) => {
-          el.style.transform = `translate3d(0, ${(-y * speed).toFixed(1)}px, 0)`;
+      let ticking = false;
+      const onScroll = () => {
+        if (ticking || !parallaxEls.length) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          const y = window.scrollY;
+          for (const { el, speed } of parallaxEls) {
+            el.style.transform = `translate3d(0, ${(-y * speed).toFixed(1)}px, 0)`;
+          }
+          ticking = false;
         });
-        ticking = false;
-      });
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
+      };
+      if (parallaxEls.length) {
+        window.addEventListener("scroll", onScroll, { passive: true });
+      }
 
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      io.disconnect();
-      tiltEls.forEach((el) => (el as any).__afrTiltCleanup?.());
-    };
+      return () => {
+        window.removeEventListener("scroll", onScroll);
+        tiltEls.forEach((el) => (el as any).__afrTiltCleanup?.());
+      };
     };
 
     const start = () => {
