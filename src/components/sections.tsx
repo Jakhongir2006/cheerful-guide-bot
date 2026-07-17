@@ -67,6 +67,7 @@ import dlx5 from "@/assets/deluxe-room-5.jpg.asset.json";
 import suiteMain from "@/assets/suite-room-main.png.asset.json";
 import aboutRestaurant from "@/assets/about-restaurant.jpg.asset.json";
 import aboutDining from "@/assets/about-dining.jpg.asset.json";
+import aboutReception from "@/assets/about-reception.jpg.asset.json";
 import suite1 from "@/assets/suite-room-1.png.asset.json";
 import suite2 from "@/assets/suite-room-2.png.asset.json";
 import suite3 from "@/assets/suite-room-3.png.asset.json";
@@ -283,7 +284,7 @@ export function Stats() {
 
 export function About() {
   const t = useT();
-  const gallery = [aboutRestaurant.url, aboutDining.url, ...[8, 9, 10, 11, 12, 13].map((n) => `${SRC}/${n}.jpg`)];
+  const gallery = [aboutRestaurant.url, aboutDining.url, aboutReception.url, ...[9, 10, 11, 12, 13].map((n) => `${SRC}/${n}.jpg`)];
   return (
     <section id="about" className="bg-secondary/40 py-20">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 lg:grid-cols-2">
