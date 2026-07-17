@@ -281,7 +281,7 @@ export function Stats() {
 
 export function About() {
   const t = useT();
-  const gallery = [8, 9, 10, 11, 12, 13].map((n) => `${SRC}/${n}.jpg`);
+  const gallery = [aboutRestaurant.url, ...[8, 9, 10, 11, 12, 13].map((n) => `${SRC}/${n}.jpg`)];
   return (
     <section id="about" className="bg-secondary/40 py-20">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 lg:grid-cols-2">
