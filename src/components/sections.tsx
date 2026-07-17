@@ -296,7 +296,7 @@ export function Stats() {
       <div className="mx-auto grid max-w-7xl grid-cols-2 gap-4 px-4 md:grid-cols-3 lg:grid-cols-6">
         {items.map((it, i) => (
           <Reveal key={it.label} delay={i * 80}>
-            <div className="flex h-full flex-col items-center gap-2 rounded-xl border border-border bg-card p-5 text-center transition hover:-translate-y-1 hover:shadow-lg">
+            <div data-tilt className="flex h-full flex-col items-center gap-2 rounded-xl border border-border bg-card p-5 text-center transition hover:-translate-y-1 hover:shadow-lg">
               <it.icon className="h-7 w-7 text-accent" />
               {it.num > 0 ? (<div className="font-serif text-2xl text-primary"><CountUp value={it.num} suffix={it.suffix} /></div>) : null}
               <span className="text-sm font-medium text-foreground">{it.label}</span>
@@ -360,10 +360,13 @@ export function Rooms() {
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {rooms.map((r, i) => (
             <Reveal key={r.id} delay={i * 70} as="article" className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:shadow-xl">
-              <div className="relative aspect-[4/3] overflow-hidden">
-                <Zimg src={r.image} gallery={r.gallery ?? rooms.map((x) => x.image)} index={r.gallery ? 0 : i} alt={r.name} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+              <div data-tilt className="relative aspect-[4/3] overflow-hidden">
+                <Zimg src={r.image} gallery={r.gallery ?? rooms.map((x) => x.image)} index={r.gallery ? 0 : i} alt={r.name} className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.06]" />
+                {r.gallery && r.gallery[1] ? (
+                  <img src={r.gallery[1]} alt="" aria-hidden loading="lazy" decoding="async" className="afr-room-alt" />
+                ) : null}
                 {r.gallery && r.gallery.length > 1 ? (
-                  <span className="pointer-events-none absolute bottom-3 right-3 rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur">{r.gallery.length} photos</span>
+                  <span className="pointer-events-none absolute bottom-3 right-3 z-10 rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur">{r.gallery.length} photos</span>
                 ) : null}
               </div>
               <div className="flex flex-1 flex-col p-5">
@@ -375,7 +378,7 @@ export function Rooms() {
                   <div><dt className="text-[10px] uppercase tracking-wider text-muted-foreground">{t("room_bed")}</dt><dd className="font-medium text-foreground">{r.bed}</dd></div>
                 </dl>
                 <div className="mt-5 flex items-center gap-2">
-                  <BookingDialog defaultRoom={r.name} trigger={<Button className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90">{t("cta_book")}</Button>} />
+                  <BookingDialog defaultRoom={r.name} trigger={<Button className="afr-cta flex-1 bg-primary text-primary-foreground hover:bg-primary/90">{t("cta_book")}</Button>} />
                   <a href={`tel:${PHONE_TEL}`} className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground">{t("cta_get_price")}</a>
                 </div>
               </div>
@@ -501,12 +504,14 @@ export function Why() {
         <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("why_kicker")}</p>
         <h2 className="mt-3 max-w-3xl font-serif text-3xl text-primary md:text-4xl">{t("why_h2")}</h2>
         <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {items.map((it) => (
-            <div key={it.title} className="rounded-2xl border border-border bg-card p-6 transition hover:border-accent">
-              <it.icon className="h-8 w-8 text-accent" />
-              <h3 className="mt-4 font-serif text-lg text-primary">{it.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-foreground/70">{it.desc}</p>
-            </div>
+          {items.map((it, i) => (
+            <Reveal key={it.title} delay={i * 90}>
+              <div data-tilt className="h-full rounded-2xl border border-border bg-card p-6 transition hover:-translate-y-1 hover:border-accent hover:shadow-lg">
+                <it.icon className="h-8 w-8 text-accent" />
+                <h3 className="mt-4 font-serif text-lg text-primary">{it.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-foreground/70">{it.desc}</p>
+              </div>
+            </Reveal>
           ))}
         </div>
       </div>
