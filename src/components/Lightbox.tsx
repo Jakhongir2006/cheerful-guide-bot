@@ -42,7 +42,8 @@ export function LightboxProvider({ children }: { children: ReactNode }) {
   return (
     <LightboxCtx.Provider value={{ open }}>
       {children}
-      {state && (
+      {state &&
+        createPortal(
         <div
           role="dialog"
           aria-modal="true"
