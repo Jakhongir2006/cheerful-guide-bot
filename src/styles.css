@@ -309,6 +309,7 @@ main > section:first-of-type {
 /* ===== Room card image crossfade (needs a second layer marked .afr-room-alt) ===== */
 .afr-room-alt {
   position: absolute;
+  pointer-events: none;
   inset: 0;
   width: 100%;
   height: 100%;
