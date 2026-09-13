@@ -91,7 +91,8 @@ export function LightboxProvider({ children }: { children: ReactNode }) {
             onClick={(e) => e.stopPropagation()}
             className="max-h-[92vh] max-w-[94vw] object-contain shadow-2xl"
           />
-        </div>
+        </div>,
+        document.body,
       )}
     </LightboxCtx.Provider>
   );
