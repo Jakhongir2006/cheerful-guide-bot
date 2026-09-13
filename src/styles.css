@@ -247,10 +247,8 @@ main > section:first-of-type {
   to   { opacity: 1; transform: none; }
 }
 .afr-page-in {
-  animation: afr-page-in 420ms cubic-bezier(.22,.61,.36,1) both;
-  will-change: transform, opacity;
+  animation: afr-page-in 420ms cubic-bezier(.22,.61,.36,1) backwards;
 }
-.afr-page-in { will-change: auto; }
 
 /* ===== Premium CTA lift ===== */
 .afr-cta {

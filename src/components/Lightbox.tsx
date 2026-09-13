@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
 type LightboxState = { images: string[]; index: number } | null;
@@ -41,7 +42,8 @@ export function LightboxProvider({ children }: { children: ReactNode }) {
   return (
     <LightboxCtx.Provider value={{ open }}>
       {children}
-      {state && (
+      {state &&
+        createPortal(
         <div
           role="dialog"
           aria-modal="true"
@@ -89,7 +91,8 @@ export function LightboxProvider({ children }: { children: ReactNode }) {
             onClick={(e) => e.stopPropagation()}
             className="max-h-[92vh] max-w-[94vw] object-contain shadow-2xl"
           />
-        </div>
+        </div>,
+        document.body,
       )}
     </LightboxCtx.Provider>
   );
