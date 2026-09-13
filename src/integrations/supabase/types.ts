@@ -77,6 +77,33 @@ export type Database = {
         }
         Relationships: []
       }
+      room_inventory: {
+        Row: {
+          created_at: string
+          id: string
+          room_key: string
+          room_name: string
+          total_rooms: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          room_key: string
+          room_name: string
+          total_rooms?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          room_key?: string
+          room_name?: string
+          total_rooms?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -103,12 +130,50 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_booking_checked: {
+        Args: { _booking: Json }
+        Returns: {
+          booking_number: string
+          check_in_date: string
+          check_out_date: string
+          created_at: string
+          guest_citizenship: string | null
+          guest_email: string
+          guest_lastname: string
+          guest_name: string
+          guest_patronymic: string | null
+          guest_phone: string
+          guests_count: number
+          id: string
+          nights: number
+          notes: string | null
+          price_per_night: number
+          room_type: string
+          status: string
+          total_price: number
+        }
+        SetofOptions: {
+          from: "*"
+          to: "bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      room_availability: {
+        Args: { _check_in: string; _check_out: string }
+        Returns: {
+          available_rooms: number
+          room_key: string
+          room_name: string
+          total_rooms: number
+        }[]
       }
     }
     Enums: {
