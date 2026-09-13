@@ -33,16 +33,44 @@ export const createBooking = createServerFn({ method: "POST" })
     const total_price = price_per_night * computedNights;
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: row, error } = await supabaseAdmin
-      .from("bookings" as never)
-      .insert({ ...data, price_per_night, total_price, status: "new" } as never)
-      .select()
-      .single();
+    const { data: row, error } = await (supabaseAdmin as any).rpc("create_booking_checked", {
+      _booking: { ...data, price_per_night, total_price },
+    });
     if (error) {
       console.error("[createBooking] DB error:", error);
+      if (String(error.message || "").includes("NO_AVAILABILITY")) {
+        throw new Error("SOLD_OUT");
+      }
       throw new Error("Failed to create booking. Please try again.");
     }
     return row as { id: string; booking_number: string };
+  });
+
+export type RoomAvailability = {
+  room_key: string;
+  room_name: string;
+  total_rooms: number;
+  available_rooms: number;
+};
+
+const availabilitySchema = z.object({
+  check_in_date: z.string().min(8).max(20),
+  check_out_date: z.string().min(8).max(20),
+});
+
+export const getRoomAvailability = createServerFn({ method: "POST" })
+  .inputValidator((d: z.infer<typeof availabilitySchema>) => availabilitySchema.parse(d))
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: rows, error } = await (supabaseAdmin as any).rpc("room_availability", {
+      _check_in: data.check_in_date,
+      _check_out: data.check_out_date,
+    });
+    if (error) {
+      console.error("[getRoomAvailability] DB error:", error);
+      throw new Error("Failed to load availability. Please try again.");
+    }
+    return (rows ?? []) as RoomAvailability[];
   });
 
 async function assertAdmin(supabase: any, userId: string) {
