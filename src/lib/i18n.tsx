@@ -57,6 +57,9 @@ export const DICT: Dict = {
     ko: "포함: 조식 + 스파 + 수영장",
   },
   room_left: { ru: "Осталось 2 номера!", en: "Only 2 rooms left!", uz: "2 ta xona qoldi!", ko: "2개 객실만 남음!" },
+  rooms_left: { ru: "Осталось: {N}", en: "{N} left", uz: "Qoldi {N} ta", ko: "{N}개 남음" },
+  sold_out: { ru: "Номера закончились", en: "Sold out", uz: "Xonalar tugadi", ko: "객실 매진" },
+  unavailable: { ru: "Недоступно", en: "Unavailable", uz: "Mavjud emas", ko: "예약 불가" },
   continue_with_selected: {
     ru: "Продолжить с выбранным номером",
     en: "Continue with selected room",
