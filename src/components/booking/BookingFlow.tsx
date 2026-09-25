@@ -380,11 +380,24 @@ export function BookingFlow({
               {upgradeTargets(room.tier).flatMap((tier) =>
                 ROOMS.filter((r) => r.tier === tier).slice(0, 1).map((r) => {
                   const price = priceFor(r, guests);
+                  const left = availability?.[r.key];
+                  const isSoldOut = left === 0;
                   return (
                     <article key={r.key} className="relative overflow-hidden rounded-xl border border-accent bg-card">
-                      <div className="absolute right-2 top-2 z-10 rounded-full bg-accent px-2 py-0.5 text-[10px] font-semibold text-accent-foreground">
-                        {t("room_left")}
-                      </div>
+                      {left != null && (
+                        <div
+                          className={cn(
+                            "absolute right-2 top-2 z-10 rounded-full px-2 py-0.5 text-[10px] font-semibold",
+                            isSoldOut
+                              ? "bg-red-100 text-red-700"
+                              : left <= 2
+                                ? "bg-amber-100 text-amber-800"
+                                : "bg-accent text-accent-foreground",
+                          )}
+                        >
+                          {isSoldOut ? t("sold_out") : t("rooms_left").replace("{N}", String(left))}
+                        </div>
+                      )}
                       <img src={r.image} alt={r.name} loading="lazy" className="h-40 w-full object-cover" />
                       <div className="p-4">
                         <h3 className="font-serif text-lg text-primary">{r.name}</h3>
@@ -393,8 +406,8 @@ export function BookingFlow({
                         </p>
                         <div className="mt-3 flex items-end justify-between">
                           <div className="font-serif text-xl text-primary">{formatSum(price * nights, lang)}</div>
-                          <Button size="sm" variant="outline" onClick={() => { setRoom(r); setStep(4); }}>
-                            {t("upgrade_room")}
+                          <Button size="sm" variant="outline" disabled={isSoldOut} onClick={() => { setRoom(r); setStep(4); }}>
+                            {isSoldOut ? t("unavailable") : t("upgrade_room")}
                           </Button>
                         </div>
                       </div>
