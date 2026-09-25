@@ -320,6 +320,8 @@ export function BookingFlow({
             <div className="grid gap-4 md:grid-cols-2">
               {ROOMS.map((r) => {
                 const price = priceFor(r, guests);
+                const left = availability?.[r.key];
+                const isSoldOut = left === 0;
                 return (
                   <article key={r.key} className="overflow-hidden rounded-xl border border-border bg-card">
                     <img src={r.image} alt={r.name} loading="lazy" className="h-40 w-full object-cover" />
@@ -328,8 +330,24 @@ export function BookingFlow({
                       <p className="text-xs text-muted-foreground">
                         {r.area} · {r.bed}
                       </p>
-                      <div className="mt-2 inline-block rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-medium text-emerald-800">
-                        {t("included_badge")}
+                      <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                        <span className="inline-block rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-medium text-emerald-800">
+                          {t("included_badge")}
+                        </span>
+                        {left != null && (
+                          <span
+                            className={cn(
+                              "inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold",
+                              isSoldOut
+                                ? "bg-red-100 text-red-700"
+                                : left <= 2
+                                  ? "bg-amber-100 text-amber-800"
+                                  : "bg-emerald-100 text-emerald-800",
+                            )}
+                          >
+                            {isSoldOut ? t("sold_out") : t("rooms_left").replace("{N}", String(left))}
+                          </span>
+                        )}
                       </div>
                       <div className="mt-3 flex items-end justify-between">
                         <div>
@@ -338,8 +356,8 @@ export function BookingFlow({
                           </div>
                           <div className="font-serif text-xl text-primary">{formatSum(price * nights, lang)}</div>
                         </div>
-                        <Button size="sm" onClick={() => selectRoom(r)}>
-                          {t("select")}
+                        <Button size="sm" disabled={isSoldOut} onClick={() => selectRoom(r)}>
+                          {isSoldOut ? t("unavailable") : t("select")}
                         </Button>
                       </div>
                     </div>
