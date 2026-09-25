@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,7 +18,7 @@ import {
   generateBookingNumber,
 } from "@/lib/booking/pricing";
 import { useServerFn } from "@tanstack/react-start";
-import { createBooking, cancelBookingByNumber } from "@/lib/bookings.functions";
+import { createBooking, cancelBookingByNumber, getRoomAvailability } from "@/lib/bookings.functions";
 import jsPDF from "jspdf";
 
 // Convert any error (including Zod JSON arrays from server validators)
@@ -136,9 +136,31 @@ export function BookingFlow({
   });
   const [bookingNumber, setBookingNumber] = useState<string>("");
   const [submitting, setSubmitting] = useState(false);
+  const [availability, setAvailability] = useState<Record<string, number> | null>(null);
 
   const create = useServerFn(createBooking);
   const cancelFn = useServerFn(cancelBookingByNumber);
+  const fetchAvailability = useServerFn(getRoomAvailability);
+
+  useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    setAvailability(null);
+    fetchAvailability({ data: { check_in_date: checkin, check_out_date: checkout } })
+      .then((rows) => {
+        if (cancelled) return;
+        const map: Record<string, number> = {};
+        for (const r of rows) map[r.room_key] = r.available_rooms;
+        setAvailability(map);
+      })
+      .catch(() => {
+        if (!cancelled) setAvailability(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, checkin, checkout]);
 
   const nights = nightsBetween(checkin, checkout);
   const pricePerNight = room ? priceFor(room, guests) : 0;
@@ -299,6 +321,8 @@ export function BookingFlow({
             <div className="grid gap-4 md:grid-cols-2">
               {ROOMS.map((r) => {
                 const price = priceFor(r, guests);
+                const left = availability?.[r.key];
+                const isSoldOut = left === 0;
                 return (
                   <article key={r.key} className="overflow-hidden rounded-xl border border-border bg-card">
                     <img src={r.image} alt={r.name} loading="lazy" className="h-40 w-full object-cover" />
@@ -307,8 +331,24 @@ export function BookingFlow({
                       <p className="text-xs text-muted-foreground">
                         {r.area} · {r.bed}
                       </p>
-                      <div className="mt-2 inline-block rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-medium text-emerald-800">
-                        {t("included_badge")}
+                      <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                        <span className="inline-block rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-medium text-emerald-800">
+                          {t("included_badge")}
+                        </span>
+                        {left != null && (
+                          <span
+                            className={cn(
+                              "inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold",
+                              isSoldOut
+                                ? "bg-red-100 text-red-700"
+                                : left <= 2
+                                  ? "bg-amber-100 text-amber-800"
+                                  : "bg-emerald-100 text-emerald-800",
+                            )}
+                          >
+                            {isSoldOut ? t("sold_out") : t("rooms_left").replace("{N}", String(left))}
+                          </span>
+                        )}
                       </div>
                       <div className="mt-3 flex items-end justify-between">
                         <div>
@@ -317,8 +357,8 @@ export function BookingFlow({
                           </div>
                           <div className="font-serif text-xl text-primary">{formatSum(price * nights, lang)}</div>
                         </div>
-                        <Button size="sm" onClick={() => selectRoom(r)}>
-                          {t("select")}
+                        <Button size="sm" disabled={isSoldOut} onClick={() => selectRoom(r)}>
+                          {isSoldOut ? t("unavailable") : t("select")}
                         </Button>
                       </div>
                     </div>
@@ -341,11 +381,24 @@ export function BookingFlow({
               {upgradeTargets(room.tier).flatMap((tier) =>
                 ROOMS.filter((r) => r.tier === tier).slice(0, 1).map((r) => {
                   const price = priceFor(r, guests);
+                  const left = availability?.[r.key];
+                  const isSoldOut = left === 0;
                   return (
                     <article key={r.key} className="relative overflow-hidden rounded-xl border border-accent bg-card">
-                      <div className="absolute right-2 top-2 z-10 rounded-full bg-accent px-2 py-0.5 text-[10px] font-semibold text-accent-foreground">
-                        {t("room_left")}
-                      </div>
+                      {left != null && (
+                        <div
+                          className={cn(
+                            "absolute right-2 top-2 z-10 rounded-full px-2 py-0.5 text-[10px] font-semibold",
+                            isSoldOut
+                              ? "bg-red-100 text-red-700"
+                              : left <= 2
+                                ? "bg-amber-100 text-amber-800"
+                                : "bg-accent text-accent-foreground",
+                          )}
+                        >
+                          {isSoldOut ? t("sold_out") : t("rooms_left").replace("{N}", String(left))}
+                        </div>
+                      )}
                       <img src={r.image} alt={r.name} loading="lazy" className="h-40 w-full object-cover" />
                       <div className="p-4">
                         <h3 className="font-serif text-lg text-primary">{r.name}</h3>
@@ -354,8 +407,8 @@ export function BookingFlow({
                         </p>
                         <div className="mt-3 flex items-end justify-between">
                           <div className="font-serif text-xl text-primary">{formatSum(price * nights, lang)}</div>
-                          <Button size="sm" variant="outline" onClick={() => { setRoom(r); setStep(4); }}>
-                            {t("upgrade_room")}
+                          <Button size="sm" variant="outline" disabled={isSoldOut} onClick={() => { setRoom(r); setStep(4); }}>
+                            {isSoldOut ? t("unavailable") : t("upgrade_room")}
                           </Button>
                         </div>
                       </div>
