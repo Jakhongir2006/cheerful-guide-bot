@@ -159,7 +159,8 @@ export function BookingFlow({
     return () => {
       cancelled = true;
     };
-  }, [open, checkin, checkout, fetchAvailability]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, checkin, checkout]);
 
   const nights = nightsBetween(checkin, checkout);
   const pricePerNight = room ? priceFor(room, guests) : 0;
