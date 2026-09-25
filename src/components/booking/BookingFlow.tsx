@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,7 +18,7 @@ import {
   generateBookingNumber,
 } from "@/lib/booking/pricing";
 import { useServerFn } from "@tanstack/react-start";
-import { createBooking, cancelBookingByNumber } from "@/lib/bookings.functions";
+import { createBooking, cancelBookingByNumber, getRoomAvailability } from "@/lib/bookings.functions";
 import jsPDF from "jspdf";
 
 // Convert any error (including Zod JSON arrays from server validators)
@@ -136,9 +136,30 @@ export function BookingFlow({
   });
   const [bookingNumber, setBookingNumber] = useState<string>("");
   const [submitting, setSubmitting] = useState(false);
+  const [availability, setAvailability] = useState<Record<string, number> | null>(null);
 
   const create = useServerFn(createBooking);
   const cancelFn = useServerFn(cancelBookingByNumber);
+  const fetchAvailability = useServerFn(getRoomAvailability);
+
+  useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    setAvailability(null);
+    fetchAvailability({ data: { check_in_date: checkin, check_out_date: checkout } })
+      .then((rows) => {
+        if (cancelled) return;
+        const map: Record<string, number> = {};
+        for (const r of rows) map[r.room_key] = r.available_rooms;
+        setAvailability(map);
+      })
+      .catch(() => {
+        if (!cancelled) setAvailability(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [open, checkin, checkout, fetchAvailability]);
 
   const nights = nightsBetween(checkin, checkout);
   const pricePerNight = room ? priceFor(room, guests) : 0;
