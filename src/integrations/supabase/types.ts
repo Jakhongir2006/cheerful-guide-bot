@@ -34,6 +34,8 @@ export type Database = {
           room_type: string
           status: string
           total_price: number
+          tourist_tax_rate: number
+          tourist_tax_total: number
         }
         Insert: {
           booking_number: string
@@ -54,6 +56,8 @@ export type Database = {
           room_type: string
           status?: string
           total_price: number
+          tourist_tax_rate?: number
+          tourist_tax_total?: number
         }
         Update: {
           booking_number?: string
@@ -74,6 +78,8 @@ export type Database = {
           room_type?: string
           status?: string
           total_price?: number
+          tourist_tax_rate?: number
+          tourist_tax_total?: number
         }
         Relationships: []
       }
@@ -151,6 +157,8 @@ export type Database = {
           room_type: string
           status: string
           total_price: number
+          tourist_tax_rate: number
+          tourist_tax_total: number
         }
         SetofOptions: {
           from: "*"
