@@ -17,6 +17,7 @@ export type RoomDef = {
   image: string;
   single: number;
   double: number;
+  maxGuests: number;
 };
 
 const SRC = "https://loquacious-stroopwafel-814d5f.netlify.app";
@@ -31,6 +32,7 @@ export const ROOMS: RoomDef[] = [
     image: `${SRC}/Room%2022-906.jpg`,
     single: 700_000,
     double: 900_000,
+    maxGuests: 2,
   },
   {
     key: "standard-twin",
@@ -41,6 +43,7 @@ export const ROOMS: RoomDef[] = [
     image: `${SRC}/Room%208-910.jpg`,
     single: 700_000,
     double: 900_000,
+    maxGuests: 2,
   },
   {
     key: "superior-king",
@@ -51,6 +54,7 @@ export const ROOMS: RoomDef[] = [
     image: `${SRC}/Room%203-1005.jpg`,
     single: 850_000,
     double: 1_050_000,
+    maxGuests: 3,
   },
   {
     key: "superior-twin",
@@ -61,6 +65,7 @@ export const ROOMS: RoomDef[] = [
     image: `${SRC}/Room%2010-910.jpg`,
     single: 850_000,
     double: 1_050_000,
+    maxGuests: 3,
   },
   {
     key: "deluxe",
@@ -71,6 +76,7 @@ export const ROOMS: RoomDef[] = [
     image: `${SRC}/Room%2017-909.jpg`,
     single: 1_200_000,
     double: 1_400_000,
+    maxGuests: 2,
   },
   {
     key: "suite",
@@ -81,6 +87,7 @@ export const ROOMS: RoomDef[] = [
     image: `${SRC}/Room%2029-1013.jpg`,
     single: 1_500_000,
     double: 1_700_000,
+    maxGuests: 2,
   },
 ];
 
@@ -89,12 +96,14 @@ export function priceFor(room: RoomDef, guests: number) {
 }
 
 export const TOURIST_TAX_PER_GUEST_PER_NIGHT = 66_000;
+export const EXTRA_BED_PRICE_PER_NIGHT = 200_000;
 
 export function bookingCosts(room: RoomDef, guests: number, nights: number) {
   const pricePerNight = priceFor(room, guests);
   const subtotal = pricePerNight * nights;
+  const extraBed = guests >= 3 ? EXTRA_BED_PRICE_PER_NIGHT * nights : 0;
   const touristTax = TOURIST_TAX_PER_GUEST_PER_NIGHT * guests * nights;
-  return { pricePerNight, subtotal, touristTax, total: subtotal + touristTax };
+  return { pricePerNight, subtotal, extraBed, touristTax, total: subtotal + extraBed + touristTax };
 }
 
 export function nightsBetween(checkin: string, checkout: string) {
