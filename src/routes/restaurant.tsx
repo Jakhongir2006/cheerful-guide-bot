@@ -5,6 +5,8 @@ import { Restaurant } from "@/components/sections";
 export const Route = createFileRoute("/restaurant")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Ko'hna Restaurant — Afrosiyob Regency Hotel Tashkent" },
       { name: "description", content: "Breakfast, business lunches, banquets and room service at Ko'hna restaurant inside Afrosiyob Regency Hotel Tashkent." },
       { property: "og:title", content: "Ko'hna Restaurant — Afrosiyob Regency Hotel Tashkent" },

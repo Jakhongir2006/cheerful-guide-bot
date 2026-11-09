@@ -83,7 +83,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://afrosiyobregency.com/" },
       { property: "og:site_name", content: "Afrosiyob Regency Hotel" },
-      { property: "og:image", content: "https://loquacious-stroopwafel-814d5f.netlify.app/t6.jpg" },
       { property: "og:image:alt", content: "Afrosiyob Regency Hotel Tashkent" },
       { property: "og:locale", content: "en_US" },
       { property: "og:locale:alternate", content: "ru_RU" },
@@ -91,7 +90,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Afrosiyob Regency Hotel Tashkent — 4★ Business Hotel" },
       { name: "twitter:description", content: "4-star business hotel in Tashkent with 100 rooms, conference halls, spa and restaurant." },
-      { name: "twitter:image", content: "https://loquacious-stroopwafel-814d5f.netlify.app/t6.jpg" },
     ],
     links: [
       {
