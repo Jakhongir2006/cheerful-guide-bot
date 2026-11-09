@@ -4,7 +4,7 @@ import { reservationFontBase64 } from "./reservation-font";
 import { reservationColors, reservationFields, type ReservationRecord } from "./reservation-details";
 export type { ReservationRecord } from "./reservation-details";
 
-export async function createReservationPdf(reservation: ReservationRecord): Promise<Uint8Array> {
+export async function createReservationPdf(reservation: ReservationRecord, summaryLines: string[] = []): Promise<Uint8Array> {
   const pdf = await PDFDocument.create();
   pdf.registerFontkit(fontkit);
   const font = await pdf.embedFont(Uint8Array.from(atob(reservationFontBase64), c => c.charCodeAt(0)), { subset: true });
@@ -37,6 +37,20 @@ export async function createReservationPdf(reservation: ReservationRecord): Prom
   page.drawRectangle({ x: 48, y: 110, width: 499, height: 76, color: pdfColor(c.pale) });
   page.drawText("Payment is made at the hotel reception.", { x: 64, y: 159, size: 10, font, color: ink });
   page.drawText("This document confirms a reservation, not a payment.", { x: 64, y: 136, size: 10, font, color: ink });
+  if (summaryLines.length) {
+    const summary = pdf.addPage([595, 842]);
+    summary.drawRectangle({ x: 0, y: 690, width: 595, height: 152, color: pdfColor(c.pale) });
+    summary.drawText("Reservation summary", { x: 48, y: 780, size: 24, font, color: pdfColor(c.blue) });
+    summary.drawText(reservation.booking_number, { x: 48, y: 738, size: 14, font, color: ink });
+    let summaryY = 650;
+    for (const line of summaryLines) {
+      for (const wrapped of wrap(line, 499, 11)) {
+        summary.drawText(wrapped, { x: 48, y: summaryY, size: 11, font, color: ink });
+        summaryY -= 20;
+      }
+      summaryY -= 10;
+    }
+  }
   pdf.setTitle(`Reservation ${reservation.booking_number} — Afrosiyob Regency`);
   return pdf.save();
 }
