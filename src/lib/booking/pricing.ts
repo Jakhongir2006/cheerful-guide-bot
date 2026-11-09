@@ -29,8 +29,8 @@ export const ROOMS: RoomDef[] = [
     area: "27 m²",
     bed: "1 × 160×200",
     image: `${SRC}/Room%2022-906.jpg`,
-    single: 900_000,
-    double: 1_100_000,
+    single: 700_000,
+    double: 900_000,
   },
   {
     key: "standard-twin",
@@ -39,8 +39,8 @@ export const ROOMS: RoomDef[] = [
     area: "27 m²",
     bed: "2 × 100×200",
     image: `${SRC}/Room%208-910.jpg`,
-    single: 1_100_000,
-    double: 1_100_000,
+    single: 700_000,
+    double: 900_000,
   },
   {
     key: "superior-king",
