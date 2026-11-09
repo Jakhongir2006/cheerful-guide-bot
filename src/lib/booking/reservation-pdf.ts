@@ -20,9 +20,15 @@ export async function createReservationPdf(reservation: ReservationRecord, summa
   const wrap = (text: string, width: number, size: number) => {
     const lines: string[] = [];
     let line = "";
-    for (const character of text.replace(/[\r\n\t]/g, " ")) {
-      if (font.widthOfTextAtSize(line + character, size) > width && line) { lines.push(line.trim()); line = ""; }
-      line += character;
+    for (const word of text.replace(/[\r\n\t]/g, " ").split(/\s+/)) {
+      const candidate = line ? `${line} ${word}` : word;
+      if (font.widthOfTextAtSize(candidate, size) > width && line) { lines.push(line); line = ""; }
+      if (font.widthOfTextAtSize(word, size) > width) {
+        for (const character of word) {
+          if (font.widthOfTextAtSize(line + character, size) > width && line) { lines.push(line); line = ""; }
+          line += character;
+        }
+      } else line = line ? `${line} ${word}` : word;
     }
     if (line) lines.push(line.trim());
     return lines;
