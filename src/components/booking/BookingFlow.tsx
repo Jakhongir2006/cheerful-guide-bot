@@ -21,7 +21,6 @@ import {
 } from "@/lib/booking/pricing";
 import { useServerFn } from "@tanstack/react-start";
 import { createBooking, cancelBookingByNumber, getRoomAvailability } from "@/lib/bookings.functions";
-import jsPDF from "jspdf";
 
 // Convert any error (including Zod JSON arrays from server validators)
 // into a single human-readable sentence.
@@ -245,12 +244,9 @@ export function BookingFlow({
     }
   }
 
-  function downloadPdf() {
+  async function downloadPdf() {
     if (!room || !bookingNumber) return;
-    const pdf = new jsPDF();
-    pdf.setFontSize(18);
-    pdf.text("Afrosiyob Regency Hotel", 20, 20);
-    pdf.setFontSize(12);
+    const { createReservationPdf } = await import("@/lib/booking/reservation-pdf");
     const lines = [
       "We have received your reservation.",
       `Booking: ${bookingNumber}`,
@@ -273,8 +269,17 @@ export function BookingFlow({
       "Payment: at the hotel reception on arrival.",
       "No online payment is required. This is not a payment receipt.",
     ];
-    lines.forEach((l, i) => pdf.text(l, 20, 35 + i * 8));
-    pdf.save(`${bookingNumber}.pdf`);
+    const bytes = await createReservationPdf({
+      booking_number: bookingNumber, guest_name: form.name, guest_lastname: form.lastname,
+      guest_patronymic: form.patronymic, guest_email: form.email, room_type: room.name,
+      check_in_date: checkin, check_out_date: checkout, nights, guests_count: guests,
+    }, lines.slice(10));
+    const url = URL.createObjectURL(new Blob([new Uint8Array(bytes)], { type: "application/pdf" }));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${bookingNumber}.pdf`;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
   async function cancelBooking() {

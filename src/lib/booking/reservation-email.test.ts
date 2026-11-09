@@ -12,6 +12,8 @@ const booking = {
   room_type: "Standard King",
   check_in_date: "2026-12-10",
   check_out_date: "2026-12-12",
+  nights: 2,
+  guests_count: 2,
 };
 
 test("reservation PDF accepts Cyrillic names and produces one valid page", async () => {
@@ -33,6 +35,8 @@ test("confirmation goes to guest with PDF and hidden copy to hotel's requested e
     assert.equal(url, "https://connector-gateway.lovable.dev/resend/emails");
     const body = JSON.parse(String(init?.body));
     assert.equal(body.from, "Afrosiyob Regency Hotel <booking@afrosiyobregency.com>");
+    assert.equal(body.subject, "Booking confirmation – Afrosiyob Regency");
+    for (const value of ["Nights: 2", "Guests: 2", "14:00", "12:00", "+998 55 519 00 05", "house 20"]) assert.ok(body.text.includes(value));
     assert.deepEqual(body.to, ["guest@example.com"]);
     assert.deepEqual(body.bcc, ["jaxongir.sh2006@gmail.com"]);
     assert.equal(new Headers(init?.headers).get("Idempotency-Key"), "reservation-AFR-TEST-1001");

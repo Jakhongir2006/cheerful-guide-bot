@@ -62,6 +62,11 @@
 }
 
 :root {
+  --reservation-paper: #ffffff;
+  --reservation-blue: #153b70;
+  --reservation-pale: #edf6fc;
+  --reservation-ink: #182938;
+  --reservation-border: #d9e5ed;
   --radius: 0.625rem;
   --background: oklch(0.985 0.009 230);
   --foreground: oklch(0.18 0.04 255);
