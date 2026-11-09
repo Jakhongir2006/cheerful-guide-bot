@@ -30,6 +30,9 @@ function friendlyError(e: unknown, lang: "ru" | "en" | string): string {
   const fallback = ru ? "Произошла ошибка. Попробуйте ещё раз." : "Something went wrong. Please try again.";
   const raw = (e as any)?.message ?? (typeof e === "string" ? e : "");
   if (!raw) return fallback;
+  if (raw.includes("TOO_MANY_GUESTS")) {
+    return ru ? "В этом номере максимум 2 гостя." : "This room fits at most 2 guests.";
+  }
 
   // Try to parse Zod-style error arrays embedded in the message.
   const jsonStart = raw.indexOf("[");

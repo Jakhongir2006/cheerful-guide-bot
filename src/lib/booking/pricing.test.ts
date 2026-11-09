@@ -1,6 +1,6 @@
 import { describe, test } from "node:test";
 import { strict as assert } from "node:assert";
-import { ROOMS, priceFor, bookingCosts, TOURIST_TAX_PER_GUEST_PER_NIGHT } from "./pricing";
+import { ROOMS, priceFor, bookingCosts, TOURIST_TAX_PER_GUEST_PER_NIGHT, EXTRA_BED_PRICE_PER_NIGHT } from "./pricing";
 
 describe("Tourist tax", () => {
   test("rate is 66,000 UZS per guest per night", () => {
