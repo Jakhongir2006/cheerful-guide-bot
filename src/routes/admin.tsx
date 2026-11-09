@@ -14,7 +14,15 @@ import { formatSum } from "@/lib/booking/pricing";
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
-  head: () => ({ meta: [{ title: "Admin · Afrosiyob Regency" }] }),
+  head: () => ({ meta: [
+    { title: "Admin · Afrosiyob Regency" },
+    { name: "description", content: "Управление бронированиями Afrosiyob Regency." },
+    { property: "og:title", content: "Admin · Afrosiyob Regency" },
+    { property: "og:description", content: "Управление бронированиями Afrosiyob Regency." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+    { name: "robots", content: "noindex, nofollow" },
+  ] }),
   component: AdminPage,
   pendingComponent: () => <div className="p-8 text-center text-sm">Загрузка…</div>,
   errorComponent: ({ error, reset }) => (
@@ -44,6 +52,7 @@ type Booking = {
   guest_citizenship: string | null;
   price_per_night: number;
   total_price: number;
+  tourist_tax_total: number;
 };
 
 const STATUSES = ["new", "confirmed", "checked_in", "checked_out", "cancelled"] as const;
@@ -187,6 +196,7 @@ function Dashboard({ onSignOut }: { onSignOut: () => void }) {
       Email: b.guest_email,
       Гражданство: b.guest_citizenship ?? "",
       Цена: b.price_per_night,
+      "Туристический сбор": b.tourist_tax_total,
       Итого: b.total_price,
     }));
     const ws = XLSX.utils.json_to_sheet(rows);
@@ -295,6 +305,7 @@ function Dashboard({ onSignOut }: { onSignOut: () => void }) {
               <dt className="text-muted-foreground">Заезд → Выезд</dt><dd>{selected.check_in_date} → {selected.check_out_date}</dd>
               <dt className="text-muted-foreground">Ночей / Гостей</dt><dd>{selected.nights} / {selected.guests_count}</dd>
               <dt className="text-muted-foreground">За ночь</dt><dd>{formatSum(selected.price_per_night)}</dd>
+              <dt className="text-muted-foreground">Туристический сбор</dt><dd>{formatSum(selected.tourist_tax_total ?? 0)}</dd>
               <dt className="text-muted-foreground">Итого</dt><dd className="font-semibold">{formatSum(selected.total_price)}</dd>
               <dt className="text-muted-foreground">Статус</dt><dd>{STATUS_LABEL[selected.status] ?? selected.status}</dd>
             </dl>

@@ -399,21 +399,21 @@ export function Conference() {
   ];
   const confGallery = halls.map((h) => h.image);
   return (
-    <section id="conference" className="relative bg-primary py-20 text-primary-foreground" style={{ backgroundImage: `linear-gradient(rgba(20,30,60,0.92), rgba(20,30,60,0.92)), url(${SRC}/18.jpg)`, backgroundSize: "cover", backgroundPosition: "center" }}>
+    <section id="conference" className="relative bg-secondary py-20 text-foreground">
       <div className="mx-auto max-w-7xl px-4">
-        <p className="font-serif text-sm uppercase tracking-[0.3em] text-accent">{t("conf_kicker")}</p>
+        <p className="font-serif text-sm uppercase tracking-[0.3em] text-primary">{t("conf_kicker")}</p>
         <h2 className="mt-3 max-w-3xl font-serif text-3xl md:text-4xl">{t("conf_h2")}</h2>
-        <p className="mt-4 max-w-2xl text-white/80">{t("conf_desc")}</p>
+        <p className="mt-4 max-w-2xl text-muted-foreground">{t("conf_desc")}</p>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           {halls.map((h, i) => (
             <Reveal key={h.name} delay={i * 100}>
-              <div className="group overflow-hidden rounded-2xl border border-white/15 bg-white/5 backdrop-blur transition hover:-translate-y-1 hover:border-accent">
+              <div className="group overflow-hidden rounded-2xl border border-border bg-card transition hover:-translate-y-1 hover:border-primary">
                 <div className="aspect-[4/3] overflow-hidden">
                   <Zimg src={h.image} gallery={confGallery} index={i} alt={`Конференц-зал ${h.name}`} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
                 </div>
                 <div className="p-6">
-                  <h3 className="font-serif text-2xl text-accent">«{h.name}»</h3>
-                  <p className="mt-3 text-sm text-white/80">{h.desc}</p>
+                  <h3 className="font-serif text-2xl text-primary">«{h.name}»</h3>
+                  <p className="mt-3 text-sm text-muted-foreground">{h.desc}</p>
                 </div>
               </div>
             </Reveal>
@@ -569,26 +569,26 @@ export function Location() {
 export function Footer() {
   const t = useT();
   return (
-    <footer className="bg-primary py-12 text-primary-foreground">
+    <footer className="border-t border-border bg-secondary py-12 text-foreground">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 md:grid-cols-3">
         <div>
           <div className="font-serif text-2xl">Afrosiyob Regency</div>
-          <p className="mt-3 text-sm text-white/70">{t("foot_tagline")}</p>
+          <p className="mt-3 text-sm text-muted-foreground">{t("foot_tagline")}</p>
         </div>
         <div>
-          <div className="text-xs uppercase tracking-wider text-accent">{t("foot_contacts")}</div>
+          <div className="text-xs uppercase tracking-wider text-primary">{t("foot_contacts")}</div>
           <a href={`tel:${PHONE_TEL}`} className="mt-3 block text-sm">{PHONE}</a>
-          <div className="mt-1 text-sm text-white/70">{t("loc_address_val")}</div>
+          <div className="mt-1 text-sm text-muted-foreground">{t("loc_address_val")}</div>
         </div>
         <div>
-          <div className="text-xs uppercase tracking-wider text-accent">{t("foot_booking")}</div>
-          <p className="mt-3 text-sm text-white/70">{t("foot_booking_desc")}</p>
+          <div className="text-xs uppercase tracking-wider text-primary">{t("foot_booking")}</div>
+          <p className="mt-3 text-sm text-muted-foreground">{t("foot_booking_desc")}</p>
           <div className="mt-4">
             <BookingDialog trigger={<Button className="bg-accent text-accent-foreground hover:bg-accent/90">{t("cta_book_room")}</Button>} />
           </div>
         </div>
       </div>
-      <div className="mt-10 border-t border-white/10 pt-6 text-center text-xs text-white/50">
+      <div className="mt-10 border-t border-border pt-6 text-center text-xs text-muted-foreground">
         © {new Date().getFullYear()} Afrosiyob Regency Hotel. {t("foot_rights")}
       </div>
     </footer>

@@ -16,6 +16,8 @@ import {
   formatSum,
   upgradeTargets,
   generateBookingNumber,
+  bookingCosts,
+  TOURIST_TAX_PER_GUEST_PER_NIGHT,
 } from "@/lib/booking/pricing";
 import { useServerFn } from "@tanstack/react-start";
 import { createBooking, cancelBookingByNumber, getRoomAvailability } from "@/lib/bookings.functions";
@@ -164,7 +166,10 @@ export function BookingFlow({
 
   const nights = nightsBetween(checkin, checkout);
   const pricePerNight = room ? priceFor(room, guests) : 0;
-  const total = pricePerNight * nights;
+  const costs = room ? bookingCosts(room, guests, nights) : null;
+  const subtotal = costs?.subtotal ?? 0;
+  const touristTax = costs?.touristTax ?? 0;
+  const total = costs?.total ?? 0;
 
   function reset() {
     setStep(1);
@@ -242,10 +247,12 @@ export function BookingFlow({
       `Nights: ${nights}`,
       `Guests: ${guests}`,
       `Price per night: ${formatSum(pricePerNight)}`,
+      `Room subtotal: ${formatSum(subtotal, "en")}`,
+      `Tourist tax: ${formatSum(touristTax, "en")} (${guests} x ${nights} x ${TOURIST_TAX_PER_GUEST_PER_NIGHT} UZS)`,
       `Total: ${formatSum(total)}`,
       "",
       "Included: breakfast, SPA, indoor pool, sauna, hammam, gym, WiFi, VAT.",
-      "Tourist tax NOT included.",
+      "Tourist tax included in total.",
     ];
     lines.forEach((l, i) => pdf.text(l, 20, 35 + i * 8));
     pdf.save(`${bookingNumber}.pdf`);
@@ -497,9 +504,16 @@ export function BookingFlow({
                 </div>
                 <div className="mt-1 flex justify-between">
                   <span className="text-muted-foreground">{t("subtotal")}</span>
-                  <span>{formatSum(total, lang)}</span>
+                  <span>{formatSum(subtotal, lang)}</span>
                 </div>
-                <div className="mt-2 rounded-md bg-amber-50 p-2 text-[11px] text-amber-900">
+                <div className="mt-2 flex flex-wrap justify-between gap-1">
+                  <span className="text-muted-foreground">{t("tourist_tax")}</span>
+                  <span>{formatSum(touristTax, lang)}</span>
+                </div>
+                <div className="mt-1 text-xs text-muted-foreground">
+                  {guests} × {nights} × {formatSum(TOURIST_TAX_PER_GUEST_PER_NIGHT, lang)}
+                </div>
+                <div className="mt-2 rounded-md bg-secondary p-2 text-[11px] text-secondary-foreground">
                   {t("tourist_tax_note")}
                 </div>
                 <div className="mt-2 rounded-md bg-emerald-50 p-2 text-[11px] text-emerald-900">
@@ -531,7 +545,10 @@ export function BookingFlow({
               <div className="text-muted-foreground">
                 {checkin} → {checkout} · {nights} {t("nights")}
               </div>
-              <div className="mt-1 font-semibold">{formatSum(total, lang)}</div>
+              <div className="mt-2 text-muted-foreground">{t("subtotal")}: {formatSum(subtotal, lang)}</div>
+              <div className="mt-1 text-muted-foreground">{t("tourist_tax")}: {formatSum(touristTax, lang)}</div>
+              <div className="mt-1 text-xs text-muted-foreground">{t("tourist_tax_note")}</div>
+              <div className="mt-2 font-semibold">{t("total")}: {formatSum(total, lang)}</div>
               <div className="mt-2 text-xs text-muted-foreground">
                 {t("conf_sent_to")}: {form.email}
               </div>
