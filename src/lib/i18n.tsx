@@ -11,6 +11,7 @@ export const LANGS: { code: Lang; label: string; flag: string }[] = [
 type Dict = Record<string, Record<Lang, string>>;
 
 export const DICT: Dict = {
+  rooms_available: { ru: "Номера доступны", en: "Rooms available", uz: "Xonalar mavjud", ko: "객실 이용 가능" },
   nav_home: { ru: "Главная", en: "Home", uz: "Bosh sahifa", ko: "홈" },
   nav_rooms: { ru: "Номера", en: "Rooms", uz: "Xonalar", ko: "객실" },
   nav_about: { ru: "О нас", en: "About", uz: "Biz haqimizda", ko: "소개" },

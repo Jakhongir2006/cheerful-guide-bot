@@ -368,16 +368,9 @@ export function BookingFlow({
                         </span>
                         {left != null && (
                           <span
-                            className={cn(
-                              "inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold",
-                              isSoldOut
-                                ? "bg-red-100 text-red-700"
-                                : left <= 2
-                                  ? "bg-amber-100 text-amber-800"
-                                  : "bg-emerald-100 text-emerald-800",
-                            )}
+                            className="inline-block rounded-full bg-secondary px-2 py-0.5 text-[10px] font-semibold text-secondary-foreground"
                           >
-                            {isSoldOut ? t("sold_out") : t("rooms_left").replace("{N}", String(left))}
+                            {t("rooms_available")}
                           </span>
                         )}
                       </div>
@@ -418,16 +411,9 @@ export function BookingFlow({
                     <article key={r.key} className="relative overflow-hidden rounded-xl border border-accent bg-card">
                       {left != null && (
                         <div
-                          className={cn(
-                            "absolute right-2 top-2 z-10 rounded-full px-2 py-0.5 text-[10px] font-semibold",
-                            isSoldOut
-                              ? "bg-red-100 text-red-700"
-                              : left <= 2
-                                ? "bg-amber-100 text-amber-800"
-                                : "bg-accent text-accent-foreground",
-                          )}
+                          className="absolute right-2 top-2 z-10 rounded-full bg-secondary px-2 py-0.5 text-[10px] font-semibold text-secondary-foreground"
                         >
-                          {isSoldOut ? t("sold_out") : t("rooms_left").replace("{N}", String(left))}
+                          {t("rooms_available")}
                         </div>
                       )}
                       <img src={r.image} alt={r.name} loading="lazy" className="h-40 w-full object-cover" />
