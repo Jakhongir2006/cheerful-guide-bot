@@ -1,6 +1,6 @@
 import { createReservationPdf, type ReservationRecord } from "./reservation-pdf";
 
-export const RESERVATION_FROM = "Afrosiyob Regency Hotel <reservations@afrosiyobregency.com>";
+export const RESERVATION_FROM = "Afrosiyob Regency Hotel <booking@afrosiyobregency.com>";
 export const RESERVATION_COPY = "jaxongir.sh2006@gmail.com";
 
 export async function sendReservationEmail(reservation: ReservationRecord) {

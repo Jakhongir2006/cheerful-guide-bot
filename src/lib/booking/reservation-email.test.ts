@@ -32,6 +32,7 @@ test("confirmation goes to guest with PDF and hidden copy to hotel's requested e
     calls++;
     assert.equal(url, "https://connector-gateway.lovable.dev/resend/emails");
     const body = JSON.parse(String(init?.body));
+    assert.equal(body.from, "Afrosiyob Regency Hotel <booking@afrosiyobregency.com>");
     assert.deepEqual(body.to, ["guest@example.com"]);
     assert.deepEqual(body.bcc, ["jaxongir.sh2006@gmail.com"]);
     assert.equal(new Headers(init?.headers).get("Idempotency-Key"), "reservation-AFR-TEST-1001");
