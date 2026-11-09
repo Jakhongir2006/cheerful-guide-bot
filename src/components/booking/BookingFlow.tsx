@@ -237,6 +237,7 @@ export function BookingFlow({
     pdf.text("Afrosiyob Regency Hotel", 20, 20);
     pdf.setFontSize(12);
     const lines = [
+      "We have received your reservation.",
       `Booking: ${bookingNumber}`,
       `Guest: ${form.lastname} ${form.name} ${form.patronymic}`,
       `Email: ${form.email}`,
@@ -253,6 +254,8 @@ export function BookingFlow({
       "",
       "Included: breakfast, SPA, indoor pool, sauna, hammam, gym, WiFi, VAT.",
       "Tourist tax included in total.",
+      "Payment: at the hotel reception on arrival.",
+      "No online payment is required. This is not a payment receipt.",
     ];
     lines.forEach((l, i) => pdf.text(l, 20, 35 + i * 8));
     pdf.save(`${bookingNumber}.pdf`);
@@ -523,6 +526,8 @@ export function BookingFlow({
                   <span className="font-semibold">{t("total")}</span>
                   <span className="font-serif text-xl text-primary">{formatSum(total, lang)}</span>
                 </div>
+                <p className="mt-2 text-xs text-muted-foreground">{t("rates_include_breakfast_vat")}</p>
+                <p className="mt-2 text-xs text-muted-foreground">{t("pay_at_reception")}</p>
                 <Button className="mt-3 w-full" disabled={submitting} onClick={submitBooking}>
                   {t("cta_book")}
                 </Button>
@@ -549,8 +554,9 @@ export function BookingFlow({
               <div className="mt-1 text-muted-foreground">{t("tourist_tax")}: {formatSum(touristTax, lang)}</div>
               <div className="mt-1 text-xs text-muted-foreground">{t("tourist_tax_note")}</div>
               <div className="mt-2 font-semibold">{t("total")}: {formatSum(total, lang)}</div>
+              <p className="mt-2 text-xs text-muted-foreground">{t("rates_include_breakfast_vat")}</p>
               <div className="mt-2 text-xs text-muted-foreground">
-                {t("conf_sent_to")}: {form.email}
+                {t("pay_at_reception")}
               </div>
             </div>
             <div className="flex flex-wrap justify-center gap-2">

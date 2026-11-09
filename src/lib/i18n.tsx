@@ -107,10 +107,22 @@ export const DICT: Dict = {
   select: { ru: "Выбрать", en: "Select", uz: "Tanlash", ko: "선택" },
 
   confirm_title: {
-    ru: "Ваша бронь успешно создана!",
-    en: "Your booking has been created!",
-    uz: "Sizning broningiz muvaffaqiyatli yaratildi!",
-    ko: "예약이 성공적으로 생성되었습니다!",
+    ru: "Мы приняли вашу резервацию",
+    en: "We have received your reservation",
+    uz: "Rezervatsiyangiz qabul qilindi",
+    ko: "예약이 접수되었습니다",
+  },
+  pay_at_reception: {
+    ru: "Оплата при заселении на ресепшн отеля. На сайте оплачивать ничего не нужно.",
+    en: "Pay at the hotel reception on arrival. No online payment is required.",
+    uz: "To'lov mehmonxonaga kelganda resepshnda amalga oshiriladi. Saytda to'lov qilish shart emas.",
+    ko: "도착 시 호텔 프런트에서 결제하세요. 온라인 결제는 필요하지 않습니다.",
+  },
+  rates_include_breakfast_vat: {
+    ru: "Цена номера за сутки включает завтрак «шведский стол» и НДС.",
+    en: "The nightly room rate includes buffet breakfast and VAT.",
+    uz: "Xonaning bir kunlik narxiga shved stoli nonushtasi va QQS kiritilgan.",
+    ko: "1박 객실 요금에는 조식 뷔페와 부가세가 포함됩니다.",
   },
   booking_number: { ru: "Номер брони", en: "Booking number", uz: "Bron raqami", ko: "예약 번호" },
   conf_sent_to: { ru: "Подтверждение отправлено на", en: "Confirmation sent to", uz: "Tasdiq yuborildi", ko: "확인 이메일 발송됨" },

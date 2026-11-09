@@ -1,4 +1,6 @@
 # Tasks
+- [x] Update reservation confirmation and PDF to state payment at reception, not online.
+- [ ] Send reservation confirmation email with PDF download link: blocked until the hotel email sender domain is configured.
 - [x] Apply white/light-blue backgrounds throughout the site.
 - [x] Include 66,000 UZS per guest per night tourist tax in booking summaries, PDF and stored total.
 - [x] Test calculation and verify all pages and sold-out booking display on desktop/mobile.
