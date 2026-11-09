@@ -25,6 +25,7 @@ export const createBooking = createServerFn({ method: "POST" })
     // Server-side price computation — never trust client-supplied amounts.
     const room = ROOMS.find((r) => r.name === data.room_type);
     if (!room) throw new Error("Invalid room selection.");
+    if (data.guests_count > room.maxGuests) throw new Error("TOO_MANY_GUESTS");
     const computedNights = nightsBetween(data.check_in_date, data.check_out_date);
     if (computedNights <= 0 || computedNights !== data.nights) {
       throw new Error("Invalid booking dates.");

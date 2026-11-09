@@ -100,6 +100,18 @@ export const DICT: Dict = {
   },
   tourist_tax: { ru: "Туристический сбор", en: "Tourist tax", uz: "Turistik yig'im", ko: "관광세" },
   subtotal: { ru: "Подытог", en: "Subtotal", uz: "Oraliq jami", ko: "소계" },
+  extra_bed: {
+    ru: "Дополнительная кровать",
+    en: "Extra bed",
+    uz: "Qo'shimcha krovat",
+    ko: "추가 침대",
+  },
+  too_many_guests: {
+    ru: "В этом номере максимум {N} гостя.",
+    en: "This room fits at most {N} guests.",
+    uz: "Bu xonaga ko'pi bilan {N} mehmon sig'adi.",
+    ko: "이 객실은 최대 {N}명까지 가능합니다.",
+  },
   total: { ru: "Итого", en: "Total", uz: "Jami", ko: "합계" },
   price_per_night: { ru: "Цена за ночь", en: "Price per night", uz: "Bir tunlik narx", ko: "1박 가격" },
   continue: { ru: "Продолжить", en: "Continue", uz: "Davom etish", ko: "계속" },
