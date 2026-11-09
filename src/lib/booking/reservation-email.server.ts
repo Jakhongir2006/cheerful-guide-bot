@@ -1,4 +1,5 @@
 import { createReservationPdf, type ReservationRecord } from "./reservation-pdf";
+import { CONFIRMATION_SUBJECT, reservationEmailContent } from "./reservation-details";
 
 export const RESERVATION_FROM = "Afrosiyob Regency Hotel <booking@afrosiyobregency.com>";
 export const RESERVATION_COPY = "jaxongir.sh2006@gmail.com";
@@ -8,6 +9,7 @@ export async function sendReservationEmail(reservation: ReservationRecord) {
   const connectionKey = process.env["RESEND_API_KEY"];
   if (!gatewayKey || !connectionKey) throw new Error("Resend credentials are not configured");
   const pdf = await createReservationPdf(reservation);
+  const content = reservationEmailContent(reservation);
   const response = await fetch("https://connector-gateway.lovable.dev/resend/emails", {
     method: "POST",
     headers: {
@@ -20,17 +22,9 @@ export async function sendReservationEmail(reservation: ReservationRecord) {
       from: RESERVATION_FROM,
       to: [reservation.guest_email],
       bcc: [RESERVATION_COPY],
-      subject: `Afrosiyob Regency — Reservation ${reservation.booking_number}`,
-      text: [
-        "We have received your reservation.",
-        `Guest: ${reservation.guest_lastname} ${reservation.guest_name}`,
-        `Room: ${reservation.room_type}`,
-        `Check-in: ${reservation.check_in_date}`,
-        `Check-out: ${reservation.check_out_date}`,
-        `Booking number: ${reservation.booking_number}`,
-        "Your reservation PDF is attached.",
-        "Payment is made at the hotel reception. This is not a payment receipt.",
-      ].join("\n"),
+      subject: CONFIRMATION_SUBJECT,
+      text: content.text,
+      html: content.html,
       attachments: [{
         filename: `${reservation.booking_number.replace(/[^a-zA-Z0-9_-]/g, "_")}.pdf`,
         content: Buffer.from(pdf).toString("base64"),

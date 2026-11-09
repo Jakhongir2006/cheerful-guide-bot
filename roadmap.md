@@ -1,4 +1,5 @@
 # Tasks
+- [ ] Update English reservation email and PDF with all requested details and site-matched design; verify document layout.
 - [x] Update reservation confirmation and PDF to state payment at reception, not online.
 - [x] Implement Resend confirmation with PDF attachment and a copy to jaxongir.sh2006@gmail.com.
 - [x] Verify Resend sender domain and configure booking@afrosiyobregency.com: domain verified and sending enabled.
