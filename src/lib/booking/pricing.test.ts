@@ -10,7 +10,7 @@ describe("Tourist tax", () => {
     const room = ROOMS.find((r) => r.key === "standard-king");
     if (!room) throw new Error("Missing room");
     assert.deepEqual(bookingCosts(room, 2, 3), {
-      pricePerNight: 900_000, subtotal: 2_700_000, touristTax: 396_000, total: 3_096_000,
+      pricePerNight: 900_000, subtotal: 2_700_000, extraBed: 0, touristTax: 396_000, total: 3_096_000,
     });
   });
   test("one guest for one night pays 66,000 UZS tax included in total", () => {
