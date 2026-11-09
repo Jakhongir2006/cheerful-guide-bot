@@ -69,8 +69,8 @@ export const ROOMS: RoomDef[] = [
     area: "50 m²",
     bed: "1 × 180×200",
     image: `${SRC}/Room%2017-909.jpg`,
-    single: 1_500_000,
-    double: 1_700_000,
+    single: 1_200_000,
+    double: 1_400_000,
   },
   {
     key: "suite",
@@ -79,8 +79,8 @@ export const ROOMS: RoomDef[] = [
     area: "80 m²",
     bed: "1 × 180×200",
     image: `${SRC}/Room%2029-1013.jpg`,
-    single: 2_000_000,
-    double: 2_200_000,
+    single: 1_500_000,
+    double: 1_700_000,
   },
 ];
 
