@@ -210,7 +210,7 @@ export function BookingFlow({
     const bn = generateBookingNumber();
     setSubmitting(true);
     try {
-      await create({
+      const result = await create({
         data: {
           booking_number: bn,
           check_in_date: checkin,
@@ -227,8 +227,17 @@ export function BookingFlow({
           notes: null,
         },
       });
-      setBookingNumber(bn);
+      setBookingNumber(result.booking_number);
       setStep(5);
+      if (!result.email_sent) {
+        const messages = {
+          ru: "Резервация принята, но письмо не отправлено. Скачайте PDF здесь.",
+          en: "Your reservation was received, but the email could not be sent. Download the PDF here.",
+          uz: "Rezervatsiyangiz qabul qilindi, ammo email yuborilmadi. PDF-ni shu yerdan yuklab oling.",
+          ko: "예약이 접수되었으나 이메일을 보내지 못했습니다. 여기에서 PDF를 다운로드하세요.",
+        };
+        toast.warning(messages[lang]);
+      }
     } catch (e: any) {
       toast.error(friendlyError(e, lang));
     } finally {

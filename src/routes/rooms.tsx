@@ -5,6 +5,8 @@ import { Rooms } from "@/components/sections";
 export const Route = createFileRoute("/rooms")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Rooms & Suites — Afrosiyob Regency Hotel Tashkent" },
       { name: "description", content: "Standard, Superior, Deluxe and Suite rooms at Afrosiyob Regency Tashkent. Compare room types, sizes and beds. Book directly for best rates." },
       { property: "og:title", content: "Rooms & Suites — Afrosiyob Regency Hotel Tashkent" },

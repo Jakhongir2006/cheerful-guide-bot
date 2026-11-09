@@ -5,6 +5,8 @@ import { About } from "@/components/sections";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "About Afrosiyob Regency Hotel Tashkent — 4★ Business Hotel" },
       { name: "description", content: "Discover Afrosiyob Regency — a modern 4-star business hotel in Tashkent, 1 km from the international airport, with 100 rooms and premium amenities." },
       { property: "og:title", content: "About Afrosiyob Regency Hotel Tashkent — 4★ Business Hotel" },

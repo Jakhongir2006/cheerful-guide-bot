@@ -5,6 +5,8 @@ import { Conference } from "@/components/sections";
 export const Route = createFileRoute("/conference")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Conference Halls in Tashkent — Afrosiyob Regency" },
       { name: "description", content: "Three modern conference halls — Shakhrisabz, Nasaf and Afrosiyob — for business events, meetings and conferences in Tashkent." },
       { property: "og:title", content: "Conference Halls in Tashkent — Afrosiyob Regency" },

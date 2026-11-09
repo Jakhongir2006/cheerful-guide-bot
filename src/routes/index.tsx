@@ -18,6 +18,10 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
+      { property: "og:image", content: "https://loquacious-stroopwafel-814d5f.netlify.app/t6.jpg" },
+      { name: "twitter:image", content: "https://loquacious-stroopwafel-814d5f.netlify.app/t6.jpg" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Afrosiyob Regency Hotel Tashkent — 4★ Business Hotel | Отель в Ташкенте" },
       { name: "description", content: "Забронируйте номер в 4★ бизнес-отеле Afrosiyob Regency в Ташкенте: 100 номеров, конференц-залы, СПА, бассейн и ресторан Ko'hna. 1 км от аэропорта." },
       { property: "og:title", content: "Afrosiyob Regency Hotel Tashkent — 4★ Business Hotel" },

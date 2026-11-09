@@ -45,7 +45,18 @@ export const createBooking = createServerFn({ method: "POST" })
       }
       throw new Error("Failed to create booking. Please try again.");
     }
-    return row as { id: string; booking_number: string };
+    const booking = row as { id: string; booking_number: string };
+    // Only a successful inventory-checked reservation can trigger an email.
+    // Mail failure must not discard the reservation or invite duplicate bookings.
+    let email_sent = false;
+    try {
+      const { sendReservationEmail } = await import("@/lib/booking/reservation-email.server");
+      await sendReservationEmail({ ...data, booking_number: booking.booking_number });
+      email_sent = true;
+    } catch (emailError) {
+      console.error("[createBooking] Reservation email failed:", emailError);
+    }
+    return { ...booking, email_sent };
   });
 
 export type RoomAvailability = {
