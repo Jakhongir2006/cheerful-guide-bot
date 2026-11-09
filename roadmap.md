@@ -1,6 +1,7 @@
 # Tasks
 - [x] Update reservation confirmation and PDF to state payment at reception, not online.
-- [ ] Send reservation confirmation through Resend with PDF attachment and a copy to jaxongir.sh2006@gmail.com.
+- [x] Implement Resend confirmation with PDF attachment and a copy to jaxongir.sh2006@gmail.com.
+- [ ] Activate and verify actual email delivery: afrosiyobregency.com must be verified in Resend; the connected account currently has no sender domains.
 - [x] Apply white/light-blue backgrounds throughout the site.
 - [x] Include 66,000 UZS per guest per night tourist tax in booking summaries, PDF and stored total.
 - [x] Test calculation and verify all pages and sold-out booking display on desktop/mobile.
