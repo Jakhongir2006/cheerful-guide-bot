@@ -1,6 +1,25 @@
 import { describe, test } from "node:test";
 import { strict as assert } from "node:assert";
-import { ROOMS, priceFor } from "./pricing";
+import { ROOMS, priceFor, bookingCosts, TOURIST_TAX_PER_GUEST_PER_NIGHT } from "./pricing";
+
+describe("Tourist tax", () => {
+  test("rate is 66,000 UZS per guest per night", () => {
+    assert.equal(TOURIST_TAX_PER_GUEST_PER_NIGHT, 66_000);
+  });
+  test("two guests for three nights pay 396,000 UZS tax included in total", () => {
+    const room = ROOMS.find((r) => r.key === "standard-king");
+    if (!room) throw new Error("Missing room");
+    assert.deepEqual(bookingCosts(room, 2, 3), {
+      pricePerNight: 900_000, subtotal: 2_700_000, touristTax: 396_000, total: 3_096_000,
+    });
+  });
+  test("one guest for one night pays 66,000 UZS tax included in total", () => {
+    const room = ROOMS.find((r) => r.key === "deluxe");
+    if (!room) throw new Error("Missing room");
+    assert.equal(bookingCosts(room, 1, 1).touristTax, 66_000);
+    assert.equal(bookingCosts(room, 1, 1).total, 1_266_000);
+  });
+});
 
 describe("Deluxe nightly pricing", () => {
   test("one guest costs 1,200,000 UZS", () => {

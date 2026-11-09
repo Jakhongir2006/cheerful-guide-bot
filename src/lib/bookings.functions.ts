@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { ROOMS, priceFor, nightsBetween } from "@/lib/booking/pricing";
+import { ROOMS, bookingCosts, nightsBetween, TOURIST_TAX_PER_GUEST_PER_NIGHT } from "@/lib/booking/pricing";
 
 const createSchema = z.object({
   booking_number: z.string().min(5).max(40),
@@ -29,12 +29,13 @@ export const createBooking = createServerFn({ method: "POST" })
     if (computedNights <= 0 || computedNights !== data.nights) {
       throw new Error("Invalid booking dates.");
     }
-    const price_per_night = priceFor(room, data.guests_count);
-    const total_price = price_per_night * computedNights;
+    const costs = bookingCosts(room, data.guests_count, computedNights);
+    const price_per_night = costs.pricePerNight;
+    const total_price = costs.total;
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: row, error } = await (supabaseAdmin as any).rpc("create_booking_checked", {
-      _booking: { ...data, price_per_night, total_price },
+      _booking: { ...data, price_per_night, total_price, tourist_tax_rate: TOURIST_TAX_PER_GUEST_PER_NIGHT, tourist_tax_total: costs.touristTax },
     });
     if (error) {
       console.error("[createBooking] DB error:", error);

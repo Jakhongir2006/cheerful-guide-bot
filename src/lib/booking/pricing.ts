@@ -88,6 +88,15 @@ export function priceFor(room: RoomDef, guests: number) {
   return guests <= 1 ? room.single : room.double;
 }
 
+export const TOURIST_TAX_PER_GUEST_PER_NIGHT = 66_000;
+
+export function bookingCosts(room: RoomDef, guests: number, nights: number) {
+  const pricePerNight = priceFor(room, guests);
+  const subtotal = pricePerNight * nights;
+  const touristTax = TOURIST_TAX_PER_GUEST_PER_NIGHT * guests * nights;
+  return { pricePerNight, subtotal, touristTax, total: subtotal + touristTax };
+}
+
 export function nightsBetween(checkin: string, checkout: string) {
   const a = new Date(checkin).getTime();
   const b = new Date(checkout).getTime();
