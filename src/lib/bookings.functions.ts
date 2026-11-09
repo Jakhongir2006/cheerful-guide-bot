@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { ROOMS, bookingCosts, nightsBetween, TOURIST_TAX_PER_GUEST_PER_NIGHT } from "@/lib/booking/pricing";
+import { INVENTORY_TRACKING_ENABLED } from "@/lib/booking/availability";
 
 const createSchema = z.object({
   booking_number: z.string().min(5).max(40),
@@ -35,9 +36,10 @@ export const createBooking = createServerFn({ method: "POST" })
     const total_price = costs.total;
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: row, error } = await (supabaseAdmin as any).rpc("create_booking_checked", {
-      _booking: { ...data, price_per_night, total_price, tourist_tax_rate: TOURIST_TAX_PER_GUEST_PER_NIGHT, tourist_tax_total: costs.touristTax },
-    });
+    const reservation = { ...data, price_per_night, total_price, tourist_tax_rate: TOURIST_TAX_PER_GUEST_PER_NIGHT, tourist_tax_total: costs.touristTax };
+    const { data: row, error } = INVENTORY_TRACKING_ENABLED
+      ? await (supabaseAdmin as any).rpc("create_booking_checked", { _booking: reservation })
+      : await supabaseAdmin.from("bookings").insert({ ...reservation, status: "new" }).select("id, booking_number").single();
     if (error) {
       console.error("[createBooking] DB error:", error);
       if (String(error.message || "").includes("NO_AVAILABILITY")) {
@@ -46,7 +48,7 @@ export const createBooking = createServerFn({ method: "POST" })
       throw new Error("Failed to create booking. Please try again.");
     }
     const booking = row as { id: string; booking_number: string };
-    // Only a successful inventory-checked reservation can trigger an email.
+    // Only a successfully saved reservation can trigger an email.
     // Mail failure must not discard the reservation or invite duplicate bookings.
     let email_sent = false;
     try {

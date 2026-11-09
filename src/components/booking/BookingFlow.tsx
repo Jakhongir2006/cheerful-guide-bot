@@ -21,6 +21,7 @@ import {
 } from "@/lib/booking/pricing";
 import { useServerFn } from "@tanstack/react-start";
 import { createBooking, cancelBookingByNumber, getRoomAvailability } from "@/lib/bookings.functions";
+import { isRoomSoldOut } from "@/lib/booking/availability";
 
 // Convert any error (including Zod JSON arrays from server validators)
 // into a single human-readable sentence.
@@ -353,7 +354,7 @@ export function BookingFlow({
               {ROOMS.map((r) => {
                 const price = priceFor(r, guests);
                 const left = availability?.[r.key];
-                const isSoldOut = left === 0;
+                const isSoldOut = isRoomSoldOut(left);
                 return (
                   <article key={r.key} className="overflow-hidden rounded-xl border border-border bg-card">
                     <img src={r.image} alt={r.name} loading="lazy" className="h-40 w-full object-cover" />
@@ -406,7 +407,7 @@ export function BookingFlow({
                 ROOMS.filter((r) => r.tier === tier).slice(0, 1).map((r) => {
                   const price = priceFor(r, guests);
                   const left = availability?.[r.key];
-                  const isSoldOut = left === 0;
+                  const isSoldOut = isRoomSoldOut(left);
                   return (
                     <article key={r.key} className="relative overflow-hidden rounded-xl border border-accent bg-card">
                       {left != null && (
