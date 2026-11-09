@@ -30,6 +30,9 @@ function friendlyError(e: unknown, lang: "ru" | "en" | string): string {
   const fallback = ru ? "Произошла ошибка. Попробуйте ещё раз." : "Something went wrong. Please try again.";
   const raw = (e as any)?.message ?? (typeof e === "string" ? e : "");
   if (!raw) return fallback;
+  if (raw.includes("TOO_MANY_GUESTS")) {
+    return ru ? "В этом номере максимум 2 гостя." : "This room fits at most 2 guests.";
+  }
 
   // Try to parse Zod-style error arrays embedded in the message.
   const jsonStart = raw.indexOf("[");
@@ -165,9 +168,11 @@ export function BookingFlow({
   }, [open, checkin, checkout]);
 
   const nights = nightsBetween(checkin, checkout);
+  const maxGuestsOption = Math.max(...ROOMS.map((r) => r.maxGuests));
   const pricePerNight = room ? priceFor(room, guests) : 0;
   const costs = room ? bookingCosts(room, guests, nights) : null;
   const subtotal = costs?.subtotal ?? 0;
+  const extraBed = costs?.extraBed ?? 0;
   const touristTax = costs?.touristTax ?? 0;
   const total = costs?.total ?? 0;
 
@@ -187,6 +192,7 @@ export function BookingFlow({
 
   function selectRoom(r: RoomDef) {
     setRoom(r);
+    if (guests > r.maxGuests) setGuests(r.maxGuests);
     const targets = upgradeTargets(r.tier);
     setStep(targets.length ? 3 : 4);
   }
@@ -249,6 +255,7 @@ export function BookingFlow({
       `Guests: ${guests}`,
       `Price per night: ${formatSum(pricePerNight)}`,
       `Room subtotal: ${formatSum(subtotal, "en")}`,
+      ...(extraBed > 0 ? [`Extra bed: ${formatSum(extraBed, "en")}`] : []),
       `Tourist tax: ${formatSum(touristTax, "en")} (${guests} x ${nights} x ${TOURIST_TAX_PER_GUEST_PER_NIGHT} UZS)`,
       `Total: ${formatSum(total)}`,
       "",
@@ -303,7 +310,7 @@ export function BookingFlow({
                   onChange={(e) => setGuests(Number(e.target.value))}
                   className="h-10 rounded-md border border-input bg-background px-3 text-sm"
                 >
-                  {[1, 2, 3, 4].map((n) => (
+                  {Array.from({ length: maxGuestsOption }, (_, i) => i + 1).map((n) => (
                     <option key={n} value={n}>
                       {n}
                     </option>
@@ -417,7 +424,7 @@ export function BookingFlow({
                         </p>
                         <div className="mt-3 flex items-end justify-between">
                           <div className="font-serif text-xl text-primary">{formatSum(price * nights, lang)}</div>
-                          <Button size="sm" variant="outline" disabled={isSoldOut} onClick={() => { setRoom(r); setStep(4); }}>
+                          <Button size="sm" variant="outline" disabled={isSoldOut} onClick={() => { setRoom(r); if (guests > r.maxGuests) setGuests(r.maxGuests); setStep(4); }}>
                             {isSoldOut ? t("unavailable") : t("upgrade_room")}
                           </Button>
                         </div>
@@ -509,6 +516,12 @@ export function BookingFlow({
                   <span className="text-muted-foreground">{t("subtotal")}</span>
                   <span>{formatSum(subtotal, lang)}</span>
                 </div>
+                {extraBed > 0 && (
+                  <div className="mt-1 flex justify-between">
+                    <span className="text-muted-foreground">{t("extra_bed")}</span>
+                    <span>{formatSum(extraBed, lang)}</span>
+                  </div>
+                )}
                 <div className="mt-2 flex flex-wrap justify-between gap-1">
                   <span className="text-muted-foreground">{t("tourist_tax")}</span>
                   <span>{formatSum(touristTax, lang)}</span>
@@ -551,6 +564,9 @@ export function BookingFlow({
                 {checkin} → {checkout} · {nights} {t("nights")}
               </div>
               <div className="mt-2 text-muted-foreground">{t("subtotal")}: {formatSum(subtotal, lang)}</div>
+              {extraBed > 0 && (
+                <div className="mt-1 text-muted-foreground">{t("extra_bed")}: {formatSum(extraBed, lang)}</div>
+              )}
               <div className="mt-1 text-muted-foreground">{t("tourist_tax")}: {formatSum(touristTax, lang)}</div>
               <div className="mt-1 text-xs text-muted-foreground">{t("tourist_tax_note")}</div>
               <div className="mt-2 font-semibold">{t("total")}: {formatSum(total, lang)}</div>
