@@ -78,3 +78,39 @@ for (const key of ["superior-king", "superior-twin"]) {
     });
   });
 }
+
+describe("Room capacity", () => {
+  test("Standard King, Standard Twin, Deluxe and Suite fit at most 2 guests", () => {
+    for (const key of ["standard-king", "standard-twin", "deluxe", "suite"]) {
+      const room = ROOMS.find((r) => r.key === key);
+      if (!room) throw new Error(`Missing room: ${key}`);
+      assert.equal(room.maxGuests, 2);
+    }
+  });
+  test("Superior King and Superior Twin fit 3 guests with an extra bed", () => {
+    for (const key of ["superior-king", "superior-twin"]) {
+      const room = ROOMS.find((r) => r.key === key);
+      if (!room) throw new Error(`Missing room: ${key}`);
+      assert.equal(room.maxGuests, 3);
+    }
+  });
+});
+
+describe("Extra bed pricing", () => {
+  test("extra bed costs 200,000 UZS per night", () => {
+    assert.equal(EXTRA_BED_PRICE_PER_NIGHT, 200_000);
+  });
+  test("3 guests in a Superior room for 2 nights add 400,000 UZS extra bed", () => {
+    const room = ROOMS.find((r) => r.key === "superior-king");
+    if (!room) throw new Error("Missing room");
+    const costs = bookingCosts(room, 3, 2);
+    assert.equal(costs.extraBed, 400_000);
+    assert.equal(costs.subtotal, 2_100_000);
+    assert.equal(costs.total, 2_100_000 + 400_000 + 396_000);
+  });
+  test("2 guests pay no extra bed fee", () => {
+    const room = ROOMS.find((r) => r.key === "superior-twin");
+    if (!room) throw new Error("Missing room");
+    assert.equal(bookingCosts(room, 2, 3).extraBed, 0);
+  });
+});
